@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesson 1 — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; }
+        .top-bar { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; }
+        .lesson-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .lesson-subtitle { font-size: 14px; color: var(--gold); margin-bottom: 24px; }
+        .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; }
+        .content p { margin-bottom: 16px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); }
+        .code-string { color: #98c379; }
+        .bottom-action { margin-top: auto; padding-top: 20px; padding-bottom: 20px;}
+        .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-bar">
+            <a href="season1.html" class="back-btn">← Back to Season 1</a>
+        </div>
+        <div class="lesson-title">1. Your First Python Program</div>
+        <div class="lesson-subtitle">Part 1: What is Python?</div>
+        <div class="content">
+            <p>Imagine you want to build a house. You can't just tell a builder "make me a house" — you have to give clear instructions, one step at a time.</p>
+            <p>A programming language works the same way. You give the computer clear instructions, one line at a time. Python is one of those languages.</p>
+            <p>Example:</p>
+            <div class="code-block">
+                print(<span class="code-string">"Hello, world!"</span>)
+            </div>
+            <p>That line tells the computer: <strong>show the words "Hello, world!" on the screen.</strong></p>
+        </div>
+        <div class="bottom-action">
+            <a href="lesson1.html" class="btn-gold">Next: The print() Function →</a>
+        </div>
+    </div>
+</body>
+</html>
