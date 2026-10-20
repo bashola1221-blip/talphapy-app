@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Season 1 — Talphapy</title>
+    <style>
+        :root {
+            --bg-color: #0a1a3a;
+            --card-bg: #15264d;
+            --gold: #f0c040;
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
+
+        /* Top Bar */
+        .top-bar { display: flex; align-items: center; margin-bottom: 10px; margin-top: 10px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        
+        .page-title { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
+        .page-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+
+        /* Lesson Cards */
+        .lesson-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-main);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s;
+        }
+        .lesson-card:active { transform: scale(0.98); }
+        
+        .lesson-info h3 { font-size: 16px; margin-bottom: 4px; }
+        .lesson-info p { font-size: 12px; color: var(--text-muted); }
+        
+        .lesson-icon { font-size: 20px; }
+
+        /* Locked Lesson */
+        .lesson-card.locked { opacity: 0.6; }
+        .lesson-card.locked h3 { color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div class="top-bar">
+            <a href="index.html" class="back-btn">← Back</a>
+        </div>
+
+        <div class="page-title">Season 1</div>
+        <div class="page-subtitle">Python Foundations</div>
+
+        <!-- Lesson 1 -->
+        <a href="#" class="lesson-card">
+            <div class="lesson-info">
+                <h3>1. Your First Python Program</h3>
+                <p>Print, variables, and basic rules</p>
+            </div>
+            <div class="lesson-icon">📘</div>
+        </a>
+
+        <!-- Lesson 2 -->
+        <a href="#" class="lesson-card">
+            <div class="lesson-info">
+                <h3>2. Variables & Data Types</h3>
+                <p>Strings, integers, and floats</p>
+            </div>
+            <div class="lesson-icon">📘</div>
+        </a>
+
+        <!-- Lesson 3 -->
+        <a href="#" class="lesson-card">
+            <div class="lesson-info">
+                <h3>3. Operators & Math</h3>
+                <p>Addition, division, and BODMAS</p>
+            </div>
+            <div class="lesson-icon">📘</div>
+        </a>
+
+        <!-- Lesson 4 (Locked) -->
+        <div class="lesson-card locked">
+            <div class="lesson-info">
+                <h3>4. Input & Output</h3>
+                <p>Needs unlock</p>
+            </div>
+            <div class="lesson-icon">🔒</div>
+        </div>
+
+        <!-- Lesson 5 (Locked) -->
+        <div class="lesson-card locked">
+            <div class="lesson-info">
+                <h3>5. Conditionals</h3>
+                <p>Needs unlock</p>
+            </div>
+            <div class="lesson-icon">🔒</div>
+        </div>
+
+        <!-- Lesson 6 (Locked) -->
+        <div class="lesson-card locked">
+            <div class="lesson-info">
+                <h3>6. Loops</h3>
+                <p>Needs unlock</p>
+            </div>
+            <div class="lesson-icon">🔒</div>
+        </div>
+
+        <!-- Lesson 7 (Locked) -->
+        <div class="lesson-card locked">
+            <div class="lesson-info">
+                <h3>7. Lists</h3>
+                <p>Needs unlock</p>
+            </div>
+            <div class="lesson-icon">🔒</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
