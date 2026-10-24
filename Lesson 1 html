@@ -38,7 +38,7 @@
             <p>That line tells the computer: <strong>show the words "Hello, world!" on the screen.</strong></p>
         </div>
         <div class="bottom-action">
-            <a href="lesson1.html" class="btn-gold">Next: The print() Function →</a>
+            <a href="#" class="btn-gold">Next: The print() Function →</a>
         </div>
     </div>
 </body>
