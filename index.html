@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
     <style>
-        /* === VARIABLES === */
         :root {
             --bg-color: #0a1a3a;
             --card-bg: #15264d;
@@ -13,182 +12,59 @@
             --text-main: #ffffff;
             --text-muted: #94a3b8;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
 
-        /* === RESET & BASE === */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+        header { text-align: center; margin-bottom: 10px; margin-top: 20px; }
+        .logo { font-size: 32px; font-weight: 800; color: var(--gold); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .welcome-text { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 20px 16px; 
-        }
+        .stats-bar { background: var(--card-bg); border-radius: 12px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-item { display: flex; align-items: center; gap: 6px; font-weight: 600; font-size: 16px; }
 
-        /* === APP CONTAINER === */
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
+        .season-card { background: var(--card-bg); border-radius: 16px; padding: 24px; border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden; }
+        .season-card h2 { font-size: 20px; margin-bottom: 6px; color: var(--gold); }
+        .season-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
+        .season-card.locked h2 { color: var(--text-muted); }
 
-        /* === HEADER === */
-        header {
-            text-align: center;
-            margin-bottom: 10px;
-            margin-top: 20px;
-        }
+        .btn { display: inline-block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; }
+        .btn-gold { background: var(--gold); color: var(--bg-color); }
+        .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
 
-        .logo {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .welcome-text {
-            color: var(--text-muted);
-            font-size: 15px;
-            margin-top: 8px;
-        }
-
-        /* === STATS BAR === */
-        .stats-bar {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        /* === SEASON CARDS === */
-        .season-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .season-card h2 {
-            font-size: 20px;
-            margin-bottom: 6px;
-            color: var(--gold);
-        }
-
-        .season-card p {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        .season-card.locked h2 {
-            color: var(--text-muted);
-        }
-
-        /* === BUTTONS === */
-        .btn {
-            display: inline-block;
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 16px;
-            text-align: center;
-            text-decoration: none;
-            border: none;
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: var(--bg-color);
-        }
-
-        .btn-dark {
-            background: rgba(255,255,255,0.1);
-            color: var(--text-main);
-        }
-
-        /* === BOTTOM MENU === */
-        .bottom-menu {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .menu-btn {
-            flex: 1;
-            background: var(--card-bg);
-            padding: 14px;
-            border-radius: 10px;
-            text-align: center;
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
+        .bottom-menu { display: flex; gap: 12px; margin-top: 10px; }
+        .menu-btn { flex: 1; background: var(--card-bg); padding: 14px; border-radius: 10px; text-align: center; color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 14px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; gap: 6px; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- Header -->
         <header>
             <div class="logo">🐍 Talphapy</div>
             <div class="welcome-text">Welcome back, Learner!</div>
         </header>
 
-        <!-- Stats Bar -->
+        <!-- Stats Bar with IDs so JS can update them -->
         <div class="stats-bar">
-            <div class="stat-item">💎 <span>0</span></div>
-            <div class="stat-item">⭐ <span>0</span></div>
-            <div class="stat-item">🔥 <span>0</span></div>
+            <div class="stat-item">💎 <span id="user-diamonds">0</span></div>
+            <div class="stat-item">⭐ <span id="user-xp">0</span></div>
+            <div class="stat-item">🔥 <span>1</span></div>
         </div>
 
-        <!-- Season 1 -->
         <div class="season-card">
             <h2>Season 1</h2>
             <p>Python Foundations. Master the basics — variables, loops, and logic.</p>
             <a href="season1.html" class="btn btn-gold">Start Learning</a>
         </div>
 
-        <!-- Season 2 -->
         <div class="season-card locked">
             <h2>🔒 Season 2</h2>
             <p>Build Real Apps. Create calculators, games, and tools.</p>
             <a href="#" class="btn btn-dark">Locked</a>
         </div>
 
-        <!-- Bottom Menu -->
         <div class="bottom-menu">
             <a href="#" class="menu-btn">
                 <span style="font-size: 20px;">🏆</span>
@@ -201,6 +77,17 @@
         </div>
 
     </div>
+
+    <!-- Script to load the wallet -->
+    <script>
+        // Load saved stats from the phone's memory, or default to 0
+        const savedDiamonds = localStorage.getItem('user_diamonds') || '0';
+        const savedXp = localStorage.getItem('user_xp') || '0';
+
+        // Update the screen
+        document.getElementById('user-diamonds').innerText = savedDiamonds;
+        document.getElementById('user-xp').innerText = savedXp;
+    </script>
 
 </body>
 </html>
