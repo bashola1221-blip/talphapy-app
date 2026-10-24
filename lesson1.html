@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Lesson 1 — Talphapy</title>
     <style>
-        :root { --bg-color: #0a1a3a; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; }
+        :root { 
+            --bg-color: #0a1a3a; 
+            --card-bg: #15264d;
+            --gold: #f0c040; 
+            --text-main: #ffffff; 
+            --text-muted: #94a3b8; 
+            --code-bg: #0d1425; 
+            --success: #10b981;
+            --danger: #ef4444;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         
@@ -21,7 +30,7 @@
         .content p { margin-bottom: 16px; }
         .content strong { color: var(--text-main); }
         
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
 
@@ -29,8 +38,25 @@
         .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s; }
         .btn-gold:active { transform: scale(0.98); }
 
-        /* Hide parts initially */
-        .hidden { display: none; }
+        /* Quiz Styles */
+        .quiz-btn {
+            display: block;
+            width: 100%;
+            padding: 16px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.1);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .quiz-btn:active { transform: scale(0.98); }
+        .quiz-btn:disabled { opacity: 0.8; cursor: default; }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -55,7 +81,7 @@
             <p>That line tells the computer: <strong>show the words "Hello, world!" on the screen.</strong></p>
         </div>
 
-        <!-- PART 2 (Hidden initially) -->
+        <!-- PART 2 (Hidden) -->
         <div id="part2" class="content hidden">
             <p>Think of a market announcer with a megaphone. He shouts: "Fresh tomatoes!" — everyone hears it.</p>
             <p><strong>print()</strong> is Python's megaphone. Whatever you put inside it, Python shouts to the screen.</p>
@@ -66,7 +92,7 @@
             <p>Each <strong>print()</strong> is a new shout on a new line.</p>
         </div>
 
-        <!-- PART 3 (Hidden initially) -->
+        <!-- PART 3 (Hidden) -->
         <div id="part3" class="content hidden">
             <p>🎯 <strong>The one rule:</strong> Python is case-sensitive, like your bank password.</p>
             <div class="code-block">
@@ -74,6 +100,17 @@
                 Print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This fails ❌</span>
             </div>
             <p>Same letters, but the capital P confuses Python.</p>
+        </div>
+
+        <!-- QUIZ SECTION (Hidden) -->
+        <div id="quiz-section" class="content hidden">
+            <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
+            
+            <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Options injected by JS -->
+            </div>
+
+            <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
         </div>
 
         <div class="bottom-action">
@@ -85,16 +122,40 @@
     <script>
         let currentStep = 1;
 
+        // --- QUIZ DATA ---
+        const questions = [
+            {
+                q: "What does print(\"Hi\") do?",
+                options: ["Prints Hi", "Prints print", "Nothing", "Error"],
+                answer: "Prints Hi",
+                explain: "print() shows whatever is inside the brackets."
+            },
+            {
+                q: "Which line correctly prints the word Hello?",
+                options: ["print(Hello)", "print \"Hello\"", "print(\"Hello\")", "Print(\"Hello\")"],
+                answer: "print(\"Hello\")",
+                explain: "Text needs quotes, and print must be lowercase."
+            },
+            {
+                q: "What does print(\"2 + 2\") output?",
+                options: ["4", "2 + 2", "\"2 + 2\"", "Error"],
+                answer: "2 + 2",
+                explain: "Inside quotes, it's text. Python shows it exactly as written."
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+
+        // --- PAGE NAVIGATION ---
         function nextStep() {
             if (currentStep === 1) {
-                // Hide part 1, show part 2
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Part 2: The print() function';
                 currentStep = 2;
             } 
             else if (currentStep === 2) {
-                // Hide part 2, show part 3
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Part 3: Case sensitivity';
@@ -102,9 +163,107 @@
                 currentStep = 3;
             } 
             else if (currentStep === 3) {
-                // Next step will be the quiz
-                alert("Ready for the Quiz? We will build that next!");
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 4;
+                loadQuestion();
             }
+        }
+
+        // --- QUIZ LOGIC ---
+        function loadQuestion() {
+            const qData = questions[currentQuestion];
+            document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; 
+            
+            qData.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.innerText = option;
+                btn.className = 'quiz-btn';
+                btn.onclick = () => checkAnswer(option, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, btnClicked) {
+            const qData = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const allBtns = document.querySelectorAll('#options-container button');
+
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === qData.answer) {
+                btnClicked.style.background = 'var(--success)';
+                btnClicked.style.borderColor = 'var(--success)';
+                btnClicked.style.color = '#fff';
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
+            } else {
+                btnClicked.style.background = 'var(--danger)';
+                btnClicked.style.borderColor = 'var(--danger)';
+                btnClicked.style.color = '#fff';
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `❌ <strong>Not quite.</strong> The correct answer is: <strong>${qData.answer}</strong><br>${qData.explain}`;
+                
+                allBtns.forEach(b => {
+                    if (b.innerText === qData.answer) {
+                        b.style.background = 'var(--success)';
+                        b.style.borderColor = 'var(--success)';
+                        b.style.color = '#fff';
+                    }
+                });
+            }
+
+            feedback.style.display = 'block';
+
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            
+            if (currentQuestion < questions.length - 1) {
+                nextQBtn.innerText = 'Next Question →';
+                nextQBtn.onclick = () => {
+                    currentQuestion++;
+                    document.getElementById('feedback').style.display = 'none';
+                    loadQuestion();
+                };
+            } else {
+                nextQBtn.innerText = 'See Results 🎉';
+                nextQBtn.onclick = showResults;
+            }
+            
+            feedback.appendChild(nextQBtn);
+        }
+
+        function showResults() {
+            document.getElementById('question-text').innerText = "Assessment Complete!";
+            document.getElementById('subtitle').innerText = "Lesson 1 Finished";
+            
+            const percentage = (score / questions.length) * 100;
+            const passed = percentage >= 75;
+            
+            document.getElementById('options-container').innerHTML = `
+                <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
+                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    </h2>
+                    <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
+                    
+                    <p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">
+                        ${passed ? '💎 +2 Diamonds • ⭐ +20 XP' : '💎 +1 Diamond • ⭐ +10 XP'}
+                    </p>
+
+                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                </div>
+            `;
+            document.getElementById('feedback').style.display = 'none';
         }
     </script>
 </body>
