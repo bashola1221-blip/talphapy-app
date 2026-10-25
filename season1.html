@@ -66,7 +66,7 @@
                 <h3>1. Your First Python Program</h3>
                 <p>Print, variables, and basic rules</p>
             </div>
-            <div class="lesson-icon">📘</div>
+            <div class="lesson-icon" id="icon-lesson1">📘</div>
         </a>
 
         <!-- Lesson 2 -->
@@ -75,7 +75,7 @@
                 <h3>2. Variables & Data Types</h3>
                 <p>Strings, integers, and floats</p>
             </div>
-            <div class="lesson-icon"id="icon-lesson2"> 📘</div>
+            <div class="lesson-icon" id="icon-lesson2">📘</div>
         </a>
 
         <!-- Lesson 3 -->
@@ -125,5 +125,18 @@
 
     </div>
 
+    <script>
+        // Check if Lesson 1 is completed
+        if (localStorage.getItem('lesson1_completed') === 'true') {
+            const icon1 = document.getElementById('icon-lesson1');
+            if (icon1) { icon1.innerText = '✅'; }
+        }
+
+        // Check if Lesson 2 is completed
+        if (localStorage.getItem('lesson2_completed') === 'true') {
+            const icon2 = document.getElementById('icon-lesson2');
+            if (icon2) { icon2.innerText = '✅'; }
+        }
+    </script>
 </body>
 </html>
