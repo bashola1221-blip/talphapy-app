@@ -50,28 +50,20 @@
             <p>Imagine you want to build a house. You can't just tell a builder "make me a house" — you have to give clear instructions, one step at a time.</p>
             <p>A programming language works the same way. You give the computer clear instructions, one line at a time. Python is one of those languages.</p>
             <p>Example:</p>
-            <div class="code-block">
-                print(<span class="code-string">"Hello, world!"</span>)
-            </div>
+            <div class="code-block">print(<span class="code-string">"Hello, world!"</span>)</div>
             <p>That line tells the computer: <strong>show the words "Hello, world!" on the screen.</strong></p>
         </div>
 
         <div id="part2" class="content hidden">
             <p>Think of a market announcer with a megaphone. He shouts: "Fresh tomatoes!" — everyone hears it.</p>
             <p><strong>print()</strong> is Python's megaphone. Whatever you put inside it, Python shouts to the screen.</p>
-            <div class="code-block">
-                print(<span class="code-string">"My name is Ada"</span>)<br>
-                print(<span class="code-string">"I am learning Python"</span>)
-            </div>
+            <div class="code-block">print(<span class="code-string">"My name is Ada"</span>)<br>print(<span class="code-string">"I am learning Python"</span>)</div>
             <p>Each <strong>print()</strong> is a new shout on a new line.</p>
         </div>
 
         <div id="part3" class="content hidden">
             <p>🎯 <strong>The one rule:</strong> Python is case-sensitive, like your bank password.</p>
-            <div class="code-block">
-                print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This works ✅</span><br>
-                Print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This fails ❌</span>
-            </div>
+            <div class="code-block">print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This works ✅</span><br>Print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This fails ❌</span></div>
             <p>Same letters, but the capital P confuses Python.</p>
         </div>
 
@@ -87,7 +79,12 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
         let currentStep = 1;
         const questions = [
             { q: "What does print(\"Hi\") do?", options: ["Prints Hi", "Prints print", "Nothing", "Error"], answer: "Prints Hi", explain: "print() shows whatever is inside the brackets." },
@@ -183,9 +180,11 @@
             feedback.appendChild(nextQBtn);
         }
 
-        function showResults() {
-            // 1. Mark as completed
-            localStorage.setItem('lesson1_completed', 'true');
+        async function showResults() {
+            document.getElementById('question-text').innerText = "Saving progress...";
+            document.getElementById('subtitle').innerText = "Lesson 1 Finished";
+            document.getElementById('options-container').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
             const passed = percentage >= 75;
@@ -194,38 +193,43 @@
             let earnedXp = passed ? 20 : 10;
             let rewardMessage = "";
 
-            // 2. Check if they already got the reward (Anti-Cheat)
-            if (!localStorage.getItem('lesson1_rewarded')) {
-                // Add to wallet
-                let currentDiamonds = parseInt(localStorage.getItem('user_diamonds') || '0');
-                let currentXp = parseInt(localStorage.getItem('user_xp') || '0');
+            // 1. Get current user
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                // 2. Fetch their profile
+                let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 
-                localStorage.setItem('user_diamonds', currentDiamonds + earnedD);
-                localStorage.setItem('user_xp', currentXp + earnedXp);
-                localStorage.setItem('lesson1_rewarded', 'true');
+                // 3. Check if already rewarded
+                const completed = profile.completed_lessons || [];
+                if (!completed.includes('lesson1')) {
+                    // Update database
+                    const newDiamonds = (profile.diamonds || 0) + earnedD;
+                    const newXp = (profile.xp || 0) + earnedXp;
+                    const newCompleted = [...completed, 'lesson1'];
 
-                rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
-            } else {
-                // Already rewarded before
-                rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    await supabaseClient.from('profiles').update({
+                        diamonds: newDiamonds,
+                        xp: newXp,
+                        completed_lessons: newCompleted
+                    }).eq('id', user.id);
+                    
+                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                } else {
+                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                }
             }
 
             document.getElementById('question-text').innerText = "Assessment Complete!";
-            document.getElementById('subtitle').innerText = "Lesson 1 Finished";
-            
             document.getElementById('options-container').innerHTML = `
                 <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
                     <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
                         ${passed ? '🌟 Excellent!' : '📉 Good try!'}
                     </h2>
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
-                    
                     ${rewardMessage}
-
                     <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
                 </div>
             `;
-            document.getElementById('feedback').style.display = 'none';
         }
     </script>
 </body>
