@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
+        
+        .login-box { width: 100%; max-width: 400px; background: var(--card-bg); padding: 32px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        .logo { font-size: 32px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+
+        input {
+            width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px;
+            background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white;
+            font-size: 16px; outline: none;
+        }
+        input:focus { border-color: var(--gold); }
+
+        .btn { width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; margin-bottom: 12px; }
+        .btn-gold { background: var(--gold); color: var(--bg-color); }
+        .btn-outline { background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.2); }
+        
+        .error-msg { color: var(--danger); font-size: 14px; margin-bottom: 16px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <div class="logo">🐍 Talphapy</div>
+        <div class="subtitle">Login or create an account to save your progress.</div>
+
+        <div id="error-msg" class="error-msg"></div>
+
+        <input type="email" id="email" placeholder="Email address">
+        <input type="password" id="password" placeholder="Password (min 6 characters)">
+        
+        <button class="btn btn-gold" onclick="login()">Login</button>
+        <button class="btn btn-outline" onclick="signup()">Create Account</button>
+    </div>
+
+    <!-- Load Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script>
+        // Your Database Connection
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdzd.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiZGNoa2t6b2FvdmVyeXh6eGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNDY3ODYsImV4cCI6MjEwODYyMjc4Nn0.3_O82YG1wRc6VFZ0V6GJMfWN7M4hMOoNXBKSKj4YLDo";
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function showError(msg) {
+            const err = document.getElementById('error-msg');
+            err.innerText = msg;
+            err.style.display = 'block';
+        }
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if(!email || !password) return showError("Please fill in all fields");
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) return showError(error.message);
+            
+            // Redirect to home page on success
+            window.location.href = "index.html";
+        }
+
+        async function signup() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if(!email || !password) return showError("Please fill in all fields");
+
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) return showError(error.message);
+            
+            // Redirect to home page
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>
