@@ -1,0 +1,15 @@
+{
+  "name": "Talphapy — Learn Python",
+  "short_name": "Talphapy",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a1a3a",
+  "theme_color": "#0a1a3a",
+  "icons": [
+    {
+      "src": "https://files.catbox.moe/dyepbh.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
