@@ -42,13 +42,12 @@
         <button class="btn btn-outline" onclick="signup()">Create Account</button>
     </div>
 
-    <!-- Load Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
         // Your Database Connection
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdzd.supabase.co";
-        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiZGNoa2t6b2FvdmVyeXh6eGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNDY3ODYsImV4cCI6MjEwODYyMjc4Nn0.3_O82YG1wRc6VFZ0V6GJMfWN7M4hMOoNXBKSKj4YLDo";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -66,7 +65,6 @@
             const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
             if (error) return showError(error.message);
             
-            // Redirect to home page on success
             window.location.href = "index.html";
         }
 
@@ -78,7 +76,6 @@
             const { data, error } = await supabaseClient.auth.signUp({ email, password });
             if (error) return showError(error.message);
             
-            // Redirect to home page
             window.location.href = "index.html";
         }
     </script>
