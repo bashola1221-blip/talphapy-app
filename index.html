@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
+    <!-- This connects the App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a1a3a">
+    
     <style>
-        :root {
-            --bg-color: #0a1a3a;
-            --card-bg: #15264d;
-            --gold: #f0c040;
-            --text-main: #ffffff;
-            --text-muted: #94a3b8;
-        }
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         
@@ -32,9 +30,6 @@
         .btn { display: inline-block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; }
         .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
-
-        .bottom-menu { display: flex; gap: 12px; margin-top: 10px; }
-        .menu-btn { flex: 1; background: var(--card-bg); padding: 14px; border-radius: 10px; text-align: center; color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 14px; border: 1px solid rgba(255,255,255,0.05); display: flex; flex-direction: column; align-items: center; gap: 6px; }
     </style>
 </head>
 <body>
@@ -46,7 +41,6 @@
             <div class="welcome-text">Welcome back, Learner!</div>
         </header>
 
-        <!-- Stats Bar with IDs so JS can update them -->
         <div class="stats-bar">
             <div class="stat-item">💎 <span id="user-diamonds">0</span></div>
             <div class="stat-item">⭐ <span id="user-xp">0</span></div>
@@ -65,26 +59,15 @@
             <a href="#" class="btn btn-dark">Locked</a>
         </div>
 
-        <div class="bottom-menu">
-            <a href="#" class="menu-btn">
-                <span style="font-size: 20px;">🏆</span>
-                Leaderboard
-            </a>
-            <a href="https://t.me/Talphapy_bot" class="menu-btn">
-                <span style="font-size: 20px;">🤖</span>
-                Open Bot
-            </a>
-        </div>
-
     </div>
 
-    <!-- Script to load the wallet -->
+    <!-- Load the Bottom Navigation Menu -->
+    <script src="nav.js"></script>
+
     <script>
-        // Load saved stats from the phone's memory, or default to 0
+        // Load Wallet
         const savedDiamonds = localStorage.getItem('user_diamonds') || '0';
         const savedXp = localStorage.getItem('user_xp') || '0';
-
-        // Update the screen
         document.getElementById('user-diamonds').innerText = savedDiamonds;
         document.getElementById('user-xp').innerText = savedXp;
     </script>
