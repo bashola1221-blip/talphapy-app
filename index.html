@@ -4,17 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
-    <!-- This connects the App Manifest -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a1a3a">
-    
     <style>
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
-
         header { text-align: center; margin-bottom: 10px; margin-top: 20px; }
         .logo { font-size: 32px; font-weight: 800; color: var(--gold); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .welcome-text { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
@@ -30,6 +27,8 @@
         .btn { display: inline-block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; }
         .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        
+        .logout-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; text-decoration: underline; margin-top: 20px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -38,7 +37,7 @@
         
         <header>
             <div class="logo">🐍 Talphapy</div>
-            <div class="welcome-text">Welcome back, Learner!</div>
+            <div class="welcome-text" id="welcome-name">Loading...</div>
         </header>
 
         <div class="stats-bar">
@@ -58,24 +57,57 @@
             <p>Build Real Apps. Create calculators, games, and tools.</p>
             <a href="#" class="btn btn-dark">Locked</a>
         </div>
+        
+        <center>
+            <button class="logout-btn" onclick="logout()">Log out</button>
+        </center>
 
     </div>
 
-    <!-- Load the Bottom Navigation Menu -->
     <script src="nav.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
     <script>
-        // Load Wallet
-        const savedDiamonds = localStorage.getItem('user_diamonds') || '0';
-        const savedXp = localStorage.getItem('user_xp') || '0';
-        document.getElementById('user-diamonds').innerText = savedDiamonds;
-        document.getElementById('user-xp').innerText = savedXp;
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdzd.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtiZGNoa2t6b2FvdmVyeXh6eGR6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwNDY3ODYsImV4cCI6MjEwODYyMjc4Nn0.3_O82YG1wRc6VFZ0V6GJMfWN7M4hMOoNXBKSKj4YLDo";
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadData() {
+            // 1. Check if user is logged in
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            if (!user) {
+                window.location.href = "login.html"; // Kick them to login page
+                return;
+            }
+
+            document.getElementById('welcome-name').innerText = "Welcome, " + user.email.split('@')[0];
+
+            // 2. Fetch their profile from the database
+            let { data: profile, error } = await supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('id', user.id)
+                .single();
+
+            // 3. If they don't have a profile yet, create one!
+            if (!profile) {
+                await supabaseClient.from('profiles').insert([{ id: user.id, diamonds: 0, xp: 0 }]);
+                profile = { diamonds: 0, xp: 0 };
+            }
+
+            // 4. Show their stats
+            document.getElementById('user-diamonds').innerText = profile.diamonds;
+            document.getElementById('user-xp').innerText = profile.xp;
+        }
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = "login.html";
+        }
+
+        loadData();
     </script>
-    <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js');
-  }
-</script>
-
 </body>
 </html>
