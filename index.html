@@ -68,36 +68,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <script>
+        // CORRECTED URL
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdzd.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadData() {
-            // Check if user is logged in
             const { data: { user } } = await supabaseClient.auth.getUser();
             
             if (!user) {
-                window.location.href = "login.html"; // Send to login if not
+                window.location.href = "login.html"; 
                 return;
             }
 
             document.getElementById('welcome-name').innerText = "Welcome, " + user.email.split('@')[0];
 
-            // Fetch profile from database
             let { data: profile, error } = await supabaseClient
                 .from('profiles')
                 .select('*')
                 .eq('id', user.id)
                 .single();
 
-            // Create profile if it doesn't exist
             if (!profile) {
                 await supabaseClient.from('profiles').insert([{ id: user.id, diamonds: 0, xp: 0 }]);
                 profile = { diamonds: 0, xp: 0 };
             }
 
-            // Update UI
             document.getElementById('user-diamonds').innerText = profile.diamonds;
             document.getElementById('user-xp').innerText = profile.xp;
         }
