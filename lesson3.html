@@ -213,5 +213,19 @@
             `;
         }
     </script>
+        <script>
+        // Security Check
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            if (!completed.includes('lesson2')) {
+                window.location.replace('season1.html');
+            }
+        }
+        checkLock();
+    </script>
 </body>
+
 </html>
