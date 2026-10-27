@@ -68,6 +68,11 @@
             <div class="lesson-info"><h3>6. Loops</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson6">🔒</div>
         </div>
+
+        <div class="lesson-card locked" id="card-lesson7" onclick="tryLockedLesson('lesson7.html')">
+            <div class="lesson-info"><h3>7. Lists</h3><p>Requires unlock</p></div>
+            <div class="lesson-icon" id="icon-lesson7">🔒</div>
+        </div>
     </div>
 
     <!-- PAYWALL MODAL -->
@@ -123,22 +128,28 @@
                 document.getElementById('icon-lesson3').innerText = '🔒';
             }
 
-            // Lesson 4 (Premium)
+            // Lesson 4
             if (isUnlocked) {
                 document.getElementById('card-lesson4').classList.remove('locked');
                 document.getElementById('icon-lesson4').innerText = completed.includes('lesson4') ? '✅' : '📘';
             }
 
-            // Lesson 5 (Premium + requires Lesson 4)
+            // Lesson 5
             if (isUnlocked && completed.includes('lesson4')) {
                 document.getElementById('card-lesson5').classList.remove('locked');
                 document.getElementById('icon-lesson5').innerText = completed.includes('lesson5') ? '✅' : '📘';
             }
 
-            // Lesson 6 (Premium + requires Lesson 5)
+            // Lesson 6
             if (isUnlocked && completed.includes('lesson5')) {
                 document.getElementById('card-lesson6').classList.remove('locked');
                 document.getElementById('icon-lesson6').innerText = completed.includes('lesson6') ? '✅' : '📘';
+            }
+
+            // Lesson 7
+            if (isUnlocked && completed.includes('lesson6')) {
+                document.getElementById('card-lesson7').classList.remove('locked');
+                document.getElementById('icon-lesson7').innerText = completed.includes('lesson7') ? '✅' : '📘';
             }
         }
 
