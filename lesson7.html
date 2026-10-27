@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lesson 7 — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; --success: #10b981; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-bar { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; }
+        .lesson-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .lesson-subtitle { font-size: 14px; color: var(--gold); margin-bottom: 24px; transition: opacity 0.3s; }
+        .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
+        .content p { margin-bottom: 16px; }
+        .content strong { color: var(--text-main); }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .code-string { color: #98c379; }
+        .code-keyword { color: #c678dd; }
+        .code-number { color: #d19a66; }
+        .bottom-action { padding-top: 20px; padding-bottom: 20px;}
+        .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s; }
+        .btn-gold:active { transform: scale(0.98); }
+        .quiz-btn { display: block; width: 100%; padding: 16px; background: var(--card-bg); color: var(--text-main); border-radius: 12px; font-weight: 600; font-size: 16px; text-align: left; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.1s; }
+        .quiz-btn:active { transform: scale(0.98); }
+        .quiz-btn:disabled { opacity: 0.8; cursor: default; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-bar">
+            <a href="season1.html" class="back-btn">← Back to Season 1</a>
+        </div>
+        <div class="lesson-title">7. Lists</div>
+        <div id="subtitle" class="lesson-subtitle">Part 1: What is a list?</div>
+        <div id="part1" class="content">
+            <p>Think of your class register. One book, many names — in a specific order.</p>
+            <p>A variable holds one value. A list holds many, in order.</p>
+            <div class="code-block">fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"cherry"</span>]</div>
+            <p>Wrapped in square brackets <strong>[ ]</strong>, items separated by commas.</p>
+            <p>You can print a single item using its index (its position in the register):</p>
+            <div class="code-block">print(fruits[<span class="code-number">0</span>])  <span class="code-keyword"># Output: apple</span><br>print(fruits[<span class="code-number">2</span>])  <span class="code-keyword"># Output: cherry</span></div>
+            <p>⚠️ Indexing starts at 0, not 1. In the register, the first name is at position 0.</p>
+        </div>
+        <div id="part2" class="content hidden">
+            <p><strong>Changing lists</strong></p>
+            <p>Lists are mutable — you can change them after creating, like editing a register when a new student joins.</p>
+            <div class="code-block"><span class="code-keyword"># Add to the end:</span><br>fruits.append(<span class="code-string">"orange"</span>)<br><br><span class="code-keyword"># Remove an item:</span><br>fruits.remove(<span class="code-string">"banana"</span>)<br><br><span class="code-keyword"># Change an item:</span><br>fruits[<span class="code-number">0</span>] = <span class="code-string">"mango"</span><br><br><span class="code-keyword"># How many items:</span><br>print(len(fruits))</div>
+        </div>
+        <div id="part3" class="content hidden">
+            <p>🎯 <strong>Looping through a list</strong></p>
+            <p>The most common thing to do with a list — go through every item. Like calling names one by one from the register:</p>
+            <div class="code-block"><span class="code-keyword">for</span> fruit <span class="code-keyword">in</span> fruits:<br>    print(fruit)</div>
+            <p>No <strong>range()</strong> needed. Python visits each item once.</p>
+            <p>Combine with an if statement:</p>
+            <div class="code-block"><span class="code-keyword">for</span> fruit <span class="code-keyword">in</span> fruits:<br>    <span class="code-keyword">if</span> fruit == <span class="code-string">"cherry"</span>:<br>        print(<span class="code-string">"Found the cherry!"</span>)</div>
+        </div>
+        <div id="quiz-section" class="content hidden">
+            <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
+            <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
+        </div>
+        <div class="bottom-action">
+            <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
+        </div>
+    </div>
+
+    <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // SECURITY CHECK: Make sure they are unlocked AND completed Lesson 6
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { window.location.replace('login.html'); return; }
+            
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            
+            if (!profile.unlocked_s1 || !completed.includes('lesson6')) {
+                window.location.replace('season1.html');
+            }
+        }
+        checkLock();
+
+        let currentStep = 1;
+        const questions = [
+            { q: "fruits[0] if fruits = [\"apple\", \"banana\"]?", options: ["apple", "banana", "0", "Error"], answer: "apple", explain: "Index starts at 0." },
+            { q: "How to add \"orange\" to end?", options: ["fruits.add()", "fruits.append()", "fruits +", "fruits.push()"], answer: "fruits.append()", explain: "append() adds to the end." },
+            { q: "len([1,2,3,4]) returns?", options: ["3", "4", "5", "Error"], answer: "4", explain: "len() counts items." }
+        ];
+        let currentQuestion = 0;
+        let score = 0;
+
+        function nextStep() {
+            if (currentStep === 1) {
+                document.getElementById('part1').classList.add('hidden');
+                document.getElementById('part2').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 2: Changing lists';
+                currentStep = 2;
+            } else if (currentStep === 2) {
+                document.getElementById('part2').classList.add('hidden');
+                document.getElementById('part3').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 3: Looping through lists';
+                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                currentStep = 3;
+            } else if (currentStep === 3) {
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 4;
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            const qData = questions[currentQuestion];
+            document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; 
+            qData.options.forEach(option => {
+                const btn = document.createElement('button');
+                btn.innerText = option;
+                btn.className = 'quiz-btn';
+                btn.onclick = () => checkAnswer(option, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, btnClicked) {
+            const qData = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const allBtns = document.querySelectorAll('#options-container button');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === qData.answer) {
+                btnClicked.style.background = 'var(--success)';
+                btnClicked.style.borderColor = 'var(--success)';
+                btnClicked.style.color = '#fff';
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
+            } else {
+                btnClicked.style.background = 'var(--danger)';
+                btnClicked.style.borderColor = 'var(--danger)';
+                btnClicked.style.color = '#fff';
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `❌ <strong>Not quite.</strong> The correct answer is: <strong>${qData.answer}</strong><br>${qData.explain}`;
+                allBtns.forEach(b => {
+                    if (b.innerText === qData.answer) {
+                        b.style.background = 'var(--success)';
+                        b.style.borderColor = 'var(--success)';
+                        b.style.color = '#fff';
+                    }
+                });
+            }
+
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            
+            if (currentQuestion < questions.length - 1) {
+                nextQBtn.innerText = 'Next Question →';
+                nextQBtn.onclick = () => {
+                    currentQuestion++;
+                    document.getElementById('feedback').style.display = 'none';
+                    loadQuestion();
+                };
+            } else {
+                nextQBtn.innerText = 'See Results 🎉';
+                nextQBtn.onclick = showResults;
+            }
+            feedback.appendChild(nextQBtn);
+        }
+
+        async function showResults() {
+            document.getElementById('question-text').innerText = "Saving progress...";
+            document.getElementById('subtitle').innerText = "Lesson 7 Finished";
+            document.getElementById('options-container').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+
+            const percentage = Math.round((score / questions.length) * 100);
+            const passed = percentage >= 75;
+            
+            let earnedD = passed ? 2 : 1;
+            let earnedXp = passed ? 20 : 10;
+            let rewardMessage = "";
+
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+                const completed = profile.completed_lessons || [];
+                
+                if (!completed.includes('lesson7')) {
+                    const newDiamonds = (profile.diamonds || 0) + earnedD;
+                    const newXp = (profile.xp || 0) + earnedXp;
+                    const newCompleted = [...completed, 'lesson7'];
+
+                    await supabaseClient.from('profiles').update({
+                        diamonds: newDiamonds,
+                        xp: newXp,
+                        completed_lessons: newCompleted
+                    }).eq('id', user.id);
+                    
+                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                } else {
+                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                }
+            }
+
+            document.getElementById('question-text').innerText = "Assessment Complete!";
+            document.getElementById('options-container').innerHTML = `
+                <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
+                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    </h2>
+                    <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
+                    ${rewardMessage}
+                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
