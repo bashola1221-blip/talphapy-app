@@ -11,118 +11,138 @@
         
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
         .top-bar { display: flex; align-items: center; margin-bottom: 10px; margin-top: 10px; }
-        .back-btn { color: var(--gold); text-decoration: none; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 16px; font-weight: 600; }
         .page-title { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
         .page-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
 
-        .lesson-card { background: var(--card-bg); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-main); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s; }
+        .lesson-card { background: var(--card-bg); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-main); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s; cursor: pointer; }
         .lesson-card:active { transform: scale(0.98); }
         .lesson-info h3 { font-size: 16px; margin-bottom: 4px; }
         .lesson-info p { font-size: 12px; color: var(--text-muted); }
         .lesson-icon { font-size: 20px; }
 
-        /* Locked Lesson Styling */
-        .lesson-card.locked { opacity: 0.5; pointer-events: none; }
-        .lesson-card.locked h3 { color: var(--text-muted); }
+        .lesson-card.locked { opacity: 0.6; }
+
+        /* MODAL STYLES */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
+        .modal-content { background: var(--card-bg); padding: 24px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--gold); }
+        .modal-content h2 { color: var(--gold); margin-bottom: 12px; }
+        .modal-content p { color: var(--text-main); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
+        .modal-content .bank-details { background: #0d1425; padding: 12px; border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 20px; }
+        .modal-content .btn { display: block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; }
+        .btn-gold { background: var(--gold); color: var(--bg-color); margin-bottom: 8px;}
+        .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        
-        <div class="top-bar">
-            <a href="index.html" class="back-btn">← Back</a>
-        </div>
-
+        <div class="top-bar"><a href="index.html" class="back-btn">← Back</a></div>
         <div class="page-title">Season 1</div>
         <div class="page-subtitle">Python Foundations</div>
 
-        <!-- Lesson 1 -->
         <a href="lesson1.html" class="lesson-card" id="card-lesson1">
-            <div class="lesson-info">
-                <h3>1. Your First Python Program</h3>
-                <p>Print, variables, and basic rules</p>
-            </div>
+            <div class="lesson-info"><h3>1. Your First Python Program</h3><p>Print, variables, and basic rules</p></div>
             <div class="lesson-icon" id="icon-lesson1">📘</div>
         </a>
-
-        <!-- Lesson 2 -->
         <a href="lesson2.html" class="lesson-card" id="card-lesson2">
-            <div class="lesson-info">
-                <h3>2. Variables & Data Types</h3>
-                <p>Strings, integers, and floats</p>
-            </div>
+            <div class="lesson-info"><h3>2. Variables & Data Types</h3><p>Strings, integers, and floats</p></div>
             <div class="lesson-icon" id="icon-lesson2">📘</div>
         </a>
-
-        <!-- Lesson 3 -->
         <a href="lesson3.html" class="lesson-card" id="card-lesson3">
-            <div class="lesson-info">
-                <h3>3. Operators & Math</h3>
-                <p>Addition, division, and BODMAS</p>
-            </div>
+            <div class="lesson-info"><h3>3. Operators & Math</h3><p>Addition, division, and BODMAS</p></div>
             <div class="lesson-icon" id="icon-lesson3">📘</div>
         </a>
-
-        <!-- Lesson 4 (Locked by Paywall) -->
-        <div class="lesson-card locked">
-            <div class="lesson-info">
-                <h3>4. Input & Output</h3>
-                <p>Needs unlock</p>
-            </div>
-            <div class="lesson-icon">🔒</div>
+        
+        <div class="lesson-card locked" id="card-lesson4" onclick="tryLockedLesson('lesson4.html')">
+            <div class="lesson-info"><h3>4. Input & Output</h3><p>Requires unlock</p></div>
+            <div class="lesson-icon" id="icon-lesson4">🔒</div>
         </div>
 
+        <div class="lesson-card locked" id="card-lesson5" onclick="tryLockedLesson('lesson5.html')">
+            <div class="lesson-info"><h3>5. Conditionals</h3><p>Requires unlock</p></div>
+            <div class="lesson-icon" id="icon-lesson5">🔒</div>
+        </div>
+    </div>
+
+    <!-- PAYWALL MODAL -->
+    <div class="modal-overlay" id="paywall-modal">
+        <div class="modal-content">
+            <h2>🔒 Unlock Season 1</h2>
+            <p>To continue to Lesson 4 and beyond, please pay ₦1,500.</p>
+            <div class="bank-details">
+                <strong>Bank:</strong> Opay<br>
+                <strong>Account:</strong> 8062860797<br>
+                <strong>Name:</strong> Bashir
+            </div>
+            <p>After paying, send your screenshot to <strong>@YourHandle</strong> on Telegram. You will be unlocked within a few hours.</p>
+            <a href="https://t.me/YourHandle" target="_blank" class="btn btn-gold">Message me on Telegram</a>
+            <button class="btn btn-dark" onclick="closeModal()">Close</button>
+        </div>
     </div>
 
     <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        let isUnlocked = false;
 
         async function loadProgress() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
 
-            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
-            
-            let completed = [];
-            if (profile && profile.completed_lessons) {
-                completed = profile.completed_lessons;
-            }
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            isUnlocked = profile.unlocked_s1;
 
-            // Lesson 1 is always unlocked. Check completion for icon.
-            if (completed.includes('lesson1')) {
-                document.getElementById('icon-lesson1').innerText = '✅';
-            }
+            // Lesson 1
+            if (completed.includes('lesson1')) document.getElementById('icon-lesson1').innerText = '✅';
 
-            // Check if Lesson 1 is done to unlock Lesson 2
+            // Lesson 2
             if (completed.includes('lesson1')) {
                 document.getElementById('card-lesson2').classList.remove('locked');
-                if (completed.includes('lesson2')) {
-                    document.getElementById('icon-lesson2').innerText = '✅';
-                }
+                if (completed.includes('lesson2')) document.getElementById('icon-lesson2').innerText = '✅';
             } else {
                 document.getElementById('card-lesson2').classList.add('locked');
                 document.getElementById('icon-lesson2').innerText = '🔒';
             }
 
-            // Check if Lesson 2 is done to unlock Lesson 3
+            // Lesson 3
             if (completed.includes('lesson2')) {
                 document.getElementById('card-lesson3').classList.remove('locked');
-                if (completed.includes('lesson3')) {
-                    document.getElementById('icon-lesson3').innerText = '✅';
-                }
+                if (completed.includes('lesson3')) document.getElementById('icon-lesson3').innerText = '✅';
             } else {
                 document.getElementById('card-lesson3').classList.add('locked');
                 document.getElementById('icon-lesson3').innerText = '🔒';
             }
+
+            // Lesson 4 (Premium)
+            if (isUnlocked) {
+                document.getElementById('card-lesson4').classList.remove('locked');
+                document.getElementById('icon-lesson4').innerText = completed.includes('lesson4') ? '✅' : '📘';
+            }
+
+            // Lesson 5 (Premium + requires Lesson 4)
+            if (isUnlocked && completed.includes('lesson4')) {
+                document.getElementById('card-lesson5').classList.remove('locked');
+                document.getElementById('icon-lesson5').innerText = completed.includes('lesson5') ? '✅' : '📘';
+            }
         }
 
-        // We need to wait for the DOM to load and Supabase to check auth
+        function tryLockedLesson(url) {
+            if (isUnlocked) {
+                window.location.href = url;
+            } else {
+                document.getElementById('paywall-modal').style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('paywall-modal').style.display = 'none';
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             loadProgress();
         });
