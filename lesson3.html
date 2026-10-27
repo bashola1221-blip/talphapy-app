@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lesson 2 — Talphapy</title>
+    <title>Lesson 3 — Talphapy</title>
     <style>
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; --success: #10b981; --danger: #ef4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -34,26 +34,23 @@
         <div class="top-bar">
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
-        <div class="lesson-title">2. Variables & Data Types</div>
-        <div id="subtitle" class="lesson-subtitle">Part 1: What is a variable?</div>
+        <div class="lesson-title">3. Operators & Math</div>
+        <div id="subtitle" class="lesson-subtitle">Part 1: The math operators</div>
         <div id="part1" class="content">
-            <p>Imagine a market stall with labelled containers. One jar says "rice", another says "beans". Each jar holds something.</p>
-            <p>A variable is exactly that: a <strong>labelled container</strong> in your program.</p>
-            <div class="code-block">name = <span class="code-string">"Ada"</span><br>age = <span class="code-number">14</span></div>
-            <p><strong>name</strong> is the label. <strong>"Ada"</strong> is what's inside.</p>
+            <p>Think of cooking rice for a party. You measure, add, subtract, share. Python does the same math — with symbols.</p>
+            <div class="code-block"><span class="code-keyword">+</span> addition<br><span class="code-keyword">-</span> subtraction<br><span class="code-keyword">*</span> multiplication<br><span class="code-keyword">/</span> division (always gives a decimal)<br><span class="code-keyword">//</span> floor division (whole part only)<br><span class="code-keyword">%</span> remainder (what's left over)<br><span class="code-keyword">**</span> power</div>
         </div>
         <div id="part2" class="content hidden">
-            <p>Different containers hold different things. Python has 4 main types:</p>
-            <p><strong>1. String (text)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">name = <span class="code-string">"Ada"</span></span> — Always in quotes.</p>
-            <p><strong>2. Integer (whole number)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">age = <span class="code-number">14</span></span> — No quotes, no decimal point.</p>
-            <p><strong>3. Float (decimal)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">price = <span class="code-number">4.5</span></span> — Has a dot.</p>
-            <p><strong>4. Boolean (True or False)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">is_student = <span class="code-keyword">True</span></span> — Only two values.</p>
+            <p>Sharing <span class="code-number">7</span> oranges among <span class="code-number">2</span> people:</p>
+            <p><strong>Floor division (//)</strong> gives the share:</p>
+            <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">//</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 3</span></div>
+            <p><strong>Remainder (%)</strong> gives the leftover:</p>
+            <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">%</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 1</span></div>
         </div>
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>The naming rules:</strong></p>
-            <p>✅ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">my_name = <span class="code-string">"Ada"</span></span> (Valid)</p>
-            <p>❌ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;"><span class="code-number">2name</span> = <span class="code-string">"Ada"</span></span> (Can't start with a number)</p>
-            <p>❌ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">my name = <span class="code-string">"Ada"</span></span> (No spaces allowed)</p>
+            <p>🎯 <strong>Order of operations (BODMAS)</strong></p>
+            <p>Python follows the same rules as maths: brackets first, then powers, then multiplication/division, then addition/subtraction.</p>
+            <div class="code-block">print(<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span> <span class="code-keyword">*</span> <span class="code-number">4</span>)  <span class="code-keyword"># Output: 14 (Not 20!)</span><br><br>print((<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span>) <span class="code-keyword">*</span> <span class="code-number">4</span>) <span class="code-keyword"># Output: 20</span></div>
         </div>
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
@@ -65,17 +62,30 @@
         </div>
     </div>
 
+    <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // SECURITY CHECK: Make sure Lesson 2 is done
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) return;
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            if (!completed.includes('lesson2')) {
+                window.location.replace('season1.html');
+            }
+        }
+        checkLock();
+
         let currentStep = 1;
         const questions = [
-            { q: "Which is a valid variable name?", options: ["2name", "my name", "my_name", "for"], answer: "my_name", explain: "No starting with numbers, no spaces, no keywords." },
-            { q: "What type is x = 4.5?", options: ["String", "Integer", "Float", "Boolean"], answer: "Float", explain: "A decimal point means float." },
-            { q: "What is x after: x = 3, then x = 5?", options: ["3", "5", "8", "Error"], answer: "5", explain: "Second assignment replaces the first." }
+            { q: "What is 7 // 2?", options: ["3.5", "3", "4", "1"], answer: "3", explain: "Floor division gives the whole share only." },
+            { q: "What is 7 % 2?", options: ["1", "3", "3.5", "0"], answer: "1", explain: "The remainder after sharing 7 among 2." },
+            { q: "What is 2 + 3 * 4?", options: ["20", "14", "24", "9"], answer: "14", explain: "Multiplication first: 3*4 = 12, then 2+12 = 14." }
         ];
         let currentQuestion = 0;
         let score = 0;
@@ -84,12 +94,12 @@
             if (currentStep === 1) {
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: Data Types';
+                document.getElementById('subtitle').innerText = 'Part 2: The tricky two';
                 currentStep = 2;
             } else if (currentStep === 2) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: Naming Rules';
+                document.getElementById('subtitle').innerText = 'Part 3: BODMAS';
                 document.getElementById('nextBtn').innerText = 'Start Quiz →';
                 currentStep = 3;
             } else if (currentStep === 3) {
@@ -167,7 +177,7 @@
 
         async function showResults() {
             document.getElementById('question-text').innerText = "Saving progress...";
-            document.getElementById('subtitle').innerText = "Lesson 2 Finished";
+            document.getElementById('subtitle').innerText = "Lesson 3 Finished";
             document.getElementById('options-container').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
 
@@ -183,10 +193,10 @@
                 let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 const completed = profile.completed_lessons || [];
                 
-                if (!completed.includes('lesson2')) {
+                if (!completed.includes('lesson3')) {
                     const newDiamonds = (profile.diamonds || 0) + earnedD;
                     const newXp = (profile.xp || 0) + earnedXp;
-                    const newCompleted = [...completed, 'lesson2'];
+                    const newCompleted = [...completed, 'lesson3'];
 
                     await supabaseClient.from('profiles').update({
                         diamonds: newDiamonds,
@@ -213,19 +223,5 @@
             `;
         }
     </script>
-        <script>
-        // Security Check
-        async function checkLock() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return;
-            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
-            let completed = profile.completed_lessons || [];
-            if (!completed.includes('lesson2')) {
-                window.location.replace('season1.html');
-            }
-        }
-        checkLock();
-    </script>
 </body>
-
 </html>
