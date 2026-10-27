@@ -63,6 +63,11 @@
             <div class="lesson-info"><h3>5. Conditionals</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson5">🔒</div>
         </div>
+
+        <div class="lesson-card locked" id="card-lesson6" onclick="tryLockedLesson('lesson6.html')">
+            <div class="lesson-info"><h3>6. Loops</h3><p>Requires unlock</p></div>
+            <div class="lesson-icon" id="icon-lesson6">🔒</div>
+        </div>
     </div>
 
     <!-- PAYWALL MODAL -->
@@ -128,6 +133,12 @@
             if (isUnlocked && completed.includes('lesson4')) {
                 document.getElementById('card-lesson5').classList.remove('locked');
                 document.getElementById('icon-lesson5').innerText = completed.includes('lesson5') ? '✅' : '📘';
+            }
+
+            // Lesson 6 (Premium + requires Lesson 5)
+            if (isUnlocked && completed.includes('lesson5')) {
+                document.getElementById('card-lesson6').classList.remove('locked');
+                document.getElementById('icon-lesson6').innerText = completed.includes('lesson6') ? '✅' : '📘';
             }
         }
 
