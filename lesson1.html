@@ -18,7 +18,7 @@
         .content strong { color: var(--text-main); }
         .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
         .content li { margin-bottom: 8px; }
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
         .bottom-action { padding-top: 20px; padding-bottom: 20px;}
@@ -60,6 +60,7 @@
             <p>A programming language works the same way. You give the computer clear instructions, one line at a time. Python is one of those languages.</p>
             <p>Example:</p>
             <div class="code-block">print(<span class="code-string">"Hello, world!"</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('print(&quot;Hello, world!&quot;)')">💻 Practice this code</button>
             <p>That line tells the computer: <strong>show the words "Hello, world!" on the screen.</strong></p>
         </div>
 
@@ -69,6 +70,7 @@
             <p>Think of a market announcer with a megaphone. He shouts: "Fresh tomatoes!" — everyone hears it.</p>
             <p><strong>print()</strong> is Python's megaphone. Whatever you put inside it, Python shouts to the screen.</p>
             <div class="code-block">print(<span class="code-string">"My name is Ada"</span>)<br>print(<span class="code-string">"I am learning Python"</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('print(&quot;My name is Ada&quot;)\nprint(&quot;I am learning Python&quot;)')">💻 Practice this code</button>
             <p>Each <strong>print()</strong> is a new shout on a new line.</p>
         </div>
 
@@ -77,24 +79,21 @@
             <p>🎯 <strong>The One Rule: Case Sensitivity</strong></p>
             <p>Python is case-sensitive, like your bank password. The computer treats uppercase and lowercase letters as completely different.</p>
             <div class="code-block">print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This works ✅</span><br>Print(<span class="code-string">"Hello"</span>)  <span class="code-keyword"># This fails ❌</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(&quot;Hello&quot;)\nPrint(&quot;Hello&quot;)')">💻 Try running the failing code</button>
             <p>Same letters, but the capital P confuses Python.</p>
         </div>
 
-        <!-- PART 4: PRACTICE INFO -->
+        <!-- PART 4 -->
         <div id="part4" class="content hidden">
             <p><strong>Your Turn: Try it Yourself!</strong></p>
             <p>You can write and run real Python code right here in the app.</p>
-            
             <p>🎯 <strong>Mission:</strong></p>
             <ol style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
-                <li>Tap the yellow <strong>💻 button</strong> at the bottom right of your screen to open the Playground.</li>
+                <li>Tap the yellow <strong>💻 button</strong> at the bottom right of your screen.</li>
                 <li>Type <code>print("Hello, world!")</code> in the box.</li>
                 <li>Tap <strong>▶ Run Code</strong> to see the magic happen!</li>
                 <li>Change the text to your own name and run it again.</li>
-                <li>Tap the <strong>✖ button</strong> at the top right of the Playground to close it when you're done.</li>
             </ol>
-
-            <p><em>Note: The first time you run code, the Python engine might take a few seconds to load. Please be patient!</em></p>
         </div>
 
         <!-- PART 5 -->
@@ -129,17 +128,18 @@
 
         let currentStep = 1;
         
-        // 5 Questions (Question 3 is an interactive coding challenge!)
+        // 5 Questions (2 Coding Challenges!)
         const questions = [
             { q: "What does print(\"Hi\") do?", options: ["Prints Hi", "Prints print", "Nothing", "Error"], answer: "Prints Hi", explain: "print() shows whatever is inside the brackets." },
             { q: "Which line correctly prints the word Hello?", options: ["print(Hello)", "print \"Hello\"", "print(\"Hello\")", "Print(\"Hello\")"], answer: "print(\"Hello\")", explain: "Text needs quotes, and print must be lowercase." },
-            { q: "💻 Coding Challenge: Write the code to print exactly: Python is fun!", type: "coding", answer: "print(\"Python is fun!\")", explain: "You must use print() with the exact text inside quotes." },
-            { q: "Which of these is a valid Python function?", options: ["Print()", "PRINT()", "print()", "Print_()"], answer: "print()", explain: "Python is case-sensitive. Only print() is valid." },
+            { q: "💻 Coding Challenge 1: Write the code to print exactly: Python is fun!", type: "coding", answer: "print(\"Python is fun!\")", explain: "You must use print() with the exact text inside quotes." },
+            { q: "💻 Coding Challenge 2: Write code to print: I love coding", type: "coding", answer: "print(\"I love coding\")", explain: "Use print() and make sure the text is inside the quotes." },
             { q: "What do you use to display text on the screen?", options: ["input()", "show()", "print()", "text()"], answer: "print()", explain: "print() is Python's way of showing output." }
         ];
         
         let currentQuestion = 0;
         let score = 0;
+        let wrongAnswers = []; // NEW: Tracks failed questions
 
         function nextStep() {
             if (currentStep === 1) {
@@ -189,7 +189,6 @@
                     <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
                         <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
                         
-                        <!-- Fixed symbol bar using the insertSymbol function -->
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
                             <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
                             <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
@@ -212,7 +211,8 @@
         }
 
         function checkCodingAnswer() {
-            const userCode = document.getElementById('quiz-code').value.replace(/\s+/g, ''); 
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
             const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
             const feedback = document.getElementById('feedback');
             
@@ -222,9 +222,21 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
             } else {
+                // Add to wrong answers list
+                wrongAnswers.push({
+                    q: questions[currentQuestion].q,
+                    user: userCodeRaw || "(empty)",
+                    correct: questions[currentQuestion].answer
+                });
+
                 feedback.style.background = 'rgba(239, 68, 68, 0.1)';
                 feedback.style.color = 'var(--danger)';
-                feedback.innerHTML = `❌ <strong>Not quite.</strong> The correct answer is: <code>${questions[currentQuestion].answer}</code><br>${questions[currentQuestion].explain}`;
+                feedback.innerHTML = `
+                    ❌ <strong>Incorrect.</strong><br><br>
+                    <strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br>
+                    <strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>
+                    ${questions[currentQuestion].explain}
+                `;
             }
             
             feedback.style.display = 'block';
@@ -255,6 +267,13 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
+                // Add to wrong answers list
+                wrongAnswers.push({
+                    q: qData.q,
+                    user: selected,
+                    correct: qData.answer
+                });
+
                 btnClicked.style.background = 'var(--danger)';
                 btnClicked.style.borderColor = 'var(--danger)';
                 btnClicked.style.color = '#fff';
@@ -300,6 +319,23 @@
             let rewardMessage = "";
             let statusMessage = "";
             let btnHtml = "";
+
+            // Build the Mistake Review HTML
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
+                    <h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item, index) => {
+                    reviewHtml += `
+                        <div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <strong>${item.q}</strong><br>
+                            <span style="color: #ef4444;">Your answer: ${item.user}</span><br>
+                            <span style="color: #10b981;">Correct answer: ${item.correct}</span>
+                        </div>
+                    `;
+                });
+                reviewHtml += `</div>`;
+            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
@@ -349,6 +385,7 @@
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
                     ${rewardMessage}
                     ${btnHtml}
+                    ${reviewHtml}
                 </div>
             `;
         }
