@@ -8,19 +8,16 @@
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
-        
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
         .top-bar { display: flex; align-items: center; margin-bottom: 10px; margin-top: 10px; }
         .back-btn { color: var(--gold); text-decoration: none; font-size: 16px; font-weight: 600; }
         .page-title { font-size: 26px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
         .page-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
-
         .lesson-card { background: var(--card-bg); border-radius: 12px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; text-decoration: none; color: var(--text-main); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.2s; cursor: pointer; }
         .lesson-card:active { transform: scale(0.98); }
         .lesson-info h3 { font-size: 16px; margin-bottom: 4px; }
         .lesson-info p { font-size: 12px; color: var(--text-muted); }
         .lesson-icon { font-size: 20px; }
-
         .lesson-card.locked { opacity: 0.6; }
 
         /* MODAL STYLES */
@@ -29,13 +26,12 @@
         .modal-content h2 { color: var(--gold); margin-bottom: 12px; }
         .modal-content p { color: var(--text-main); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
         .modal-content .bank-details { background: #0d1425; padding: 12px; border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 20px; }
-        .modal-content .btn { display: block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; }
-        .btn-gold { background: var(--gold); color: var(--bg-color); margin-bottom: 8px;}
+        .modal-content .btn { display: block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; margin-bottom: 8px;}
+        .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
     </style>
 </head>
 <body>
-
     <div class="app-container">
         <div class="top-bar"><a href="index.html" class="back-btn">← Back</a></div>
         <div class="page-title">Season 1</div>
@@ -58,17 +54,14 @@
             <div class="lesson-info"><h3>4. Input & Output</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson4">🔒</div>
         </div>
-
         <div class="lesson-card locked" id="card-lesson5" onclick="tryLockedLesson('lesson5.html')">
             <div class="lesson-info"><h3>5. Conditionals</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson5">🔒</div>
         </div>
-
         <div class="lesson-card locked" id="card-lesson6" onclick="tryLockedLesson('lesson6.html')">
             <div class="lesson-info"><h3>6. Loops</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson6">🔒</div>
         </div>
-
         <div class="lesson-card locked" id="card-lesson7" onclick="tryLockedLesson('lesson7.html')">
             <div class="lesson-info"><h3>7. Lists</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson7">🔒</div>
@@ -79,15 +72,25 @@
     <div class="modal-overlay" id="paywall-modal">
         <div class="modal-content">
             <h2>🔒 Unlock Season 1</h2>
-            <p>To continue to Lesson 4 and beyond, please pay ₦1,500.</p>
+            <p>To continue to Lesson 4 and beyond, choose an option below:</p>
+            
             <div class="bank-details">
-                <strong>Bank:</strong> Opay<br>
-                <strong>Account:</strong> 8062860797<br>
-                <strong>Name:</strong> Bashir
+                <strong>Option 1: Pay ₦1,500</strong><br>
+                Bank: Opay<br>
+                Account: 8062860797<br>
+                Name: Bashir<br>
+                <span style="font-size: 12px; color: var(--text-muted);">Send proof to @YourHandle on Telegram.</span>
             </div>
-            <p>After paying, send your screenshot to <strong>@YourHandle</strong> on Telegram. You will be unlocked within a few hours.</p>
-            <a href="https://t.me/YourHandle" target="_blank" class="btn btn-gold">Message me on Telegram</a>
-            <button class="btn btn-dark" onclick="closeModal()">Close</button>
+            
+            <a href="https://t.me/YourHandle" target="_blank" class="btn btn-gold">💳 I have paid</a>
+            
+            <div style="margin: 16px 0; border-top: 1px solid #333;"></div>
+            
+            <p><strong>Option 2: Invite 3 friends</strong></p>
+            <button id="invite-btn" class="btn btn-dark" onclick="generateInvite()">👥 Get My Invite Link</button>
+            <p id="invite-progress" style="font-size: 12px; color: var(--gold); margin-top: 8px;"></p>
+            
+            <button class="btn btn-dark" style="margin-top: 16px;" onclick="closeModal()">Close</button>
         </div>
     </div>
 
@@ -98,14 +101,22 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         let isUnlocked = false;
+        let currentUser = null;
 
         async function loadProgress() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return;
+            currentUser = user;
 
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
             let completed = profile.completed_lessons || [];
-            isUnlocked = profile.unlocked_s1;
+            isUnlocked = profile.unlocked_s1 || (profile.invite_count >= 3);
+
+            // If they hit 3 invites, auto-unlock in DB
+            if (profile.invite_count >= 3 && !profile.unlocked_s1) {
+                await supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', user.id);
+                isUnlocked = true;
+            }
 
             // Lesson 1
             if (completed.includes('lesson1')) document.getElementById('icon-lesson1').innerText = '✅';
@@ -128,25 +139,19 @@
                 document.getElementById('icon-lesson3').innerText = '🔒';
             }
 
-            // Lesson 4
+            // Premium Lessons
             if (isUnlocked) {
                 document.getElementById('card-lesson4').classList.remove('locked');
                 document.getElementById('icon-lesson4').innerText = completed.includes('lesson4') ? '✅' : '📘';
             }
-
-            // Lesson 5
             if (isUnlocked && completed.includes('lesson4')) {
                 document.getElementById('card-lesson5').classList.remove('locked');
                 document.getElementById('icon-lesson5').innerText = completed.includes('lesson5') ? '✅' : '📘';
             }
-
-            // Lesson 6
             if (isUnlocked && completed.includes('lesson5')) {
                 document.getElementById('card-lesson6').classList.remove('locked');
                 document.getElementById('icon-lesson6').innerText = completed.includes('lesson6') ? '✅' : '📘';
             }
-
-            // Lesson 7
             if (isUnlocked && completed.includes('lesson6')) {
                 document.getElementById('card-lesson7').classList.remove('locked');
                 document.getElementById('icon-lesson7').innerText = completed.includes('lesson7') ? '✅' : '📘';
@@ -159,6 +164,19 @@
             } else {
                 document.getElementById('paywall-modal').style.display = 'flex';
             }
+        }
+
+        function generateInvite() {
+            const link = `https://talphapy-app.vercel.app/login.html?ref=${currentUser.id}`;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(link).then(() => {
+                alert("Invite link copied to clipboard! Send it to your friends.");
+                document.getElementById('invite-progress').innerText = "Link copied!";
+            }).catch(() => {
+                // Fallback if clipboard fails
+                prompt("Copy your invite link:", link);
+            });
         }
 
         function closeModal() {
