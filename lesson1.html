@@ -28,19 +28,6 @@
         .quiz-btn:active { transform: scale(0.98); }
         .quiz-btn:disabled { opacity: 0.8; cursor: default; }
         .hidden { display: none !important; }
-
-        /* IN-APP EDITOR STYLES */
-        .in-app-editor { background: #1e1e1e; border-radius: 12px; overflow: hidden; margin-bottom: 24px; border: 1px solid #333; }
-        .editor-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 8px 12px; font-weight: bold; }
-        .code-area { width: 100%; height: 120px; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
-        .symbol-bar { display: flex; overflow-x: auto; background: #2d2d2d; padding: 8px; gap: 8px; -webkit-overflow-scrolling: touch; }
-        .symbol-bar::-webkit-scrollbar { display: none; }
-        .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; flex-shrink: 0; }
-        .symbol-bar button:active { background: #555; }
-        .run-btn { width: 100%; padding: 12px; background: #4CAF50; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; }
-        .run-btn:disabled { background: #2e7d32; opacity: 0.7; }
-        .output-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 4px 12px; }
-        .code-output { background: #000; color: #fff; min-height: 60px; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; white-space: pre-wrap; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -93,20 +80,19 @@
             <p>Same letters, but the capital P confuses Python.</p>
         </div>
 
-        <!-- PART 4: THE PLAYGROUND -->
+        <!-- PART 4: PRACTICE INFO -->
         <div id="part4" class="content hidden">
             <p><strong>Your Turn: Try it Yourself!</strong></p>
-            <p>Use the playground below to write and run real Python code right here in the app.</p>
+            <p>You can write and run real Python code right here in the app.</p>
             
             <p>🎯 <strong>Mission:</strong></p>
             <ol style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
-                <li>Type <code>print("Hello, world!")</code> in the box below.</li>
+                <li>Tap the yellow <strong>💻 button</strong> at the bottom right of your screen to open the Playground.</li>
+                <li>Type <code>print("Hello, world!")</code> in the box.</li>
                 <li>Tap <strong>▶ Run Code</strong> to see the magic happen!</li>
                 <li>Change the text to your own name and run it again.</li>
+                <li>Tap the <strong>✖ button</strong> at the top right of the Playground to close it when you're done.</li>
             </ol>
-
-            <!-- This is where the editor will be injected -->
-            <div id="editor-container"></div>
 
             <p><em>Note: The first time you run code, the Python engine might take a few seconds to load. Please be patient!</em></p>
         </div>
@@ -175,8 +161,6 @@
                 document.getElementById('part3').classList.add('hidden');
                 document.getElementById('part4').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Part 4: Try it yourself';
-                // Initialize the editor!
-                createEditor('editor-container');
                 currentStep = 5;
             } else if (currentStep === 5) {
                 document.getElementById('part4').classList.add('hidden');
@@ -201,22 +185,22 @@
             optionsContainer.innerHTML = ''; 
 
             if (qData.type === 'coding') {
-                // Render the inline editor for the coding challenge
                 optionsContainer.innerHTML = `
                     <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
-                        <p style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted);">Write your code below:</p>
                         <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        
+                        <!-- Fixed symbol bar using the insertSymbol function -->
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
-                            <button onclick="insertSymbolQuiz('(')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
-                            <button onclick="insertSymbolQuiz(')')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
-                            <button onclick="insertSymbolQuiz('&quot;')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
-                            <button onclick="insertSymbolQuiz('print()')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
+                            <button onclick="insertSymbol('&#39;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">'</button>
+                            <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
                         </div>
                         <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
                     </div>
                 `;
             } else {
-                // Render normal multiple choice
                 qData.options.forEach(option => {
                     const btn = document.createElement('button');
                     btn.innerText = option;
@@ -227,17 +211,8 @@
             }
         }
 
-        function insertSymbolQuiz(symbol) {
-            const ta = document.getElementById('quiz-code');
-            const startPos = ta.selectionStart;
-            const endPos = ta.selectionEnd;
-            ta.value = ta.value.substring(0, startPos) + symbol + ta.value.substring(endPos, ta.value.length);
-            ta.selectionStart = ta.selectionEnd = startPos + symbol.length;
-            ta.focus();
-        }
-
         function checkCodingAnswer() {
-            const userCode = document.getElementById('quiz-code').value.replace(/\s+/g, ''); // Remove spaces for easy matching
+            const userCode = document.getElementById('quiz-code').value.replace(/\s+/g, ''); 
             const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
             const feedback = document.getElementById('feedback');
             
@@ -320,7 +295,7 @@
             document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 70; // 70% PASS MARK
+            const passed = percentage >= 70;
             
             let rewardMessage = "";
             let statusMessage = "";
