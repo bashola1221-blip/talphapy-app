@@ -3,15 +3,14 @@
 let pyodideReady = false;
 let pyodideLoading = false;
 
-// Function to insert text at the cursor position (Works for both main editor and quiz)
-function insertSymbol(symbol, targetId = 'code-input') {
+// Function to insert text at the cursor position (Works for main editor, modal, and quiz)
+function insertSymbol(symbol, targetId) {
     const ta = document.getElementById(targetId);
     if (!ta) return;
     
     const startPos = ta.selectionStart;
     const endPos = ta.selectionEnd;
     
-    // Check if we need to move the cursor back (like for print())
     let cursorOffset = symbol.length;
     if (symbol === 'print()') {
         cursorOffset = 6; // Put cursor inside the parentheses
@@ -22,11 +21,25 @@ function insertSymbol(symbol, targetId = 'code-input') {
     ta.focus();
 }
 
-// Function to run the code
-async function runPythonCode(outputId, runBtnId) {
-    const code = document.getElementById('code-input').value;
-    const output = document.getElementById(outputId);
-    const runBtn = document.getElementById(runBtnId);
+// Function to open the modal, optionally with pre-filled code
+function openEditorModal(initialCode = '') {
+    document.getElementById('editor-modal').style.display = 'flex';
+    const ta = document.getElementById('modal-code');
+    
+    if (initialCode) {
+        // Decode HTML entities (like &quot;)
+        let div = document.createElement('div');
+        div.innerHTML = initialCode;
+        ta.value = div.textContent;
+    }
+    ta.focus();
+}
+
+// Function to run the code inside the modal
+async function runModalCode() {
+    const code = document.getElementById('modal-code').value;
+    const output = document.getElementById('modal-output');
+    const runBtn = document.getElementById('modal-run-btn');
     
     if (!code.trim()) return;
 
@@ -64,14 +77,12 @@ async function runPythonCode(outputId, runBtnId) {
 
 // Builds the Floating Action Button and the Modal
 function setupGlobalEditor() {
-    // 1. Add the floating button
     const fab = document.createElement('button');
     fab.className = 'fab-editor';
     fab.innerHTML = '💻';
-    fab.onclick = openEditorModal;
+    fab.onclick = () => openEditorModal(); // Empty playground
     document.body.appendChild(fab);
 
-    // 2. Add the Modal HTML
     const modal = document.createElement('div');
     modal.id = 'editor-modal';
     modal.className = 'editor-modal-overlay';
@@ -82,7 +93,7 @@ function setupGlobalEditor() {
                 <button class="close-modal" onclick="document.getElementById('editor-modal').style.display='none'">✖</button>
             </div>
             
-            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 200px;"></textarea>
+            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 150px;"></textarea>
             
             <div class="symbol-bar">
                 <button onclick="insertSymbol(':', 'modal-code')">:</button>
@@ -101,12 +112,11 @@ function setupGlobalEditor() {
             <button id="modal-run-btn" class="run-btn" onclick="runModalCode()">▶ Run Code</button>
             
             <div class="output-header">Output:</div>
-            <div id="modal-output" class="code-output" style="max-height: 150px; overflow-y: auto;"></div>
+            <div id="modal-output" class="code-output" style="max-height: 120px; overflow-y: auto;"></div>
         </div>
     `;
     document.body.appendChild(modal);
 
-    // Load Pyodide script dynamically
     if (!document.getElementById('pyodide-script')) {
         const script = document.createElement('script');
         script.id = 'pyodide-script';
@@ -115,50 +125,7 @@ function setupGlobalEditor() {
     }
 }
 
-function openEditorModal() {
-    document.getElementById('editor-modal').style.display = 'flex';
-}
-
-async function runModalCode() {
-    const code = document.getElementById('modal-code').value;
-    const output = document.getElementById('modal-output');
-    const runBtn = document.getElementById('modal-run-btn');
-    
-    if (!code.trim()) return;
-
-    output.innerHTML = "⏳ Running...";
-    runBtn.disabled = true;
-
-    try {
-        if (!pyodideReady) {
-            if (!pyodideLoading) {
-                pyodideLoading = true;
-                output.innerHTML = "⏳ Loading Python engine...";
-                window.pyodide = await loadPyodide({
-                    stdout: (text) => {
-                        output.innerHTML += text + "<br>";
-                    }
-                });
-                pyodideReady = true;
-            } else {
-                while (!pyodideReady) { await new Promise(r => setTimeout(r, 500)); }
-            }
-        }
-
-        output.innerHTML = ""; 
-        await window.pyodide.runPythonAsync(code);
-        
-        if (output.innerHTML === "") {
-            output.innerHTML = "<span style='color: gray;'>[Program finished with no output]</span>";
-        }
-    } catch (error) {
-        output.innerHTML = `<span style="color: #ef4444;">${error.message}</span>`;
-    }
-    
-    runBtn.disabled = false;
-}
-
-// Add the styles for the modal and FAB
+// Add the styles
 document.addEventListener("DOMContentLoaded", () => {
     const style = document.createElement('style');
     style.innerHTML = `
@@ -186,7 +153,6 @@ document.addEventListener("DOMContentLoaded", () => {
         .close-modal {
             background: none; border: none; color: #fff; font-size: 18px; cursor: pointer;
         }
-        /* Re-using the classes from lesson1 */
         .code-area { width: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
         .symbol-bar { display: flex; overflow-x: auto; background: #2d2d2d; padding: 8px; gap: 8px; -webkit-overflow-scrolling: touch; }
         .symbol-bar::-webkit-scrollbar { display: none; }
@@ -196,6 +162,12 @@ document.addEventListener("DOMContentLoaded", () => {
         .run-btn:disabled { background: #2e7d32; opacity: 0.7; }
         .output-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 4px 12px; }
         .code-output { background: #000; color: #fff; min-height: 60px; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; white-space: pre-wrap; line-height: 1.4; }
+        
+        .btn-practice {
+            display: inline-block; background: rgba(240,192,64,0.1); color: var(--gold); 
+            border: 1px dashed var(--gold); padding: 6px 12px; border-radius: 6px; 
+            font-size: 13px; font-weight: bold; margin-top: -16px; margin-bottom: 24px; cursor: pointer;
+        }
     `;
     document.head.appendChild(style);
     setupGlobalEditor();
