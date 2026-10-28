@@ -16,7 +16,9 @@
         .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
         .content p { margin-bottom: 16px; }
         .content strong { color: var(--text-main); }
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
         .code-number { color: #d19a66; }
@@ -35,69 +37,162 @@
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
         <div class="lesson-title">2. Variables & Data Types</div>
-        <div id="subtitle" class="lesson-subtitle">Part 1: What is a variable?</div>
-        <div id="part1" class="content">
-            <p>Imagine a market stall with labelled containers. One jar says "rice", another says "beans". Each jar holds something.</p>
-            <p>A variable is exactly that: a <strong>labelled container</strong> in your program.</p>
-            <div class="code-block">name = <span class="code-string">"Ada"</span><br>age = <span class="code-number">14</span></div>
-            <p><strong>name</strong> is the label. <strong>"Ada"</strong> is what's inside.</p>
+        <div id="subtitle" class="lesson-subtitle">Introduction: What is a Variable?</div>
+        
+        <!-- INTRODUCTION -->
+        <div id="intro" class="content">
+            <p>In Lesson 1, we learned how to print text to the screen. But what if we want to save that text and use it later? That's where <strong>variables</strong> come in.</p>
+            
+            <p><strong>The Market Stall Analogy</strong></p>
+            <p>Imagine a market stall with labelled containers. One jar has a label that says "rice", another says "beans". Each jar holds something inside.</p>
+            <p>A variable is exactly that: a <strong>labelled container</strong> in your computer's memory. You give it a name, and you put a value inside.</p>
         </div>
+
+        <!-- PART 1 -->
+        <div id="part1" class="content hidden">
+            <p><strong>Creating Your First Variable</strong></p>
+            <p>In Python, you create a variable by choosing a name and using the equals sign <strong>(=)</strong> to assign a value to it.</p>
+            <div class="code-block">name = <span class="code-string">"Ada"</span></div>
+            <button class="btn-practice" onclick="openEditorModal('name = &quot;Ada&quot;\nprint(name)')">💻 Practice this code</button>
+            <p><strong>name</strong> is the label. <strong>"Ada"</strong> is what's inside the jar.</p>
+            <p>If you type <code>print(name)</code> and run it, the computer will look inside the jar labelled "name" and print <strong>Ada</strong>.</p>
+        </div>
+
+        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p>Different containers hold different things. Python has 4 main types:</p>
-            <p><strong>1. String (text)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">name = <span class="code-string">"Ada"</span></span> — Always in quotes.</p>
-            <p><strong>2. Integer (whole number)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">age = <span class="code-number">14</span></span> — No quotes, no decimal point.</p>
-            <p><strong>3. Float (decimal)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">price = <span class="code-number">4.5</span></span> — Has a dot.</p>
-            <p><strong>4. Boolean (True or False)</strong><br><span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">is_student = <span class="code-keyword">True</span></span> — Only two values.</p>
+            <p><strong>The 4 Basic Data Types</strong></p>
+            <p>Different jars hold different things. In Python, there are 4 main types of data you can put into a variable:</p>
+            <ul>
+                <li><strong>String (Text):</strong> Always in quotes. <code>name = "Ada"</code></li>
+                <li><strong>Integer (Whole Number):</strong> No quotes, no decimals. <code>age = 14</code></li>
+                <li><strong>Float (Decimal):</strong> A number with a dot. <code>price = 4.5</code></li>
+                <li><strong>Boolean (True/False):</strong> Only two possible values. <code>is_student = True</code></li>
+            </ul>
+            <div class="code-block">name = <span class="code-string">"Ada"</span><br>age = <span class="code-number">14</span><br>price = <span class="code-number">4.5</span><br>is_student = <span class="code-keyword">True</span></div>
+            <button class="btn-practice" onclick="openEditorModal('name = &quot;Ada&quot;\nage = 14\nprice = 4.5\nis_student = True\nprint(type(name))')">💻 See their types in the Playground</button>
         </div>
+
+        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>The naming rules:</strong></p>
-            <p>✅ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">my_name = <span class="code-string">"Ada"</span></span> (Valid)</p>
-            <p>❌ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;"><span class="code-number">2name</span> = <span class="code-string">"Ada"</span></span> (Can't start with a number)</p>
-            <p>❌ <span class="code-block" style="display:inline-block; padding: 4px 8px; margin: 4px 0;">my name = <span class="code-string">"Ada"</span></span> (No spaces allowed)</p>
+            <p>🎯 <strong>The Naming Rules</strong></p>
+            <p>You can name variables almost anything, but there are strict rules:</p>
+            <ul>
+                <li>✅ <strong>Valid:</strong> <code>my_name = "Ada"</code> (lowercase, underscores)</li>
+                <li>❌ <strong>Invalid:</strong> <code>2name = "Ada"</code> (cannot start with a number)</li>
+                <li>❌ <strong>Invalid:</strong> <code>my name = "Ada"</code> (no spaces allowed)</li>
+                <li>❌ <strong>Invalid:</strong> <code>for = 5</code> (cannot use Python keywords)</li>
+            </ul>
+            <div class="code-block">my_name = <span class="code-string">"Ada"</span><br>2name = <span class="code-string">"Error"</span></div>
+            <button class="btn-practice" onclick="openEditorModal('2name = &quot;Error&quot;')">💻 Try running the invalid code</button>
+            <p>The last example will show a SyntaxError because it breaks the rules.</p>
         </div>
+
+        <!-- PART 4 -->
+        <div id="part4" class="content hidden">
+            <p><strong>Your Turn: Try it Yourself!</strong></p>
+            <p>You can write and run real Python code right here in the app.</p>
+            <p>🎯 <strong>Mission:</strong></p>
+            <ol style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+                <li>Tap the yellow <strong>💻 button</strong> at the bottom right of your screen.</li>
+                <li>Create a variable for your name: <code>my_name = "YourName"</code></li>
+                <li>Create a variable for your age: <code>my_age = 15</code></li>
+                <li>Print both of them using <code>print(my_name)</code> and <code>print(my_age)</code>.</li>
+                <li>Tap <strong>▶ Run Code</strong> to see them appear!</li>
+            </ol>
+        </div>
+
+        <!-- PART 5 -->
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• <strong>Variables</strong> are labelled containers for storing data.</p>
+            <p>• You create them using the <strong>=</strong> sign.</p>
+            <p>• <strong>Strings</strong> are text (in quotes), <strong>Integers</strong> are whole numbers, <strong>Floats</strong> are decimals.</p>
+            <p>• Variable names cannot start with numbers or contain spaces.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
             <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
         </div>
+
         <div class="bottom-action">
             <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
         </div>
     </div>
 
+    <script src="editor.js"></script>
+    <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Security Check: Must complete Lesson 1 first
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { window.location.replace('login.html'); return; }
+            
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            
+            if (!completed.includes('lesson1')) {
+                window.location.replace('season1.html');
+            }
+        }
+        checkLock();
+
         let currentStep = 1;
+        
+        // 5 Questions (2 Coding Challenges!)
         const questions = [
             { q: "Which is a valid variable name?", options: ["2name", "my name", "my_name", "for"], answer: "my_name", explain: "No starting with numbers, no spaces, no keywords." },
             { q: "What type is x = 4.5?", options: ["String", "Integer", "Float", "Boolean"], answer: "Float", explain: "A decimal point means float." },
-            { q: "What is x after: x = 3, then x = 5?", options: ["3", "5", "8", "Error"], answer: "5", explain: "Second assignment replaces the first." }
+            { q: "💻 Coding Challenge 1: Write the code to create a variable called age and set it to 20.", type: "coding", answer: "age=20", explain: "Use the variable name, an equals sign, and the number 20 (no spaces)." },
+            { q: "💻 Coding Challenge 2: Write code to print exactly: Hello World", type: "coding", answer: "print(\"Hello World\")", explain: "Use print() and put the text inside the quotes." },
+            { q: "What is x after: x = 3, then x = 5?", options: ["3", "5", "8", "Error"], answer: "5", explain: "The second assignment replaces the first." }
         ];
+        
         let currentQuestion = 0;
         let score = 0;
+        let wrongAnswers = []; // Tracks failed questions
 
         function nextStep() {
             if (currentStep === 1) {
-                document.getElementById('part1').classList.add('hidden');
-                document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: Data Types';
+                document.getElementById('intro').classList.add('hidden');
+                document.getElementById('part1').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 1: Creating a Variable';
                 currentStep = 2;
             } else if (currentStep === 2) {
+                document.getElementById('part1').classList.add('hidden');
+                document.getElementById('part2').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 2: The 4 Data Types';
+                currentStep = 3;
+            } else if (currentStep === 3) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Part 3: Naming Rules';
-                document.getElementById('nextBtn').innerText = 'Start Quiz →';
-                currentStep = 3;
-            } else if (currentStep === 3) {
-                document.getElementById('part3').classList.add('hidden');
-                document.getElementById('quiz-section').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Assessment';
-                document.getElementById('nextBtn').classList.add('hidden');
                 currentStep = 4;
+            } else if (currentStep === 4) {
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('part4').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 4: Try it yourself';
+                currentStep = 5;
+            } else if (currentStep === 5) {
+                document.getElementById('part4').classList.add('hidden');
+                document.getElementById('part5').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 5: Quick Summary';
+                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                currentStep = 6;
+            } else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
                 loadQuestion();
             }
         }
@@ -107,13 +202,73 @@
             document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = ''; 
-            qData.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.innerText = option;
-                btn.className = 'quiz-btn';
-                btn.onclick = () => checkAnswer(option, btn);
-                optionsContainer.appendChild(btn);
-            });
+
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol('=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">=</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
+                            <button onclick="insertSymbol('&#39;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">'</button>
+                            <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>
+                `;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.innerText = option;
+                    btn.className = 'quiz-btn';
+                    btn.onclick = () => checkAnswer(option, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            
+            if (userCode === correct) {
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({
+                    q: questions[currentQuestion].q,
+                    user: userCodeRaw || "(empty)",
+                    correct: questions[currentQuestion].answer
+                });
+
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `
+                    ❌ <strong>Incorrect.</strong><br><br>
+                    <strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br>
+                    <strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>
+                    ${questions[currentQuestion].explain}
+                `;
+            }
+            
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            nextQBtn.innerText = 'Next Question →';
+            nextQBtn.onclick = () => {
+                currentQuestion++;
+                document.getElementById('feedback').style.display = 'none';
+                loadQuestion();
+            };
+            feedback.appendChild(nextQBtn);
         }
 
         function checkAnswer(selected, btnClicked) {
@@ -131,6 +286,12 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
+                wrongAnswers.push({
+                    q: qData.q,
+                    user: selected,
+                    correct: qData.answer
+                });
+
                 btnClicked.style.background = 'var(--danger)';
                 btnClicked.style.borderColor = 'var(--danger)';
                 btnClicked.style.color = '#fff';
@@ -167,65 +328,85 @@
 
         async function showResults() {
             document.getElementById('question-text').innerText = "Saving progress...";
-            document.getElementById('subtitle').innerText = "Lesson 2 Finished";
             document.getElementById('options-container').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 75;
+            const passed = percentage >= 70;
             
-            let earnedD = passed ? 2 : 1;
-            let earnedXp = passed ? 20 : 10;
             let rewardMessage = "";
+            let statusMessage = "";
+            let btnHtml = "";
+
+            // Build the Mistake Review HTML
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
+                    <h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item, index) => {
+                    reviewHtml += `
+                        <div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <strong>${item.q}</strong><br>
+                            <span style="color: #ef4444;">Your answer: ${item.user}</span><br>
+                            <span style="color: #10b981;">Correct answer: ${item.correct}</span>
+                        </div>
+                    `;
+                });
+                reviewHtml += `</div>`;
+            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
                 let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 const completed = profile.completed_lessons || [];
                 
-                if (!completed.includes('lesson2')) {
-                    const newDiamonds = (profile.diamonds || 0) + earnedD;
-                    const newXp = (profile.xp || 0) + earnedXp;
-                    const newCompleted = [...completed, 'lesson2'];
-
-                    await supabaseClient.from('profiles').update({
-                        diamonds: newDiamonds,
-                        xp: newXp,
-                        completed_lessons: newCompleted
-                    }).eq('id', user.id);
+                if (passed) {
+                    if (!completed.includes('lesson2')) {
+                        const newCompleted = [...completed, 'lesson2'];
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 2,
+                            xp: (profile.xp || 0) + 20,
+                            completed_lessons: newCompleted
+                        }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    }
                     
-                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                    statusMessage = "🌟 Excellent! You passed!";
+                    document.getElementById('subtitle').innerText = "Lesson 2 Unlocked";
+                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
                 } else {
-                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    if (!localStorage.getItem('lesson2_partial_reward')) {
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 1,
+                            xp: (profile.xp || 0) + 10
+                        }).eq('id', user.id);
+                        localStorage.setItem('lesson2_partial_reward', 'true');
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`;
+                    }
+                    
+                    statusMessage = "📉 You need 70% to pass.";
+                    document.getElementById('subtitle').innerText = "Lesson Locked";
+                    btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
                 }
             }
 
             document.getElementById('question-text').innerText = "Assessment Complete!";
             document.getElementById('options-container').innerHTML = `
                 <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
-                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
-                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    <h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${statusMessage}
                     </h2>
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
                     ${rewardMessage}
-                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                    ${btnHtml}
+                    ${reviewHtml}
                 </div>
             `;
         }
     </script>
-        <script>
-        // Security Check
-        async function checkLock() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return;
-            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
-            let completed = profile.completed_lessons || [];
-            if (!completed.includes('lesson1')) {
-                window.location.replace('season1.html');
-            }
-        }
-        checkLock();
-    </script>
 </body>
-
 </html>
