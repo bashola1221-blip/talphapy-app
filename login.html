@@ -8,48 +8,37 @@
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --danger: #ef4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
-        
         .login-box { width: 100%; max-width: 400px; background: var(--card-bg); padding: 32px 24px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
         .logo { font-size: 32px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
         .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
-
-        input {
-            width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px;
-            background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white;
-            font-size: 16px; outline: none;
-        }
+        input { width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px; background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 16px; outline: none; }
         input:focus { border-color: var(--gold); }
-
         .btn { width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; margin-bottom: 12px; }
         .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-outline { background: transparent; color: var(--text-main); border: 1px solid rgba(255,255,255,0.2); }
-        
         .error-msg { color: var(--danger); font-size: 14px; margin-bottom: 16px; display: none; }
     </style>
 </head>
 <body>
-
     <div class="login-box">
         <div class="logo">🐍 Talphapy</div>
         <div class="subtitle">Login or create an account to save your progress.</div>
-
         <div id="error-msg" class="error-msg"></div>
-
         <input type="email" id="email" placeholder="Email address">
         <input type="password" id="password" placeholder="Password (min 6 characters)">
-        
         <button class="btn btn-gold" onclick="login()">Login</button>
         <button class="btn btn-outline" onclick="signup()">Create Account</button>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
     <script>
-        // CORRECTED URL (added the missing 'd')
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
-        
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // Check for referral link in URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const referrerId = urlParams.get('ref');
 
         function showError(msg) {
             const err = document.getElementById('error-msg');
@@ -75,6 +64,29 @@
 
             const { data, error } = await supabaseClient.auth.signUp({ email, password });
             if (error) return showError(error.message);
+
+            // If there's a referrer, link the accounts!
+            if (referrerId && data.user) {
+                // 1. Set the referred_by for the new user
+                await supabaseClient.from('profiles').update({ referred_by: referrerId }).eq('id', data.user.id);
+
+                // 2. Increment the inviter's invite_count
+                let { data: inviterProfile } = await supabaseClient.from('profiles').select('invite_count, unlocked_s1').eq('id', referrerId).single();
+                if (inviterProfile) {
+                    let newCount = (inviterProfile.invite_count || 0) + 1;
+                    let unlock = inviterProfile.unlocked_s1 || false;
+                    
+                    // If they reach 3 invites, unlock Season 1!
+                    if (newCount >= 3) {
+                        unlock = true;
+                    }
+
+                    await supabaseClient.from('profiles').update({ 
+                        invite_count: newCount,
+                        unlocked_s1: unlock 
+                    }).eq('id', referrerId);
+                }
+            }
             
             window.location.href = "index.html";
         }
