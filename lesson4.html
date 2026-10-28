@@ -16,7 +16,9 @@
         .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
         .content p { margin-bottom: 16px; }
         .content strong { color: var(--text-main); }
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
         .code-number { color: #d19a66; }
@@ -35,33 +37,74 @@
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
         <div class="lesson-title">4. Input & Output</div>
-        <div id="subtitle" class="lesson-subtitle">Part 1: input()</div>
-        <div id="part1" class="content">
-            <p><strong>print()</strong> sends info out. <strong>input()</strong> asks the user for info and waits for their reply.</p>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Talking to the Computer</div>
+        
+        <!-- INTRODUCTION -->
+        <div id="intro" class="content">
+            <p>So far, we have only been telling the computer what to do (Output). But to make interactive apps, games, and calculators, we need the computer to ask us questions and wait for our answers (Input).</p>
+            
+            <p><strong>Why is this important?</strong></p>
+            <p>Every time you log into Instagram, type a message in WhatsApp, or search for a video on YouTube, you are providing <strong>input</strong>. In Python, we use a special function called <code>input()</code> to get information from the user.</p>
+        </div>
+
+        <!-- PART 1 -->
+        <div id="part1" class="content hidden">
+            <p><strong>The input() function</strong></p>
+            <p><code>print()</code> sends text to the screen. <code>input()</code> pauses the program and waits for the user to type something and press Enter.</p>
             <div class="code-block">name = input(<span class="code-string">"What is your name? "</span>)<br>print(<span class="code-string">"Hello, " + name</span>)</div>
-            <p>The text inside <strong>input()</strong> is the prompt shown to the user.</p>
+            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;What is your name? &quot;)\nprint(&quot;Hello, &quot; + name)')">💻 Practice this code</button>
+            <p>When you run this in the playground, a box will pop up asking for your name. Whatever you type gets stored in the variable <code>name</code>.</p>
         </div>
+
+        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>input() is always text (String)</strong></p>
-            <p>If you ask for age, and the user types 14, Python sees "14" (text), not 14 (number).</p>
-            <div class="code-block">age = input(<span class="code-string">"Your age: "</span>)<br><span class="code-keyword"># This will crash if you try to do math:</span><br>print(age + <span class="code-number">1</span>)</div>
-            <p>Fix it with <strong>int()</strong>:</p>
-            <div class="code-block">age = int(input(<span class="code-string">"Your age: "</span>))<br>print(age + <span class="code-number">1</span>)</div>
+            <p><strong>The Big Catch: input() is always text</strong></p>
+            <p>This is the #1 mistake beginners make. No matter what the user types, Python treats it as a <strong>String (text)</strong>.</p>
+            <div class="code-block">age = input(<span class="code-string">"Your age: "</span>)<br><span class="code-keyword"># If you type 14, age is now "14" (text), not 14 (number)</span><br>print(age + <span class="code-number">1</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('age = input(&quot;Your age: &quot;)\nprint(age + 1)')">💻 See what happens when you try to add 1</button>
+            <p>If you run this and type 14, it will crash! You can't add a number to text.</p>
         </div>
+
+        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>Putting it together</strong></p>
-            <div class="code-block">name = input(<span class="code-string">"Your name: "</span>)<br>age = int(input(<span class="code-string">"Your age: "</span>))<br>print(<span class="code-string">"Hello, " + name</span>)<br>print(<span class="code-string">"Next year you will be "</span> + str(age + <span class="code-number">1</span>))</div>
+            <p>🎯 <strong>How to fix it: int()</strong></p>
+            <p>To do math with user input, you must convert the text to a number using <code>int()</code> (for whole numbers) or <code>float()</code> (for decimals).</p>
+            <div class="code-block">age = int(input(<span class="code-string">"Your age: "</span>))<br>print(age + <span class="code-number">1</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('age = int(input(&quot;Your age: &quot;))\nprint(age + 1)')">💻 Practice the fixed version</button>
+            <p>Now, if you type 14, Python converts it to a real number, and prints 15.</p>
         </div>
+
+        <!-- PART 4 -->
+        <div id="part4" class="content hidden">
+            <p><strong>Putting it together</strong></p>
+            <p>You can also convert numbers back to text using <code>str()</code> if you want to join them with other words.</p>
+            <div class="code-block">name = input(<span class="code-string">"Your name: "</span>)<br>age = int(input(<span class="code-string">"Your age: "</span>))<br>print(<span class="code-string">"Hello " + name + "! Next year you will be " + str(age + 1)</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;Your name: &quot;)\nage = int(input(&quot;Your age: &quot;))\nprint(&quot;Hello &quot; + name + &quot;! Next year you will be &quot; + str(age + 1))')">💻 Practice the full program</button>
+        </div>
+
+        <!-- PART 5 -->
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• <strong>input()</strong> asks the user for information.</p>
+            <p>• It <em>always</em> returns a String (text).</p>
+            <p>• Use <strong>int()</strong> to convert text to a whole number.</p>
+            <p>• Use <strong>str()</strong> to convert a number back to text for printing.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
             <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
         </div>
+
         <div class="bottom-action">
             <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
         </div>
     </div>
 
+    <script src="editor.js"></script>
     <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -69,45 +112,68 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // SECURITY CHECK: Make sure user is logged in AND has paid
+        // Security Check: Must be unlocked AND completed Lesson 3
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
             
-            let { data: profile } = await supabaseClient.from('profiles').select('unlocked_s1').eq('id', user.id).single();
-            if (!profile || !profile.unlocked_s1) {
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            
+            if (!profile.unlocked_s1 || !completed.includes('lesson3')) {
                 window.location.replace('season1.html');
             }
         }
         checkLock();
 
         let currentStep = 1;
+        
+        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "What type does input() return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String", explain: "input() always returns a string." },
-            { q: "How to fix: age = input(); print(age + 1)?", options: ["age = int(input())", "age = str(input())", "age = float(input())", "Nothing"], answer: "age = int(input())", explain: "Convert to int so math works." },
-            { q: "What does str(5) do?", options: ["Turns 5 into \"5\"", "Turns \"5\" into 5", "Doubles 5", "Nothing"], answer: "Turns 5 into \"5\"", explain: "str() converts to a string." }
+            { q: "What type does input() always return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String", explain: "input() always returns text, even if the user types numbers." },
+            { q: "How do you fix this: age = input(); print(age + 1)?", options: ["age = int(input())", "age = str(input())", "age = float(input())", "Nothing is wrong"], answer: "age = int(input())", explain: "You must convert the text to an integer to do math with it." },
+            { q: "💻 Coding Challenge 1: Write the code to ask the user for their favorite color and store it in a variable called 'color'.", type: "coding", answer: "color=input(\"Favorite color: \")", explain: "Use the input() function and assign it to the variable 'color'." },
+            { q: "💻 Coding Challenge 2: Write the code to print the result of converting the text \"50\" into a number.", type: "coding", answer: "print(int(\"50\"))", explain: "Use int() to convert the string to a number, then print it." },
+            { q: "What does str(5) do?", options: ["Turns 5 into \"5\"", "Turns \"5\" into 5", "Doubles 5", "Nothing"], answer: "Turns 5 into \"5\"", explain: "str() converts numbers into strings (text)." }
         ];
+        
         let currentQuestion = 0;
         let score = 0;
+        let wrongAnswers = []; // Tracks failed questions
 
         function nextStep() {
             if (currentStep === 1) {
-                document.getElementById('part1').classList.add('hidden');
-                document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: input is text';
+                document.getElementById('intro').classList.add('hidden');
+                document.getElementById('part1').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 1: The input() function';
                 currentStep = 2;
             } else if (currentStep === 2) {
-                document.getElementById('part2').classList.add('hidden');
-                document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: Putting it together';
-                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                document.getElementById('part1').classList.add('hidden');
+                document.getElementById('part2').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 2: The Big Catch';
                 currentStep = 3;
             } else if (currentStep === 3) {
-                document.getElementById('part3').classList.add('hidden');
-                document.getElementById('quiz-section').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Assessment';
-                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('part2').classList.add('hidden');
+                document.getElementById('part3').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 3: Fixing it with int()';
                 currentStep = 4;
+            } else if (currentStep === 4) {
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('part4').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 4: Putting it together';
+                currentStep = 5;
+            } else if (currentStep === 5) {
+                document.getElementById('part4').classList.add('hidden');
+                document.getElementById('part5').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 5: Quick Summary';
+                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                currentStep = 6;
+            } else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
                 loadQuestion();
             }
         }
@@ -117,13 +183,74 @@
             document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = ''; 
-            qData.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.innerText = option;
-                btn.className = 'quiz-btn';
-                btn.onclick = () => checkAnswer(option, btn);
-                optionsContainer.appendChild(btn);
-            });
+
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol('=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">=</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
+                            <button onclick="insertSymbol('&#39;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">'</button>
+                            <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
+                            <button onclick="insertSymbol('input()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">input()</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>
+                `;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.innerText = option;
+                    btn.className = 'quiz-btn';
+                    btn.onclick = () => checkAnswer(option, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            
+            if (userCode === correct) {
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({
+                    q: questions[currentQuestion].q,
+                    user: userCodeRaw || "(empty)",
+                    correct: questions[currentQuestion].answer
+                });
+
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `
+                    ❌ <strong>Incorrect.</strong><br><br>
+                    <strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br>
+                    <strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>
+                    ${questions[currentQuestion].explain}
+                `;
+            }
+            
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            nextQBtn.innerText = 'Next Question →';
+            nextQBtn.onclick = () => {
+                currentQuestion++;
+                document.getElementById('feedback').style.display = 'none';
+                loadQuestion();
+            };
+            feedback.appendChild(nextQBtn);
         }
 
         function checkAnswer(selected, btnClicked) {
@@ -141,6 +268,12 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
+                wrongAnswers.push({
+                    q: qData.q,
+                    user: selected,
+                    correct: qData.answer
+                });
+
                 btnClicked.style.background = 'var(--danger)';
                 btnClicked.style.borderColor = 'var(--danger)';
                 btnClicked.style.color = '#fff';
@@ -177,48 +310,82 @@
 
         async function showResults() {
             document.getElementById('question-text').innerText = "Saving progress...";
-            document.getElementById('subtitle').innerText = "Lesson 4 Finished";
             document.getElementById('options-container').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 75;
+            const passed = percentage >= 70;
             
-            let earnedD = passed ? 2 : 1;
-            let earnedXp = passed ? 20 : 10;
             let rewardMessage = "";
+            let statusMessage = "";
+            let btnHtml = "";
+
+            // Build the Mistake Review HTML
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
+                    <h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item, index) => {
+                    reviewHtml += `
+                        <div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <strong>${item.q}</strong><br>
+                            <span style="color: #ef4444;">Your answer: ${item.user}</span><br>
+                            <span style="color: #10b981;">Correct answer: ${item.correct}</span>
+                        </div>
+                    `;
+                });
+                reviewHtml += `</div>`;
+            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
                 let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 const completed = profile.completed_lessons || [];
                 
-                if (!completed.includes('lesson4')) {
-                    const newDiamonds = (profile.diamonds || 0) + earnedD;
-                    const newXp = (profile.xp || 0) + earnedXp;
-                    const newCompleted = [...completed, 'lesson4'];
-
-                    await supabaseClient.from('profiles').update({
-                        diamonds: newDiamonds,
-                        xp: newXp,
-                        completed_lessons: newCompleted
-                    }).eq('id', user.id);
+                if (passed) {
+                    if (!completed.includes('lesson4')) {
+                        const newCompleted = [...completed, 'lesson4'];
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 2,
+                            xp: (profile.xp || 0) + 20,
+                            completed_lessons: newCompleted
+                        }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    }
                     
-                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                    statusMessage = "🌟 Excellent! You passed!";
+                    document.getElementById('subtitle').innerText = "Lesson 4 Unlocked";
+                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
                 } else {
-                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    if (!localStorage.getItem('lesson4_partial_reward')) {
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 1,
+                            xp: (profile.xp || 0) + 10
+                        }).eq('id', user.id);
+                        localStorage.setItem('lesson4_partial_reward', 'true');
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`;
+                    }
+                    
+                    statusMessage = "📉 You need 70% to pass.";
+                    document.getElementById('subtitle').innerText = "Lesson Locked";
+                    btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
                 }
             }
 
             document.getElementById('question-text').innerText = "Assessment Complete!";
             document.getElementById('options-container').innerHTML = `
                 <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
-                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
-                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    <h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${statusMessage}
                     </h2>
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
                     ${rewardMessage}
-                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                    ${btnHtml}
+                    ${reviewHtml}
                 </div>
             `;
         }
