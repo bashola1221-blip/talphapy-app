@@ -16,7 +16,9 @@
         .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
         .content p { margin-bottom: 16px; }
         .content strong { color: var(--text-main); }
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
         .code-number { color: #d19a66; }
@@ -35,36 +37,81 @@
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
         <div class="lesson-title">5. Conditionals</div>
-        <div id="subtitle" class="lesson-subtitle">Part 1: if</div>
-        <div id="part1" class="content">
-            <p>Think of your car's fuel gauge. If the tank is low, you stop at a filling station. If it's fine, you keep driving.</p>
-            <p>That's what <strong>if</strong> does in Python — it checks a condition and decides what to do.</p>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Making Decisions</div>
+        
+        <!-- INTRODUCTION -->
+        <div id="intro" class="content">
+            <p>Think of your car's fuel gauge. If the tank is low, a light comes on. If it's fine, the light stays off. The car is making a decision based on a condition.</p>
+            <p>In Python, we use <strong>conditionals</strong> to tell the computer: <em>"If this is true, do that. Otherwise, do something else."</em></p>
+            <p>This is how apps know to show a "Login" button if you aren't signed in, and a "Profile" button if you are.</p>
+        </div>
+
+        <!-- PART 1 -->
+        <div id="part1" class="content hidden">
+            <p><strong>The `if` statement</strong></p>
+            <p>We use the <code>if</code> keyword to check a condition. If the condition is True, the indented code below it runs.</p>
             <div class="code-block">age = <span class="code-number">15</span><br><span class="code-keyword">if</span> age >= <span class="code-number">18</span>:<br>    print(<span class="code-string">"You can vote"</span>)</div>
-            <p>Notice the colon <strong>:</strong> at the end of the if line. And the indent (4 spaces) on the line below. Both are required.</p>
+            <button class="btn-practice" onclick="openEditorModal('age = 15\nif age >= 18:\n    print(&quot;You can vote&quot;)')">💻 Practice this code</button>
+            <p>⚠️ Notice the colon <strong>:</strong> at the end of the if line. And the 4 spaces (indentation) on the line below. Both are strictly required in Python!</p>
         </div>
+
+        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>else and elif</strong></p>
-            <p><strong>if</strong> alone handles one case. Add <strong>else</strong> for the other:</p>
+            <p><strong>Handling the alternative: `else`</strong></p>
+            <p>What if the condition is False? We use <code>else</code> to catch everything that isn't True.</p>
             <div class="code-block"><span class="code-keyword">if</span> age >= <span class="code-number">18</span>:<br>    print(<span class="code-string">"You can vote"</span>)<br><span class="code-keyword">else</span>:<br>    print(<span class="code-string">"Too young to vote"</span>)</div>
-            <p>For more than two cases, use <strong>elif</strong> (short for "else if"):</p>
-            <div class="code-block"><span class="code-keyword">if</span> score >= <span class="code-number">70</span>:<br>    print(<span class="code-string">"A"</span>)<br><span class="code-keyword">elif</span> score >= <span class="code-number">60</span>:<br>    print(<span class="code-string">"B"</span>)<br><span class="code-keyword">else</span>:<br>    print(<span class="code-string">"C"</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('age = 15\nif age >= 18:\n    print(&quot;You can vote&quot;)\nelse:\n    print(&quot;Too young to vote&quot;)')">💻 Practice the else statement</button>
         </div>
+
+        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>Comparison operators</strong></p>
-            <p><strong>==</strong> equal to<br><strong>!=</strong> not equal to<br><strong>&gt;</strong> greater than<br><strong>&lt;</strong> less than<br><strong>&gt;=</strong> greater or equal<br><strong>&lt;=</strong> less or equal</p>
-            <p>⚠️ Watch out: <strong>=</strong> assigns, <strong>==</strong> compares.</p>
-            <div class="code-block">x = <span class="code-number">5</span>   <span class="code-keyword"># sets x to 5</span><br>x == <span class="code-number">5</span>  <span class="code-keyword"># asks "is x equal to 5?"</span></div>
+            <p><strong>More than two choices: `elif`</strong></p>
+            <p>If you have multiple conditions to check, use <code>elif</code> (short for "else if"). Python checks them from top to bottom, and runs the first one that is True.</p>
+            <div class="code-block">score = <span class="code-number">75</span><br><span class="code-keyword">if</span> score >= <span class="code-number">90</span>:<br>    print(<span class="code-string">"A"</span>)<br><span class="code-keyword">elif</span> score >= <span class="code-number">70</span>:<br>    print(<span class="code-string">"B"</span>)<br><span class="code-keyword">else</span>:<br>    print(<span class="code-string">"C"</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('score = 75\nif score >= 90:\n    print(&quot;A&quot;)\nelif score >= 70:\n    print(&quot;B&quot;)\nelse:\n    print(&quot;C&quot;)')">💻 Practice elif</button>
         </div>
+
+        <!-- PART 4 -->
+        <div id="part4" class="content hidden">
+            <p><strong>The Comparison Operators</strong></p>
+            <p>To build conditions, you use these symbols:</p>
+            <ul>
+                <li><code>==</code> Equal to</li>
+                <li><code>!=</code> Not equal to</li>
+                <li><code>&gt;</code> Greater than</li>
+                <li><code>&lt;</code> Less than</li>
+                <li><code>&gt;=</code> Greater than or equal to</li>
+                <li><code>&lt;=</code> Less than or equal to</li>
+            </ul>
+            <p>⚠️ <strong>The #1 Mistake:</strong> Do not confuse <code>=</code> (assigning a value) with <code>==</code> (checking if two things are equal).</p>
+            <div class="code-block">x = <span class="code-number">5</span>    <span class="code-keyword"># Assigns 5 to x</span><br>x == <span class="code-number">5</span>   <span class="code-keyword"># Asks: is x equal to 5?</span></div>
+            <button class="btn-practice" onclick="openEditorModal('x = 5\nif x == 5:\n    print(&quot;Yes, it is equal!&quot;)')">💻 Practice the double equals</button>
+        </div>
+
+        <!-- PART 5 -->
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• <strong>if</strong> checks a condition and runs code if True.</p>
+            <p>• <strong>else</strong> catches any case that isn't True.</p>
+            <p>• <strong>elif</strong> lets you check multiple conditions.</p>
+            <p>• Always end the line with a colon <strong>:</strong> and indent the next line.</p>
+            <p>• Use <strong>==</strong> to compare, and <strong>=</strong> to assign.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
             <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
         </div>
+
         <div class="bottom-action">
             <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
         </div>
     </div>
 
+    <script src="editor.js"></script>
     <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -72,7 +119,7 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // SECURITY CHECK: Make sure they are unlocked AND completed Lesson 4
+        // Security Check: Must complete Lesson 4 first
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
@@ -87,32 +134,53 @@
         checkLock();
 
         let currentStep = 1;
+        
+        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "Which symbol means 'is equal to'?", options: ["=", "==", "===", "!="], answer: "==", explain: "= assigns, == compares." },
-            { q: "What's wrong: if x = 5: print('yes')", options: ["Should be x == 5", "Missing else", "Missing colon", "Nothing wrong"], answer: "Should be x == 5", explain: "You compare with ==, not =." },
-            { q: "If score = 65: if score >= 70: 'A' elif score >= 60: 'B' else: 'C'", options: ["A", "B", "C", "Nothing"], answer: "B", explain: "65 is not ≥70 but is ≥60." }
+            { q: "Which symbol means 'is equal to' in a condition?", options: ["=", "==", "===", "!="], answer: "==", explain: "== compares values, while = assigns them." },
+            { q: "What's wrong with this code: if x = 5: print('yes')", options: ["Should be x == 5", "Missing else", "Missing colon", "Nothing is wrong"], answer: "Should be x == 5", explain: "You must use == to compare values, not =." },
+            { q: "💻 Coding Challenge 1: Write an if statement that checks if 'age' is greater than 18. (Include the colon)", type: "coding", answer: "ifage>18:", explain: "Start with 'if', the variable, the > symbol, the number, and a colon." },
+            { q: "💻 Coding Challenge 2: Write the keyword used to catch any case that is False, followed by a colon.", type: "coding", answer: "else:", explain: "The else keyword catches everything else. Don't forget the colon!" },
+            { q: "If score = 65, what is the output of: if score >= 70: print('A') elif score >= 60: print('B') else: print('C')?", options: ["A", "B", "C", "Nothing"], answer: "B", explain: "65 is not >= 70, so it checks the elif. 65 is >= 60, so it prints B." }
         ];
+        
         let currentQuestion = 0;
         let score = 0;
+        let wrongAnswers = []; // Tracks failed questions
 
         function nextStep() {
             if (currentStep === 1) {
-                document.getElementById('part1').classList.add('hidden');
-                document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: else and elif';
+                document.getElementById('intro').classList.add('hidden');
+                document.getElementById('part1').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 1: The if statement';
                 currentStep = 2;
             } else if (currentStep === 2) {
-                document.getElementById('part2').classList.add('hidden');
-                document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: Comparison operators';
-                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                document.getElementById('part1').classList.add('hidden');
+                document.getElementById('part2').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 2: The else statement';
                 currentStep = 3;
             } else if (currentStep === 3) {
-                document.getElementById('part3').classList.add('hidden');
-                document.getElementById('quiz-section').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Assessment';
-                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('part2').classList.add('hidden');
+                document.getElementById('part3').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 3: elif';
                 currentStep = 4;
+            } else if (currentStep === 4) {
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('part4').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 4: Comparison Operators';
+                currentStep = 5;
+            } else if (currentStep === 5) {
+                document.getElementById('part4').classList.add('hidden');
+                document.getElementById('part5').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 5: Quick Summary';
+                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                currentStep = 6;
+            } else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
                 loadQuestion();
             }
         }
@@ -122,13 +190,74 @@
             document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = ''; 
-            qData.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.innerText = option;
-                btn.className = 'quiz-btn';
-                btn.onclick = () => checkAnswer(option, btn);
-                optionsContainer.appendChild(btn);
-            });
+
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol(':', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">:</button>
+                            <button onclick="insertSymbol('>', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">></button>
+                            <button onclick="insertSymbol('<', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;"><</button>
+                            <button onclick="insertSymbol('==', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">==</button>
+                            <button onclick="insertSymbol('!=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">!=</button>
+                            <button onclick="insertSymbol('if ', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">if</button>
+                            <button onclick="insertSymbol('else:', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">else:</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>
+                `;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.innerText = option;
+                    btn.className = 'quiz-btn';
+                    btn.onclick = () => checkAnswer(option, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            
+            if (userCode === correct) {
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({
+                    q: questions[currentQuestion].q,
+                    user: userCodeRaw || "(empty)",
+                    correct: questions[currentQuestion].answer
+                });
+
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `
+                    ❌ <strong>Incorrect.</strong><br><br>
+                    <strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br>
+                    <strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>
+                    ${questions[currentQuestion].explain}
+                `;
+            }
+            
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            nextQBtn.innerText = 'Next Question →';
+            nextQBtn.onclick = () => {
+                currentQuestion++;
+                document.getElementById('feedback').style.display = 'none';
+                loadQuestion();
+            };
+            feedback.appendChild(nextQBtn);
         }
 
         function checkAnswer(selected, btnClicked) {
@@ -146,6 +275,12 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
+                wrongAnswers.push({
+                    q: qData.q,
+                    user: selected,
+                    correct: qData.answer
+                });
+
                 btnClicked.style.background = 'var(--danger)';
                 btnClicked.style.borderColor = 'var(--danger)';
                 btnClicked.style.color = '#fff';
@@ -182,48 +317,82 @@
 
         async function showResults() {
             document.getElementById('question-text').innerText = "Saving progress...";
-            document.getElementById('subtitle').innerText = "Lesson 5 Finished";
             document.getElementById('options-container').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 75;
+            const passed = percentage >= 70;
             
-            let earnedD = passed ? 2 : 1;
-            let earnedXp = passed ? 20 : 10;
             let rewardMessage = "";
+            let statusMessage = "";
+            let btnHtml = "";
+
+            // Build the Mistake Review HTML
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
+                    <h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item, index) => {
+                    reviewHtml += `
+                        <div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <strong>${item.q}</strong><br>
+                            <span style="color: #ef4444;">Your answer: ${item.user}</span><br>
+                            <span style="color: #10b981;">Correct answer: ${item.correct}</span>
+                        </div>
+                    `;
+                });
+                reviewHtml += `</div>`;
+            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
                 let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 const completed = profile.completed_lessons || [];
                 
-                if (!completed.includes('lesson5')) {
-                    const newDiamonds = (profile.diamonds || 0) + earnedD;
-                    const newXp = (profile.xp || 0) + earnedXp;
-                    const newCompleted = [...completed, 'lesson5'];
-
-                    await supabaseClient.from('profiles').update({
-                        diamonds: newDiamonds,
-                        xp: newXp,
-                        completed_lessons: newCompleted
-                    }).eq('id', user.id);
+                if (passed) {
+                    if (!completed.includes('lesson5')) {
+                        const newCompleted = [...completed, 'lesson5'];
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 2,
+                            xp: (profile.xp || 0) + 20,
+                            completed_lessons: newCompleted
+                        }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    }
                     
-                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                    statusMessage = "🌟 Excellent! You passed!";
+                    document.getElementById('subtitle').innerText = "Lesson 5 Unlocked";
+                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
                 } else {
-                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    if (!localStorage.getItem('lesson5_partial_reward')) {
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 1,
+                            xp: (profile.xp || 0) + 10
+                        }).eq('id', user.id);
+                        localStorage.setItem('lesson5_partial_reward', 'true');
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`;
+                    }
+                    
+                    statusMessage = "📉 You need 70% to pass.";
+                    document.getElementById('subtitle').innerText = "Lesson Locked";
+                    btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
                 }
             }
 
             document.getElementById('question-text').innerText = "Assessment Complete!";
             document.getElementById('options-container').innerHTML = `
                 <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
-                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
-                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    <h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${statusMessage}
                     </h2>
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
                     ${rewardMessage}
-                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                    ${btnHtml}
+                    ${reviewHtml}
                 </div>
             `;
         }
