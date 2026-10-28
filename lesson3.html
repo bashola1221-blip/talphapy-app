@@ -16,7 +16,9 @@
         .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
         .content p { margin-bottom: 16px; }
         .content strong { color: var(--text-main); }
-        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
         .code-number { color: #d19a66; }
@@ -35,33 +37,94 @@
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
         <div class="lesson-title">3. Operators & Math</div>
-        <div id="subtitle" class="lesson-subtitle">Part 1: The math operators</div>
-        <div id="part1" class="content">
-            <p>Think of cooking rice for a party. You measure, add, subtract, share. Python does the same math — with symbols.</p>
-            <div class="code-block"><span class="code-keyword">+</span> addition<br><span class="code-keyword">-</span> subtraction<br><span class="code-keyword">*</span> multiplication<br><span class="code-keyword">/</span> division (always gives a decimal)<br><span class="code-keyword">//</span> floor division (whole part only)<br><span class="code-keyword">%</span> remainder (what's left over)<br><span class="code-keyword">**</span> power</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Python as a Calculator</div>
+        
+        <!-- INTRODUCTION -->
+        <div id="intro" class="content">
+            <p>Python is incredibly powerful at math. You can use it like a regular calculator to add, subtract, multiply, and divide.</p>
+            
+            <p><strong>Why learn math operators?</strong></p>
+            <p>Whether you are building a game (calculating health points), a business app (calculating profit), or an AI (calculating probabilities), you will use math operators every single day as a programmer.</p>
+            
+            <p>In this lesson, we will cover the basic math symbols and the tricky ones that confuse most beginners.</p>
         </div>
+
+        <!-- PART 1 -->
+        <div id="part1" class="content hidden">
+            <p><strong>The Basic Operators</strong></p>
+            <p>You already know these from school, but Python uses slightly different symbols:</p>
+            <ul>
+                <li><code>+</code> Addition (5 + 3 = 8)</li>
+                <li><code>-</code> Subtraction (10 - 4 = 6)</li>
+                <li><code>*</code> Multiplication (4 * 3 = 12)</li>
+                <li><code>/</code> Division (10 / 2 = 5.0)</li>
+            </ul>
+            <div class="code-block">print(<span class="code-number">5</span> <span class="code-keyword">+</span> <span class="code-number">3</span>)<br>print(<span class="code-number">4</span> <span class="code-keyword">*</span> <span class="code-number">3</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('print(5 + 3)\nprint(4 * 3)')">💻 Practice this code</button>
+            <p>Notice that division in Python (<code>/</code>) always gives a decimal result, even if it divides perfectly.</p>
+        </div>
+
+        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p>Sharing <span class="code-number">7</span> oranges among <span class="code-number">2</span> people:</p>
-            <p><strong>Floor division (//)</strong> gives the share:</p>
+            <p><strong>The Tricky Two: // and %</strong></p>
+            <p>Imagine you have 7 oranges and 2 friends. You want to share them equally.</p>
+            <p><strong>Floor Division (//)</strong> gives each friend the <em>whole</em> amount they can get:</p>
             <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">//</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 3</span></div>
-            <p><strong>Remainder (%)</strong> gives the leftover:</p>
+            <button class="btn-practice" onclick="openEditorModal('print(7 // 2)')">💻 Practice Floor Division</button>
+            <p><strong>Modulo (%)</strong> gives you the <em>remainder</em> (what is left over):</p>
             <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">%</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 1</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(7 % 2)')">💻 Practice Modulo</button>
         </div>
+
+        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>Order of operations (BODMAS)</strong></p>
-            <p>Python follows the same rules as maths: brackets first, then powers, then multiplication/division, then addition/subtraction.</p>
-            <div class="code-block">print(<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span> <span class="code-keyword">*</span> <span class="code-number">4</span>)  <span class="code-keyword"># Output: 14 (Not 20!)</span><br><br>print((<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span>) <span class="code-keyword">*</span> <span class="code-number">4</span>) <span class="code-keyword"># Output: 20</span></div>
+            <p>🎯 <strong>Order of Operations (BODMAS)</strong></p>
+            <p>Python follows the exact same math rules you learned in school. Multiplication and division happen <em>before</em> addition and subtraction.</p>
+            <div class="code-block">print(<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span> <span class="code-keyword">*</span> <span class="code-number">4</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('print(2 + 3 * 4)')">💻 Run this in the Playground</button>
+            <p>Because <code>3 * 4</code> happens first (12), and then <code>2 + 12</code> = <strong>14</strong>. Not 20!</p>
+            <p>If you want to add first, you must use brackets:</p>
+            <div class="code-block">print((<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span>) <span class="code-keyword">*</span> <span class="code-number">4</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('print((2 + 3) * 4)')">💻 Practice with Brackets</button>
         </div>
+
+        <!-- PART 4 -->
+        <div id="part4" class="content hidden">
+            <p><strong>Your Turn: Try it Yourself!</strong></p>
+            <p>You can write and run real Python code right here in the app.</p>
+            <p>🎯 <strong>Mission:</strong></p>
+            <ol style="margin-left: 20px; margin-bottom: 16px; line-height: 1.8;">
+                <li>Tap the yellow <strong>💻 button</strong> at the bottom right of your screen.</li>
+                <li>Type <code>print(100 // 3)</code> to see how many whole times 3 fits into 100.</li>
+                <li>Type <code>print(100 % 3)</code> to see what is left over.</li>
+                <li>Type <code>print(2 ** 5)</code> to see what 2 to the power of 5 is.</li>
+                <li>Tap <strong>▶ Run Code</strong> to see the magic happen!</li>
+            </ol>
+        </div>
+
+        <!-- PART 5 -->
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• <strong>+ - * /</strong> are basic math operators.</p>
+            <p>• <strong>//</strong> gives the whole share, <strong>%</strong> gives the leftover.</p>
+            <p>• <strong>**</strong> is used for powers (e.g., <code>2 ** 3</code> is 8).</p>
+            <p>• Python follows <strong>BODMAS</strong> (brackets, orders, division, multiplication, addition, subtraction).</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
             <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
         </div>
+
         <div class="bottom-action">
             <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
         </div>
     </div>
 
+    <script src="editor.js"></script>
     <script src="nav.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
@@ -69,12 +132,14 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // SECURITY CHECK: Make sure Lesson 2 is done
+        // Security Check: Must complete Lesson 2 first
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) return;
-            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            if (!user) { window.location.replace('login.html'); return; }
+            
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
             let completed = profile.completed_lessons || [];
+            
             if (!completed.includes('lesson2')) {
                 window.location.replace('season1.html');
             }
@@ -82,32 +147,53 @@
         checkLock();
 
         let currentStep = 1;
+        
+        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "What is 7 // 2?", options: ["3.5", "3", "4", "1"], answer: "3", explain: "Floor division gives the whole share only." },
-            { q: "What is 7 % 2?", options: ["1", "3", "3.5", "0"], answer: "1", explain: "The remainder after sharing 7 among 2." },
-            { q: "What is 2 + 3 * 4?", options: ["20", "14", "24", "9"], answer: "14", explain: "Multiplication first: 3*4 = 12, then 2+12 = 14." }
+            { q: "What is 7 // 2?", options: ["3.5", "3", "4", "1"], answer: "3", explain: "Floor division (//) gives the whole share only." },
+            { q: "What is 7 % 2?", options: ["1", "3", "3.5", "0"], answer: "1", explain: "Modulo (%) gives the remainder after sharing." },
+            { q: "💻 Coding Challenge 1: Write the code to print the result of 10 + 5.", type: "coding", answer: "print(10+5)", explain: "Use print() and put 10 + 5 inside the brackets." },
+            { q: "💻 Coding Challenge 2: Write the code to print 2 to the power of 3.", type: "coding", answer: "print(2**3)", explain: "Use the ** operator for powers." },
+            { q: "What is 2 + 3 * 4?", options: ["20", "14", "24", "9"], answer: "14", explain: "Multiplication happens before addition (3*4=12, then 2+12=14)." }
         ];
+        
         let currentQuestion = 0;
         let score = 0;
+        let wrongAnswers = []; // Tracks failed questions
 
         function nextStep() {
             if (currentStep === 1) {
-                document.getElementById('part1').classList.add('hidden');
-                document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: The tricky two';
+                document.getElementById('intro').classList.add('hidden');
+                document.getElementById('part1').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 1: The Basic Operators';
                 currentStep = 2;
             } else if (currentStep === 2) {
-                document.getElementById('part2').classList.add('hidden');
-                document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: BODMAS';
-                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                document.getElementById('part1').classList.add('hidden');
+                document.getElementById('part2').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 2: The Tricky Two (// and %)';
                 currentStep = 3;
             } else if (currentStep === 3) {
-                document.getElementById('part3').classList.add('hidden');
-                document.getElementById('quiz-section').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Assessment';
-                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('part2').classList.add('hidden');
+                document.getElementById('part3').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 3: Order of Operations';
                 currentStep = 4;
+            } else if (currentStep === 4) {
+                document.getElementById('part3').classList.add('hidden');
+                document.getElementById('part4').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 4: Try it yourself';
+                currentStep = 5;
+            } else if (currentStep === 5) {
+                document.getElementById('part4').classList.add('hidden');
+                document.getElementById('part5').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Part 5: Quick Summary';
+                document.getElementById('nextBtn').innerText = 'Start Quiz →';
+                currentStep = 6;
+            } else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
                 loadQuestion();
             }
         }
@@ -117,13 +203,74 @@
             document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = ''; 
-            qData.options.forEach(option => {
-                const btn = document.createElement('button');
-                btn.innerText = option;
-                btn.className = 'quiz-btn';
-                btn.onclick = () => checkAnswer(option, btn);
-                optionsContainer.appendChild(btn);
-            });
+
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol('+', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">+</button>
+                            <button onclick="insertSymbol('-', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">-</button>
+                            <button onclick="insertSymbol('*', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">*</button>
+                            <button onclick="insertSymbol('/', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">/</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>
+                `;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.innerText = option;
+                    btn.className = 'quiz-btn';
+                    btn.onclick = () => checkAnswer(option, btn);
+                    optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            
+            if (userCode === correct) {
+                score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)';
+                feedback.style.color = 'var(--success)';
+                feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({
+                    q: questions[currentQuestion].q,
+                    user: userCodeRaw || "(empty)",
+                    correct: questions[currentQuestion].answer
+                });
+
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)';
+                feedback.style.color = 'var(--danger)';
+                feedback.innerHTML = `
+                    ❌ <strong>Incorrect.</strong><br><br>
+                    <strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br>
+                    <strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>
+                    ${questions[currentQuestion].explain}
+                `;
+            }
+            
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button');
+            nextQBtn.className = 'btn-gold';
+            nextQBtn.style.marginTop = '20px';
+            nextQBtn.innerText = 'Next Question →';
+            nextQBtn.onclick = () => {
+                currentQuestion++;
+                document.getElementById('feedback').style.display = 'none';
+                loadQuestion();
+            };
+            feedback.appendChild(nextQBtn);
         }
 
         function checkAnswer(selected, btnClicked) {
@@ -141,6 +288,12 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
+                wrongAnswers.push({
+                    q: qData.q,
+                    user: selected,
+                    correct: qData.answer
+                });
+
                 btnClicked.style.background = 'var(--danger)';
                 btnClicked.style.borderColor = 'var(--danger)';
                 btnClicked.style.color = '#fff';
@@ -177,48 +330,82 @@
 
         async function showResults() {
             document.getElementById('question-text').innerText = "Saving progress...";
-            document.getElementById('subtitle').innerText = "Lesson 3 Finished";
             document.getElementById('options-container').innerHTML = '';
             document.getElementById('feedback').style.display = 'none';
 
             const percentage = Math.round((score / questions.length) * 100);
-            const passed = percentage >= 75;
+            const passed = percentage >= 70;
             
-            let earnedD = passed ? 2 : 1;
-            let earnedXp = passed ? 20 : 10;
             let rewardMessage = "";
+            let statusMessage = "";
+            let btnHtml = "";
+
+            // Build the Mistake Review HTML
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
+                    <h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item, index) => {
+                    reviewHtml += `
+                        <div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <strong>${item.q}</strong><br>
+                            <span style="color: #ef4444;">Your answer: ${item.user}</span><br>
+                            <span style="color: #10b981;">Correct answer: ${item.correct}</span>
+                        </div>
+                    `;
+                });
+                reviewHtml += `</div>`;
+            }
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (user) {
                 let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
                 const completed = profile.completed_lessons || [];
                 
-                if (!completed.includes('lesson3')) {
-                    const newDiamonds = (profile.diamonds || 0) + earnedD;
-                    const newXp = (profile.xp || 0) + earnedXp;
-                    const newCompleted = [...completed, 'lesson3'];
-
-                    await supabaseClient.from('profiles').update({
-                        diamonds: newDiamonds,
-                        xp: newXp,
-                        completed_lessons: newCompleted
-                    }).eq('id', user.id);
+                if (passed) {
+                    if (!completed.includes('lesson3')) {
+                        const newCompleted = [...completed, 'lesson3'];
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 2,
+                            xp: (profile.xp || 0) + 20,
+                            completed_lessons: newCompleted
+                        }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    }
                     
-                    rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +${earnedD} Diamonds • ⭐ +${earnedXp} XP</p>`;
+                    statusMessage = "🌟 Excellent! You passed!";
+                    document.getElementById('subtitle').innerText = "Lesson 3 Unlocked";
+                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
                 } else {
-                    rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
+                    if (!localStorage.getItem('lesson3_partial_reward')) {
+                        await supabaseClient.from('profiles').update({
+                            diamonds: (profile.diamonds || 0) + 1,
+                            xp: (profile.xp || 0) + 10
+                        }).eq('id', user.id);
+                        localStorage.setItem('lesson3_partial_reward', 'true');
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else {
+                        rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`;
+                    }
+                    
+                    statusMessage = "📉 You need 70% to pass.";
+                    document.getElementById('subtitle').innerText = "Lesson Locked";
+                    btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
                 }
             }
 
             document.getElementById('question-text').innerText = "Assessment Complete!";
             document.getElementById('options-container').innerHTML = `
                 <div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;">
-                    <h2 style="font-size: 32px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
-                        ${passed ? '🌟 Excellent!' : '📉 Good try!'}
+                    <h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${statusMessage}
                     </h2>
                     <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>
                     ${rewardMessage}
-                    <a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>
+                    ${btnHtml}
+                    ${reviewHtml}
                 </div>
             `;
         }
