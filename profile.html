@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Profile — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
+        
+        .profile-header { text-align: center; margin-top: 20px; }
+        .avatar { width: 80px; height: 80px; background: var(--card-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 40px; margin: 0 auto 16px auto; border: 2px solid var(--gold); }
+        .email { font-size: 18px; font-weight: 700; }
+        .joined { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-card { background: var(--card-bg); padding: 20px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-value { font-size: 24px; font-weight: 800; color: var(--gold); margin-bottom: 4px; }
+        .stat-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+
+        .invite-section { background: var(--card-bg); padding: 20px; border-radius: 12px; border: 1px dashed var(--gold); margin-top: 10px; }
+        .invite-section h3 { font-size: 16px; margin-bottom: 8px; color: var(--gold); }
+        .invite-section p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4; }
+        
+        .invite-input { width: 100%; padding: 12px; background: #0d1425; border: 1px solid #333; color: var(--text-muted); border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+        .btn-gold { display: block; width: 100%; padding: 14px; background: var(--gold); color: var(--bg-color); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
+        .btn-outline { display: block; width: 100%; padding: 14px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <div class="profile-header">
+            <div class="avatar">🐍</div>
+            <div class="email" id="user-email">Loading...</div>
+            <div class="joined" id="user-status">Fetching profile...</div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-diamonds">0</div>
+                <div class="stat-label">Diamonds 💎</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-xp">0</div>
+                <div class="stat-label">Total XP ⭐</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-streak">1</div>
+                <div class="stat-label">Day Streak 🔥</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-lessons">0</div>
+                <div class="stat-label">Lessons ✅</div>
+            </div>
+        </div>
+
+        <div class="invite-section">
+            <h3>👥 Invite 3 Friends = Free Season 1</h3>
+            <p>Share this link. When 3 friends create an account, the premium lessons unlock automatically!</p>
+            <input type="text" id="invite-link" class="invite-input" readonly>
+            <button class="btn-gold" onclick="copyLink()">📋 Copy Invite Link</button>
+            <p id="copy-status" style="text-align: center; color: var(--success); display: none; margin-top: 8px; font-weight: bold;">Copied successfully!</p>
+        </div>
+
+        <button class="btn-outline" onclick="logout()">Log Out</button>
+
+    </div>
+
+    <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadProfile() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { window.location.href = "login.html"; return; }
+
+            document.getElementById('user-email').innerText = user.email;
+            
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            
+            if (profile) {
+                document.getElementById('stat-diamonds').innerText = profile.diamonds || 0;
+                document.getElementById('stat-xp').innerText = profile.xp || 0;
+                document.getElementById('stat-streak').innerText = profile.streak || 1;
+                document.getElementById('stat-lessons').innerText = (profile.completed_lessons || []).length;
+                
+                if (profile.unlocked_s1) {
+                    document.getElementById('user-status').innerText = "Premium Member 🌟";
+                    document.getElementById('user-status').style.color = "var(--gold)";
+                } else {
+                    document.getElementById('user-status').innerText = "Free Plan";
+                }
+            }
+
+            // Generate Invite Link
+            const inviteLink = `https://talphapy-app.vercel.app/login.html?ref=${user.id}`;
+            document.getElementById('invite-link').value = inviteLink;
+        }
+
+        function copyLink() {
+            const linkInput = document.getElementById('invite-link');
+            linkInput.select();
+            linkInput.setSelectionRange(0, 99999); // For mobile devices
+
+            navigator.clipboard.writeText(linkInput.value).then(() => {
+                const status = document.getElementById('copy-status');
+                status.style.display = 'block';
+                setTimeout(() => { status.style.display = 'none'; }, 3000);
+            }).catch(() => {
+                alert("Failed to copy. Please select and copy manually.");
+            });
+        }
+
+        async function logout() {
+            await supabaseClient.auth.signOut();
+            window.location.href = "login.html";
+        }
+
+        loadProfile();
+    </script>
+</body>
+</html>
