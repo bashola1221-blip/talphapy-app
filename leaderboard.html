@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Leaderboard — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
+        
+        .page-title { font-size: 28px; font-weight: 800; color: var(--gold); margin-top: 20px; text-align: center; }
+        .page-subtitle { color: var(--text-muted); font-size: 14px; text-align: center; margin-bottom: 20px; }
+
+        .leaderboard-card { background: var(--card-bg); border-radius: 12px; padding: 16px; display: flex; align-items: center; justify-content: space-between; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px; }
+        
+        .rank-info { display: flex; align-items: center; gap: 16px; }
+        .rank-number { font-size: 20px; font-weight: 800; color: var(--text-muted); width: 30px; }
+        .rank-name { font-size: 16px; font-weight: 600; }
+        
+        .rank-stats { text-align: right; }
+        .rank-xp { font-size: 16px; font-weight: 700; color: var(--gold); }
+        .rank-diamonds { font-size: 12px; color: var(--text-muted); }
+
+        /* Top 3 Styling */
+        .top-1 { border: 2px solid var(--gold); background: linear-gradient(135deg, #15264d, #2a1f00); }
+        .top-1 .rank-number { color: var(--gold); }
+        .top-2 { border: 2px solid #94a3b8; }
+        .top-2 .rank-number { color: #94a3b8; }
+        .top-3 { border: 2px solid #b45309; }
+        .top-3 .rank-number { color: #b45309; }
+        
+        .loading { text-align: center; color: var(--text-muted); margin-top: 40px; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="page-title">🏆 Leaderboard</div>
+        <div class="page-subtitle">Top students by XP</div>
+        
+        <div id="leaderboard-list">
+            <div class="loading">Loading leaderboard...</div>
+        </div>
+    </div>
+
+    <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadLeaderboard() {
+            // Fetch top 10 users, ordered by XP (highest first)
+            let { data: profiles, error } = await supabaseClient
+                .from('profiles')
+                .select('id, xp, diamonds')
+                .order('xp', { ascending: false })
+                .limit(10);
+
+            const container = document.getElementById('leaderboard-list');
+            
+            if (error || !profiles || profiles.length === 0) {
+                container.innerHTML = `<div class="loading">No players yet. Be the first!</div>`;
+                return;
+            }
+
+            container.innerHTML = ''; // Clear loading text
+
+            profiles.forEach((user, index) => {
+                const rank = index + 1;
+                let cardClass = 'leaderboard-card';
+                
+                if (rank === 1) cardClass += ' top-1';
+                if (rank === 2) cardClass += ' top-2';
+                if (rank === 3) cardClass += ' top-3';
+
+                // Since we don't have usernames yet, we'll use the first 5 characters of their ID
+                const shortName = "Learner " + user.id.substring(0, 5).toUpperCase();
+
+                container.innerHTML += `
+                    <div class="${cardClass}">
+                        <div class="rank-info">
+                            <div class="rank-number">#${rank}</div>
+                            <div class="rank-name">${shortName}</div>
+                        </div>
+                        <div class="rank-stats">
+                            <div class="rank-xp">⭐ ${user.xp || 0} XP</div>
+                            <div class="rank-diamonds">💎 ${user.diamonds || 0}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        loadLeaderboard();
+    </script>
+</body>
+</html>
