@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
+    
+    <!-- SEO Description -->
+    <meta name="description" content="Learn Python step by step with Talphapy. Interactive lessons, real coding playground, and a fun reward system. Start your coding journey today!">
+    
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a1a3a">
     <style>
@@ -75,7 +79,6 @@
                 await supabaseClient.from('profiles').insert([{ id: user.id, diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] }]);
                 profile = { diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] };
             } else {
-                // --- STREAK LOGIC ---
                 const today = new Date().toISOString().split('T')[0];
                 const lastLogin = profile.last_login;
 
@@ -86,9 +89,9 @@
 
                     let newStreak = profile.streak || 0;
                     if (lastLogin === yesterdayStr) {
-                        newStreak += 1; // Logged in yesterday, increase streak
+                        newStreak += 1; 
                     } else {
-                        newStreak = 1; // Missed a day, reset to 1
+                        newStreak = 1; 
                     }
 
                     await supabaseClient.from('profiles').update({ streak: newStreak, last_login: today }).eq('id', user.id);
