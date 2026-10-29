@@ -1,13 +1,14 @@
 {
   "name": "Talphapy — Learn Python",
   "short_name": "Talphapy",
+  "description": "Master Python step by step. Build real apps, earn XP, and get certified.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0a1a3a",
   "theme_color": "#0a1a3a",
   "icons": [
     {
-      "src": "https://files.catbox.moe/dyepbh.jpg",
+      "src": "https://files.catbox.moe/exkiw2.jpg",
       "sizes": "512x512",
       "type": "image/jpeg"
     }
