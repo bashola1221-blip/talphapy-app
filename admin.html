@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin Dashboard — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
+        
+        .admin-box { width: 100%; max-width: 480px; background: var(--card-bg); padding: 32px 24px; border-radius: 16px; border: 1px solid var(--gold); text-align: center; }
+        .logo { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        
+        input { width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px; background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 16px; outline: none; }
+        input:focus { border-color: var(--gold); }
+        
+        .btn { width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; margin-bottom: 12px; }
+        .btn-gold { background: var(--gold); color: var(--bg-color); }
+        .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
+        
+        .message { padding: 12px; border-radius: 8px; margin-top: 16px; display: none; font-weight: bold; }
+        .msg-success { background: rgba(16, 185, 129, 0.1); color: var(--success); }
+        .msg-error { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+    </style>
+</head>
+<body>
+    <div class="admin-box" id="login-section">
+        <div class="logo">🔐 Admin Access</div>
+        <div class="subtitle">Enter the secret password to continue.</div>
+        <input type="password" id="admin-password" placeholder="Password">
+        <button class="btn btn-gold" onclick="checkPassword()">Enter</button>
+    </div>
+
+    <div class="admin-box" id="dashboard-section" style="display: none;">
+        <div class="logo">🛠️ Admin Dashboard</div>
+        <div class="subtitle">Unlock Season 1 for a paying user.</div>
+        
+        <input type="email" id="user-email" placeholder="User's Email Address">
+        <button class="btn btn-gold" onclick="unlockUser()">🔓 Unlock Season 1</button>
+        
+        <div id="status-message" class="message"></div>
+        
+        <button class="btn btn-dark" style="margin-top: 24px;" onclick="logoutAdmin()">Log Out</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // The Secret Password (Must match the one in Supabase SQL)
+        const ADMIN_PASSWORD = "BashirAdmin2026"; 
+
+        function checkPassword() {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === ADMIN_PASSWORD) {
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                sessionStorage.setItem('isAdmin', 'true');
+            } else {
+                alert("Incorrect password!");
+            }
+        }
+
+        if (sessionStorage.getItem('isAdmin') === 'true') {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
+        }
+
+        function logoutAdmin() {
+            sessionStorage.removeItem('isAdmin');
+            window.location.reload();
+        }
+
+        async function unlockUser() {
+            const email = document.getElementById('user-email').value.trim();
+            const statusDiv = document.getElementById('status-message');
+            
+            if (!email) {
+                statusDiv.className = 'message msg-error';
+                statusDiv.innerText = "Please enter an email address.";
+                statusDiv.style.display = 'block';
+                return;
+            }
+
+            statusDiv.className = 'message';
+            statusDiv.style.display = 'none';
+
+            // Call the secure database function
+            const { data, error } = await supabaseClient.rpc('admin_unlock', { 
+                user_email: email, 
+                admin_password: ADMIN_PASSWORD 
+            });
+
+            if (error) {
+                statusDiv.className = 'message msg-error';
+                statusDiv.innerText = "Error: " + error.message;
+                statusDiv.style.display = 'block';
+            } else if (data === true) {
+                statusDiv.className = 'message msg-success';
+                statusDiv.innerText = `✅ Successfully unlocked Season 1 for ${email}`;
+                statusDiv.style.display = 'block';
+                document.getElementById('user-email').value = '';
+            } else {
+                statusDiv.className = 'message msg-error';
+                statusDiv.innerText = "❌ User not found or password incorrect.";
+                statusDiv.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
