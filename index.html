@@ -76,9 +76,23 @@
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
 
             if (!profile) {
-                await supabaseClient.from('profiles').insert([{ id: user.id, diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] }]);
+                // Create new profile WITH email saved
+                await supabaseClient.from('profiles').insert([{ 
+                    id: user.id, 
+                    email: user.email, 
+                    diamonds: 0, 
+                    xp: 0, 
+                    streak: 1, 
+                    last_login: new Date().toISOString().split('T')[0] 
+                }]);
                 profile = { diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] };
             } else {
+                // If they have a profile but no email saved yet, save it now
+                if (!profile.email) {
+                    await supabaseClient.from('profiles').update({ email: user.email }).eq('id', user.id);
+                }
+
+                // --- STREAK LOGIC ---
                 const today = new Date().toISOString().split('T')[0];
                 const lastLogin = profile.last_login;
 
