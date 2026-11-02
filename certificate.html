@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Certificate — Talphapy</title>
+    <!-- Load html2canvas to turn the certificate into an image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
+        
+        .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+
+        /* THE CERTIFICATE DESIGN */
+        #certificate-box {
+            width: 100%;
+            background: #ffffff;
+            color: #0a1a3a;
+            padding: 40px;
+            border-radius: 8px;
+            border: 15px solid #0a1a3a;
+            outline: 4px solid #f0c040;
+            outline-offset: -25px;
+            text-align: center;
+            position: relative;
+        }
+
+        .cert-header { font-size: 32px; font-weight: 800; letter-spacing: 4px; color: #0a1a3a; margin-bottom: 10px; }
+        .cert-sub { font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
+        
+        .cert-name { font-size: 36px; font-weight: 800; color: #f0c040; border-bottom: 2px solid #ddd; display: inline-block; padding-bottom: 8px; margin-bottom: 20px; font-family: "Georgia", serif; }
+        
+        .cert-text { font-size: 16px; color: #333; line-height: 1.6; max-width: 500px; margin: 0 auto 30px auto; }
+        
+        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding: 0 20px; }
+        .signature { text-align: center; }
+        .signature-line { width: 150px; height: 1px; background: #333; margin-bottom: 8px; }
+        .signature-name { font-size: 14px; font-weight: 700; }
+        .signature-title { font-size: 10px; color: #666; }
+        
+        .seal { width: 80px; height: 80px; background: #f0c040; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #0a1a3a; font-size: 12px; text-align: center; border: 4px dashed #fff; box-shadow: 0 0 0 2px #f0c040; }
+        
+        .cert-id { font-size: 10px; color: #999; margin-top: 20px; font-family: monospace; }
+
+        /* BUTTONS */
+        .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
+        .loading-text { color: var(--text-muted); font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- THIS IS WHAT GETS DOWNLOADED -->
+        <div id="certificate-box">
+            <div class="cert-header">CERTIFICATE</div>
+            <div class="cert-sub">of Completion</div>
+            
+            <div style="font-size: 14px; color: #666; margin-bottom: 10px;">This certifies that</div>
+            <div class="cert-name" id="student-name">Loading...</div>
+            
+            <div class="cert-text">
+                has successfully completed the <strong>Python Foundations (Season 1)</strong> curriculum at Talphapy, demonstrating a solid understanding of variables, loops, conditionals, functions, and data structures.
+            </div>
+            
+            <div class="cert-footer">
+                <div class="signature">
+                    <div class="signature-line"></div>
+                    <div class="signature-name">Talpa</div>
+                    <div class="signature-title">Founder, Talphapy</div>
+                </div>
+                <div class="seal">
+                    <div>VERIFIED<br>2026</div>
+                </div>
+                <div class="signature">
+                    <div class="signature-line" id="date-line"></div>
+                    <div class="signature-name">Date</div>
+                    <div class="signature-title">Issued</div>
+                </div>
+            </div>
+            
+            <div class="cert-id" id="cert-id">Certificate ID: Loading...</div>
+        </div>
+        <!-- END CERTIFICATE BOX -->
+
+        <button class="btn-gold" onclick="downloadCertificate()" id="download-btn">📥 Download Certificate</button>
+        <div id="download-status" class="loading-text"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function loadCertificate() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if(!user) return window.location.href = "login.html";
+
+            let { data: profile } = await supabaseClient.from('profiles').select('certificate_earned, certificate_date').eq('id', user.id).single();
+
+            if (!profile || !profile.certificate_earned) {
+                alert("You haven't passed the final exam yet!");
+                window.location.href = "final_exam.html";
+                return;
+            }
+
+            // Format Name (e.g., "bashiruv20@gmail.com" becomes "Bashiruv20")
+            const rawName = user.email.split('@')[0];
+            const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            
+            // Format Date
+            const date = new Date(profile.certificate_date);
+            const dateString = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            // Generate a random-ish Certificate ID based on their User ID
+            const certId = "TAL-" + user.id.substring(0, 8).toUpperCase();
+
+            document.getElementById('student-name').innerText = formattedName;
+            document.getElementById('date-line').innerText = dateString;
+            document.getElementById('cert-id').innerText = "Certificate ID: " + certId;
+        }
+
+        function downloadCertificate() {
+            const btn = document.getElementById('download-btn');
+            const status = document.getElementById('download-status');
+            btn.style.display = 'none';
+            status.innerText = "Generating high-quality image... Please wait.";
+
+            const certBox = document.getElementById('certificate-box');
+
+            // Use html2canvas to take a picture of the div
+            html2canvas(certBox, { scale: 2 }).then(canvas => {
+                // Convert canvas to image
+                const image = canvas.toDataURL("image/png");
+                
+                // Create a temporary link to download it
+                const link = document.createElement('a');
+                link.download = 'Talphapy_Certificate.png';
+                link.href = image;
+                link.click();
+
+                btn.style.display = 'block';
+                status.innerText = "Downloaded successfully! Check your phone's files/gallery.";
+            }).catch(err => {
+                btn.style.display = 'block';
+                status.innerText = "Failed to generate image. Please try again.";
+            });
+        }
+
+        loadCertificate();
+    </script>
+</body>
+</html>
