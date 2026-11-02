@@ -126,9 +126,13 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Save referral code if they arrived via invite link
+        const urlParams = new URLSearchParams(window.location.search);
+        const refId = urlParams.get('ref');
+        if (refId) { localStorage.setItem('pending_ref', refId); }
+
         let currentStep = 1;
         
-        // 5 Questions (2 Coding Challenges!)
         const questions = [
             { q: "What does print(\"Hi\") do?", options: ["Prints Hi", "Prints print", "Nothing", "Error"], answer: "Prints Hi", explain: "print() shows whatever is inside the brackets." },
             { q: "Which line correctly prints the word Hello?", options: ["print(Hello)", "print \"Hello\"", "print(\"Hello\")", "Print(\"Hello\")"], answer: "print(\"Hello\")", explain: "Text needs quotes, and print must be lowercase." },
@@ -139,9 +143,9 @@
         
         let currentQuestion = 0;
         let score = 0;
-        let wrongAnswers = []; // NEW: Tracks failed questions
+        let wrongAnswers = [];
 
-        function nextStep() {
+        async function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('intro').classList.add('hidden');
                 document.getElementById('part1').classList.remove('hidden');
@@ -169,6 +173,14 @@
                 document.getElementById('nextBtn').innerText = 'Start Quiz →';
                 currentStep = 6;
             } else if (currentStep === 6) {
+                // GUEST CHECK: Stop them before the quiz
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) {
+                    alert("🎉 You finished Lesson 1!\n\nCreate a free account to take the quiz, earn 💎 Diamonds, and save your progress!");
+                    window.location.href = "login.html";
+                    return;
+                }
+
                 document.getElementById('part5').classList.add('hidden');
                 document.getElementById('quiz-section').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
@@ -222,7 +234,6 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
             } else {
-                // Add to wrong answers list
                 wrongAnswers.push({
                     q: questions[currentQuestion].q,
                     user: userCodeRaw || "(empty)",
@@ -267,7 +278,6 @@
                 feedback.style.color = 'var(--success)';
                 feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
             } else {
-                // Add to wrong answers list
                 wrongAnswers.push({
                     q: qData.q,
                     user: selected,
@@ -320,7 +330,6 @@
             let statusMessage = "";
             let btnHtml = "";
 
-            // Build the Mistake Review HTML
             let reviewHtml = "";
             if (wrongAnswers.length > 0) {
                 reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
