@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Profile — Talphapy</title>
     <style>
-        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; }
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; --danger: #ef4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
@@ -24,9 +24,12 @@
         .invite-section h3 { font-size: 16px; margin-bottom: 8px; color: var(--gold); }
         .invite-section p { font-size: 14px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.4; }
         
-        .invite-input { width: 100%; padding: 12px; background: #0d1425; border: 1px solid #333; color: var(--text-muted); border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
-        .btn-gold { display: block; width: 100%; padding: 14px; background: var(--gold); color: var(--bg-color); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
-        .btn-outline { display: block; width: 100%; padding: 14px; background: transparent; color: #ef4444; border: 1px solid #ef4444; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-top: 20px; }
+        .invite-input { width: 100%; padding: 12px; background: #0d1425; border: 1px solid #333; color: var(--text-muted); border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
+        
+        .btn-gold { display: block; width: 100%; padding: 14px; background: var(--gold); color: var(--bg-color); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; margin-bottom: 10px; }
+        .btn-outline { display: block; width: 100%; padding: 14px; background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-bottom: 10px; }
+        
+        .btn-logout { display: block; width: 100%; padding: 14px; background: transparent; color: var(--danger); border: 1px solid var(--danger); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -61,11 +64,15 @@
             <h3>👥 Invite 3 Friends = Free Season 1</h3>
             <p>Share this link. When 3 friends create an account, the premium lessons unlock automatically!</p>
             <input type="text" id="invite-link" class="invite-input" readonly>
-            <button class="btn-gold" onclick="copyLink()">📋 Copy Invite Link</button>
+            
+            <!-- NEW SHARE BUTTON -->
+            <button class="btn-gold" onclick="shareLink()">📲 Share Invite Link</button>
+            
+            <button class="btn-outline" onclick="copyLink()">📋 Copy Link</button>
             <p id="copy-status" style="text-align: center; color: var(--success); display: none; margin-top: 8px; font-weight: bold;">Copied successfully!</p>
         </div>
 
-        <button class="btn-outline" onclick="logout()">Log Out</button>
+        <button class="btn-logout" onclick="logout()">Log Out</button>
 
     </div>
 
@@ -103,10 +110,33 @@
             document.getElementById('invite-link').value = inviteLink;
         }
 
+        // --- THE NEW SHARE FUNCTION ---
+        async function shareLink() {
+            const link = document.getElementById('invite-link').value;
+            const shareData = {
+                title: 'Join Teaching Python by Talpha 🐍',
+                text: 'Learn Python step by step with me on Talphapy! Build real apps and earn certificates. Use my link to join:',
+                url: link
+            };
+
+            try {
+                // This triggers the native phone share menu (WhatsApp, Telegram, etc.)
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    // Fallback for older phones/browsers
+                    copyLink();
+                    alert("Your phone doesn't support direct sharing. The link has been copied, you can paste it in WhatsApp!");
+                }
+            } catch (err) {
+                console.log('Share failed or cancelled', err);
+            }
+        }
+
         function copyLink() {
             const linkInput = document.getElementById('invite-link');
             linkInput.select();
-            linkInput.setSelectionRange(0, 99999); // For mobile devices
+            linkInput.setSelectionRange(0, 99999); 
 
             navigator.clipboard.writeText(linkInput.value).then(() => {
                 const status = document.getElementById('copy-status');
