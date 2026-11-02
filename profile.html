@@ -26,7 +26,7 @@
         
         .invite-input { width: 100%; padding: 12px; background: #0d1425; border: 1px solid #333; color: var(--text-muted); border-radius: 8px; font-size: 14px; margin-bottom: 12px; outline: none; }
         
-        .btn-gold { display: block; width: 100%; padding: 14px; background: var(--gold); color: var(--bg-color); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; margin-bottom: 10px; }
+        .btn-gold { display: block; width: 100%; padding: 14px; background: var(--gold); color: var(--bg-color); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; margin-bottom: 10px; text-decoration: none; }
         .btn-outline { display: block; width: 100%; padding: 14px; background: transparent; color: var(--gold); border: 2px solid var(--gold); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-bottom: 10px; }
         
         .btn-logout { display: block; width: 100%; padding: 14px; background: transparent; color: var(--danger); border: 1px solid var(--danger); border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; cursor: pointer; margin-top: 20px; }
@@ -60,20 +60,23 @@
             </div>
         </div>
 
+        <!-- CERTIFICATE SECTION (Hidden until earned) -->
+        <div id="certificate-section" style="display: none; background: var(--card-bg); padding: 20px; border-radius: 12px; border: 2px solid var(--gold); text-align: center;">
+            <h3 style="color: var(--gold); margin-bottom: 8px;">🎓 Your Certificate is Ready!</h3>
+            <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">You passed the final exam. You can download your certificate anytime.</p>
+            <a href="certificate.html" class="btn-gold">View Certificate</a>
+        </div>
+
         <div class="invite-section">
             <h3>👥 Invite 3 Friends = Free Season 1</h3>
             <p>Share this link. When 3 friends create an account, the premium lessons unlock automatically!</p>
             <input type="text" id="invite-link" class="invite-input" readonly>
-            
-            <!-- NEW SHARE BUTTON -->
             <button class="btn-gold" onclick="shareLink()">📲 Share Invite Link</button>
-            
             <button class="btn-outline" onclick="copyLink()">📋 Copy Link</button>
             <p id="copy-status" style="text-align: center; color: var(--success); display: none; margin-top: 8px; font-weight: bold;">Copied successfully!</p>
         </div>
 
         <button class="btn-logout" onclick="logout()">Log Out</button>
-
     </div>
 
     <script src="nav.js"></script>
@@ -103,14 +106,17 @@
                 } else {
                     document.getElementById('user-status').innerText = "Free Plan";
                 }
+
+                // Show Certificate button if earned
+                if (profile.certificate_earned) {
+                    document.getElementById('certificate-section').style.display = 'block';
+                }
             }
 
-            // Generate Invite Link
             const inviteLink = `https://talphapy-app.vercel.app/login.html?ref=${user.id}`;
             document.getElementById('invite-link').value = inviteLink;
         }
 
-        // --- THE NEW SHARE FUNCTION ---
         async function shareLink() {
             const link = document.getElementById('invite-link').value;
             const shareData = {
@@ -118,32 +124,24 @@
                 text: 'Learn Python step by step with me on Talphapy! Build real apps and earn certificates. Use my link to join:',
                 url: link
             };
-
             try {
-                // This triggers the native phone share menu (WhatsApp, Telegram, etc.)
                 if (navigator.share) {
                     await navigator.share(shareData);
                 } else {
-                    // Fallback for older phones/browsers
                     copyLink();
-                    alert("Your phone doesn't support direct sharing. The link has been copied, you can paste it in WhatsApp!");
+                    alert("Your phone doesn't support direct sharing. The link has been copied!");
                 }
-            } catch (err) {
-                console.log('Share failed or cancelled', err);
-            }
+            } catch (err) { console.log('Share failed', err); }
         }
 
         function copyLink() {
             const linkInput = document.getElementById('invite-link');
             linkInput.select();
             linkInput.setSelectionRange(0, 99999); 
-
             navigator.clipboard.writeText(linkInput.value).then(() => {
                 const status = document.getElementById('copy-status');
                 status.style.display = 'block';
                 setTimeout(() => { status.style.display = 'none'; }, 3000);
-            }).catch(() => {
-                alert("Failed to copy. Please select and copy manually.");
             });
         }
 
