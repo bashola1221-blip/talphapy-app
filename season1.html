@@ -66,6 +66,15 @@
             <div class="lesson-info"><h3>7. Lists</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson7">🔒</div>
         </div>
+
+        <!-- FINAL EXAM CARD -->
+        <div class="lesson-card locked" id="card-exam" onclick="tryExam()" style="border: 2px dashed var(--gold);">
+            <div class="lesson-info">
+                <h3 style="color: var(--gold);">🏆 Final Exam</h3>
+                <p>Complete all 7 lessons to unlock</p>
+            </div>
+            <div class="lesson-icon" id="icon-exam">🔒</div>
+        </div>
     </div>
 
     <!-- PAYWALL MODAL -->
@@ -112,7 +121,6 @@
             let completed = profile.completed_lessons || [];
             isUnlocked = profile.unlocked_s1 || (profile.invite_count >= 3);
 
-            // If they hit 3 invites, auto-unlock in DB
             if (profile.invite_count >= 3 && !profile.unlocked_s1) {
                 await supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', user.id);
                 isUnlocked = true;
@@ -156,6 +164,13 @@
                 document.getElementById('card-lesson7').classList.remove('locked');
                 document.getElementById('icon-lesson7').innerText = completed.includes('lesson7') ? '✅' : '📘';
             }
+
+            // Final Exam Logic
+            const allLessonsCompleted = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7'].every(l => completed.includes(l));
+            if (allLessonsCompleted) {
+                document.getElementById('card-exam').classList.remove('locked');
+                document.getElementById('icon-exam').innerText = profile.certificate_earned ? '🎓' : '📝';
+            }
         }
 
         function tryLockedLesson(url) {
@@ -166,15 +181,16 @@
             }
         }
 
+        function tryExam() {
+            window.location.href = 'final_exam.html';
+        }
+
         function generateInvite() {
             const link = `https://talphapy-app.vercel.app/login.html?ref=${currentUser.id}`;
-            
-            // Copy to clipboard
             navigator.clipboard.writeText(link).then(() => {
                 alert("Invite link copied to clipboard! Send it to your friends.");
                 document.getElementById('invite-progress').innerText = "Link copied!";
             }).catch(() => {
-                // Fallback if clipboard fails
                 prompt("Copy your invite link:", link);
             });
         }
