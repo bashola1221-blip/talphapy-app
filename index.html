@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
     
-    <!-- SEO Description -->
     <meta name="description" content="Learn Python step by step with Talphapy. Interactive lessons, real coding playground, and a fun reward system. Start your coding journey today!">
     
     <link rel="manifest" href="manifest.json">
@@ -17,25 +16,8 @@
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
         
         header { text-align: center; margin-bottom: 10px; margin-top: 20px; }
-        
-        /* Logo Section - Now Stacked Vertically */
-        .logo { 
-            font-size: 32px; 
-            font-weight: 800; 
-            color: var(--gold); 
-            display: flex; 
-            flex-direction: column; /* This stacks the image and text */
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-        }
-        
-        .logo img {
-            width: 100%;
-            max-width: 320px; /* Makes the banner nice and wide */
-            height: auto;
-            border-radius: 12px; 
-        }
+        .logo { font-size: 32px; font-weight: 800; color: var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
+        .logo img { width: 100%; max-width: 320px; height: auto; border-radius: 12px; }
         
         .welcome-text { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
         .stats-bar { background: var(--card-bg); border-radius: 12px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
@@ -44,7 +26,7 @@
         .season-card h2 { font-size: 20px; margin-bottom: 6px; color: var(--gold); }
         .season-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.4; }
         .season-card.locked h2 { color: var(--text-muted); }
-        .btn { display: inline-block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; }
+        .btn { display: inline-block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer;}
         .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
         .logout-btn { background: none; border: none; color: var(--text-muted); font-size: 12px; text-decoration: underline; margin-top: 20px; cursor: pointer; }
@@ -53,15 +35,14 @@
 <body>
     <div class="app-container">
         <header>
-            <!-- Image is now on top, text is below -->
             <div class="logo">
                 <img src="https://i.postimg.cc/RZngpbRM/IMG-20261102-WA0804.jpg" alt="Talphapy Logo">
                 <span>Talphapy</span>
             </div>
-            <div class="welcome-text" id="welcome-name">Loading...</div>
+            <div class="welcome-text" id="welcome-name">Welcome, Guest! 👋</div>
         </header>
 
-        <div class="stats-bar">
+        <div class="stats-bar" id="stats-bar">
             <div class="stat-item">💎 <span id="user-diamonds">0</span></div>
             <div class="stat-item">⭐ <span id="user-xp">0</span></div>
             <div class="stat-item">🔥 <span id="user-streak">0</span></div>
@@ -70,7 +51,7 @@
         <div class="season-card">
             <h2>Season 1</h2>
             <p>Python Foundations. Master the basics — variables, loops, and logic.</p>
-            <a href="season1.html" class="btn btn-gold">Start Learning</a>
+            <a href="season1.html" class="btn btn-gold">Start Learning (Free)</a>
         </div>
 
         <div class="season-card locked">
@@ -80,7 +61,7 @@
         </div>
         
         <center>
-            <button class="logout-btn" onclick="logout()">Log out</button>
+            <button class="logout-btn" id="auth-btn" onclick="window.location.href='login.html'">Log In / Sign Up</button>
         </center>
     </div>
 
@@ -91,57 +72,36 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Save referral code if they arrived via an invite link
+        const urlParams = new URLSearchParams(window.location.search);
+        const refId = urlParams.get('ref');
+        if (refId) {
+            localStorage.setItem('pending_ref', refId);
+        }
+
         async function loadData() {
             const { data: { user } } = await supabaseClient.auth.getUser();
-            if (!user) { window.location.href = "login.html"; return; }
+            
+            // If Guest (No user), leave the welcome text and 0 stats. 
+            // The "Log In" button is already configured in HTML.
+            if (!user) return;
 
+            // If Logged In, show stats and change button to Logout
             document.getElementById('welcome-name').innerText = "Welcome, " + user.email.split('@')[0];
+            document.getElementById('auth-btn').innerText = "Log Out";
+            document.getElementById('auth-btn').setAttribute('onclick', 'logout()');
 
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
-
-            if (!profile) {
-                await supabaseClient.from('profiles').insert([{ 
-                    id: user.id, 
-                    email: user.email, 
-                    diamonds: 0, 
-                    xp: 0, 
-                    streak: 1, 
-                    last_login: new Date().toISOString().split('T')[0] 
-                }]);
-                profile = { diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] };
-            } else {
-                if (!profile.email) {
-                    await supabaseClient.from('profiles').update({ email: user.email }).eq('id', user.id);
-                }
-
-                const today = new Date().toISOString().split('T')[0];
-                const lastLogin = profile.last_login;
-
-                if (lastLogin !== today) {
-                    const yesterday = new Date();
-                    yesterday.setDate(yesterday.getDate() - 1);
-                    const yesterdayStr = yesterday.toISOString().split('T')[0];
-
-                    let newStreak = profile.streak || 0;
-                    if (lastLogin === yesterdayStr) {
-                        newStreak += 1; 
-                    } else {
-                        newStreak = 1; 
-                    }
-
-                    await supabaseClient.from('profiles').update({ streak: newStreak, last_login: today }).eq('id', user.id);
-                    profile.streak = newStreak;
-                }
+            if (profile) {
+                document.getElementById('user-diamonds').innerText = profile.diamonds || 0;
+                document.getElementById('user-xp').innerText = profile.xp || 0;
+                document.getElementById('user-streak').innerText = profile.streak || 1;
             }
-
-            document.getElementById('user-diamonds').innerText = profile.diamonds || 0;
-            document.getElementById('user-xp').innerText = profile.xp || 0;
-            document.getElementById('user-streak').innerText = profile.streak || 1;
         }
 
         async function logout() {
             await supabaseClient.auth.signOut();
-            window.location.href = "login.html";
+            window.location.reload();
         }
 
         loadData();
