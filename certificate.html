@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Certificate — Talphapy</title>
-    <!-- Load html2canvas to turn the certificate into an image -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; }
@@ -13,7 +12,6 @@
         
         .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
-        /* THE CERTIFICATE DESIGN */
         #certificate-box {
             width: 100%;
             background: #ffffff;
@@ -44,7 +42,6 @@
         
         .cert-id { font-size: 10px; color: #999; margin-top: 20px; font-family: monospace; }
 
-        /* BUTTONS */
         .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
         .loading-text { color: var(--text-muted); font-size: 14px; }
     </style>
@@ -52,7 +49,6 @@
 <body>
     <div class="container">
         
-        <!-- THIS IS WHAT GETS DOWNLOADED -->
         <div id="certificate-box">
             <div class="cert-header">CERTIFICATE</div>
             <div class="cert-sub">of Completion</div>
@@ -82,7 +78,6 @@
             
             <div class="cert-id" id="cert-id">Certificate ID: Loading...</div>
         </div>
-        <!-- END CERTIFICATE BOX -->
 
         <button class="btn-gold" onclick="downloadCertificate()" id="download-btn">📥 Download Certificate</button>
         <div id="download-status" class="loading-text"></div>
@@ -98,7 +93,7 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             if(!user) return window.location.href = "login.html";
 
-            let { data: profile } = await supabaseClient.from('profiles').select('certificate_earned, certificate_date').eq('id', user.id).single();
+            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
 
             if (!profile || !profile.certificate_earned) {
                 alert("You haven't passed the final exam yet!");
@@ -106,18 +101,15 @@
                 return;
             }
 
-            // Format Name (e.g., "bashiruv20@gmail.com" becomes "Bashiruv20")
-            const rawName = user.email.split('@')[0];
-            const formattedName = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+            // Use the real name they entered before the exam
+            const realName = profile.certificate_name || "Talphapy Student";
             
-            // Format Date
             const date = new Date(profile.certificate_date);
             const dateString = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            // Generate a random-ish Certificate ID based on their User ID
             const certId = "TAL-" + user.id.substring(0, 8).toUpperCase();
 
-            document.getElementById('student-name').innerText = formattedName;
+            document.getElementById('student-name').innerText = realName;
             document.getElementById('date-line').innerText = dateString;
             document.getElementById('cert-id').innerText = "Certificate ID: " + certId;
         }
@@ -130,12 +122,8 @@
 
             const certBox = document.getElementById('certificate-box');
 
-            // Use html2canvas to take a picture of the div
             html2canvas(certBox, { scale: 2 }).then(canvas => {
-                // Convert canvas to image
                 const image = canvas.toDataURL("image/png");
-                
-                // Create a temporary link to download it
                 const link = document.createElement('a');
                 link.download = 'Talphapy_Certificate.png';
                 link.href = image;
