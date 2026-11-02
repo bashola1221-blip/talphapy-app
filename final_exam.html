@@ -83,6 +83,23 @@
         let timeLeft = 600; // 10 minutes
         let timerInterval;
 
+        // SECURITY CHECK: Run this as soon as the page loads
+        async function checkExamLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if(!user) return window.location.href = "login.html";
+
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            
+            const allLessonsCompleted = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7'].every(l => completed.includes(l));
+            
+            if (!allLessonsCompleted) {
+                alert("You must complete all 7 lessons before taking the final exam!");
+                window.location.href = "season1.html";
+            }
+        }
+        checkExamLock();
+
         async function startExam() {
             const nameInput = document.getElementById('real-name').value.trim();
             if (nameInput.length < 3) {
@@ -100,7 +117,7 @@
             document.getElementById('name-entry').style.display = 'none';
             document.getElementById('exam-screen').style.display = 'flex';
 
-            // Shuffle and pick 10
+            // Shuffle and pick 10 questions
             const shuffled = questionBank.sort(() => 0.5 - Math.random());
             selectedQuestions = shuffled.slice(0, 10);
 
