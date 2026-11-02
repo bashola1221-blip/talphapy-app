@@ -20,12 +20,10 @@
         .lesson-icon { font-size: 20px; }
         .lesson-card.locked { opacity: 0.6; }
 
-        /* MODAL STYLES */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; }
         .modal-content { background: var(--card-bg); padding: 24px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; border: 1px solid var(--gold); }
         .modal-content h2 { color: var(--gold); margin-bottom: 12px; }
         .modal-content p { color: var(--text-main); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
-        .modal-content .bank-details { background: #0d1425; padding: 12px; border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 20px; }
         .modal-content .btn { display: block; width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; margin-bottom: 8px;}
         .btn-gold { background: var(--gold); color: var(--bg-color); }
         .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
@@ -37,19 +35,21 @@
         <div class="page-title">Season 1</div>
         <div class="page-subtitle">Python Foundations</div>
 
+        <!-- Lesson 1 is ALWAYS open -->
         <a href="lesson1.html" class="lesson-card" id="card-lesson1">
             <div class="lesson-info"><h3>1. Your First Python Program</h3><p>Print, variables, and basic rules</p></div>
             <div class="lesson-icon" id="icon-lesson1">📘</div>
         </a>
-        <a href="lesson2.html" class="lesson-card" id="card-lesson2">
-            <div class="lesson-info"><h3>2. Variables & Data Types</h3><p>Strings, integers, and floats</p></div>
-            <div class="lesson-icon" id="icon-lesson2">📘</div>
-        </a>
-        <a href="lesson3.html" class="lesson-card" id="card-lesson3">
-            <div class="lesson-info"><h3>3. Operators & Math</h3><p>Addition, division, and BODMAS</p></div>
-            <div class="lesson-icon" id="icon-lesson3">📘</div>
-        </a>
         
+        <!-- Lessons 2-7 require login and progress -->
+        <div class="lesson-card locked" id="card-lesson2" onclick="tryLockedLesson('lesson2.html')">
+            <div class="lesson-info"><h3>2. Variables & Data Types</h3><p>Requires Lesson 1</p></div>
+            <div class="lesson-icon" id="icon-lesson2">🔒</div>
+        </div>
+        <div class="lesson-card locked" id="card-lesson3" onclick="tryLockedLesson('lesson3.html')">
+            <div class="lesson-info"><h3>3. Operators & Math</h3><p>Requires Lesson 2</p></div>
+            <div class="lesson-icon" id="icon-lesson3">🔒</div>
+        </div>
         <div class="lesson-card locked" id="card-lesson4" onclick="tryLockedLesson('lesson4.html')">
             <div class="lesson-info"><h3>4. Input & Output</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson4">🔒</div>
@@ -66,40 +66,9 @@
             <div class="lesson-info"><h3>7. Lists</h3><p>Requires unlock</p></div>
             <div class="lesson-icon" id="icon-lesson7">🔒</div>
         </div>
-
-        <!-- FINAL EXAM CARD -->
-        <div class="lesson-card locked" id="card-exam" onclick="tryExam()" style="border: 2px dashed var(--gold);">
-            <div class="lesson-info">
-                <h3 style="color: var(--gold);">🏆 Final Exam</h3>
-                <p>Complete all 7 lessons to unlock</p>
-            </div>
+        <div class="lesson-card locked" id="card-exam" onclick="tryLockedLesson('final_exam.html')">
+            <div class="lesson-info"><h3>🏆 Final Exam</h3><p>Complete all 7 lessons to unlock</p></div>
             <div class="lesson-icon" id="icon-exam">🔒</div>
-        </div>
-    </div>
-
-    <!-- PAYWALL MODAL -->
-    <div class="modal-overlay" id="paywall-modal">
-        <div class="modal-content">
-            <h2>🔒 Unlock Season 1</h2>
-            <p>To continue to Lesson 4 and beyond, choose an option below:</p>
-            
-            <div class="bank-details">
-                <strong>Option 1: Pay ₦1,500</strong><br>
-                Bank: Opay<br>
-                Account: 8062860797<br>
-                Name: Bashir<br>
-                <span style="font-size: 12px; color: var(--text-muted);">Send proof to @YourHandle on Telegram.</span>
-            </div>
-            
-            <a href="https://t.me/YourHandle" target="_blank" class="btn btn-gold">💳 I have paid</a>
-            
-            <div style="margin: 16px 0; border-top: 1px solid #333;"></div>
-            
-            <p><strong>Option 2: Invite 3 friends</strong></p>
-            <button id="invite-btn" class="btn btn-dark" onclick="generateInvite()">👥 Get My Invite Link</button>
-            <p id="invite-progress" style="font-size: 12px; color: var(--gold); margin-top: 8px;"></p>
-            
-            <button class="btn btn-dark" style="margin-top: 16px;" onclick="closeModal()">Close</button>
         </div>
     </div>
 
@@ -109,45 +78,28 @@
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        let isUnlocked = false;
-        let currentUser = null;
 
         async function loadProgress() {
             const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            // If they are a Guest, they can only play Lesson 1. 
+            // The code stops here, leaving everything else locked.
             if (!user) return;
-            currentUser = user;
 
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
             let completed = profile.completed_lessons || [];
-            isUnlocked = profile.unlocked_s1 || (profile.invite_count >= 3);
+            let isUnlocked = profile.unlocked_s1 || (profile.invite_count >= 3);
 
-            if (profile.invite_count >= 3 && !profile.unlocked_s1) {
-                await supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', user.id);
-                isUnlocked = true;
-            }
-
-            // Lesson 1
             if (completed.includes('lesson1')) document.getElementById('icon-lesson1').innerText = '✅';
 
-            // Lesson 2
             if (completed.includes('lesson1')) {
                 document.getElementById('card-lesson2').classList.remove('locked');
-                if (completed.includes('lesson2')) document.getElementById('icon-lesson2').innerText = '✅';
-            } else {
-                document.getElementById('card-lesson2').classList.add('locked');
-                document.getElementById('icon-lesson2').innerText = '🔒';
+                document.getElementById('icon-lesson2').innerText = completed.includes('lesson2') ? '✅' : '📘';
             }
-
-            // Lesson 3
             if (completed.includes('lesson2')) {
                 document.getElementById('card-lesson3').classList.remove('locked');
-                if (completed.includes('lesson3')) document.getElementById('icon-lesson3').innerText = '✅';
-            } else {
-                document.getElementById('card-lesson3').classList.add('locked');
-                document.getElementById('icon-lesson3').innerText = '🔒';
+                document.getElementById('icon-lesson3').innerText = completed.includes('lesson3') ? '✅' : '📘';
             }
-
-            // Premium Lessons
             if (isUnlocked) {
                 document.getElementById('card-lesson4').classList.remove('locked');
                 document.getElementById('icon-lesson4').innerText = completed.includes('lesson4') ? '✅' : '📘';
@@ -164,39 +116,17 @@
                 document.getElementById('card-lesson7').classList.remove('locked');
                 document.getElementById('icon-lesson7').innerText = completed.includes('lesson7') ? '✅' : '📘';
             }
-
-            // Final Exam Logic
-            const allLessonsCompleted = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7'].every(l => completed.includes(l));
-            if (allLessonsCompleted) {
+            
+            const allLessons = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7'];
+            if (allLessons.every(l => completed.includes(l))) {
                 document.getElementById('card-exam').classList.remove('locked');
                 document.getElementById('icon-exam').innerText = profile.certificate_earned ? '🎓' : '📝';
             }
         }
 
         function tryLockedLesson(url) {
-            if (isUnlocked) {
-                window.location.href = url;
-            } else {
-                document.getElementById('paywall-modal').style.display = 'flex';
-            }
-        }
-
-        function tryExam() {
-            window.location.href = 'final_exam.html';
-        }
-
-        function generateInvite() {
-            const link = `https://talphapy-app.vercel.app/login.html?ref=${currentUser.id}`;
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Invite link copied to clipboard! Send it to your friends.");
-                document.getElementById('invite-progress').innerText = "Link copied!";
-            }).catch(() => {
-                prompt("Copy your invite link:", link);
-            });
-        }
-
-        function closeModal() {
-            document.getElementById('paywall-modal').style.display = 'none';
+            alert("🔒 You must create an account and complete the previous lesson to unlock this!");
+            window.location.href = "login.html";
         }
 
         document.addEventListener("DOMContentLoaded", function() {
