@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Final Exam — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--card-bg); padding: 16px; border-radius: 12px; border: 1px solid var(--gold); }
+        .timer { font-size: 20px; font-weight: 800; color: var(--danger); }
+        .progress { font-size: 14px; color: var(--text-muted); }
+        
+        .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
+        .code-block { background-color: #0d1425; padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
+        
+        .quiz-btn { display: block; width: 100%; padding: 16px; background: var(--card-bg); color: var(--text-main); border-radius: 12px; font-weight: 600; font-size: 16px; text-align: left; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; margin-bottom: 12px; }
+        .quiz-btn:disabled { opacity: 0.6; }
+        
+        .feedback { margin-top: 20px; padding: 16px; border-radius: 8px; display: none; font-size: 15px; line-height: 1.5; }
+        .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <div class="header">
+            <div>
+                <div class="progress" id="question-progress">Question 1/10</div>
+                <div style="font-size: 12px; color: var(--text-muted);">Season 1 Final Exam</div>
+            </div>
+            <div class="timer" id="timer">10:00</div>
+        </div>
+
+        <div id="exam-content" class="content">
+            <!-- Questions injected here -->
+        </div>
+        
+    </div>
+
+    <script src="editor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // 12 Hard Questions (We will randomly pick 10)
+        const questionBank = [
+            { q: "What is the output of: print(10 // 3)?", options: ["3.3", "3", "4", "1"], answer: "3" },
+            { q: "Which of these is a valid variable name?", options: ["2name", "my-name", "my_name", "my name"], answer: "my_name" },
+            { q: "What does input() return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String" },
+            { q: "What is the output of: print(2 ** 3)?", options: ["6", "8", "9", "5"], answer: "8" },
+            { q: "If x = 5, what is the output of: if x > 3: print('Yes')?", options: ["Yes", "No", "Error", "Nothing"], answer: "Yes" },
+            { q: "Which keyword is used to stop a loop early?", options: ["stop", "end", "break", "exit"], answer: "break" },
+            { q: "What is the index of the first item in a list?", options: ["1", "0", "-1", "a"], answer: "0" },
+            { q: "What is the output of: print(len([10, 20, 30]))?", options: ["2", "3", "30", "Error"], answer: "3" },
+            { q: "How do you add an item to the end of a list?", options: [".add()", ".push()", ".append()", ".insert()"], answer: ".append()" },
+            { q: "What is the output of: print('5' + '5')?", options: ["10", "55", "Error", "5 5"], answer: "55" },
+            { q: "Which symbol is used for comments in Python?", options: ["//", "#", "/*", "--"], answer: "#" },
+            { q: "What is the result of: print(17 % 5)?", options: ["3", "2", "3.4", "0"], answer: "2" }
+        ];
+
+        let selectedQuestions = [];
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 600; // 10 minutes in seconds
+        let timerInterval;
+
+        async function initExam() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if(!user) return window.location.href = "login.html";
+
+            // 1. Shuffle and pick 10 questions
+            const shuffled = questionBank.sort(() => 0.5 - Math.random());
+            selectedQuestions = shuffled.slice(0, 10);
+
+            // 2. Start Timer
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').innerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time is up! Your exam has been submitted.");
+                    finishExam();
+                }
+            }, 1000);
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= selectedQuestions.length) {
+                finishExam();
+                return;
+            }
+
+            const qData = selectedQuestions[currentQuestion];
+            document.getElementById('question-progress').innerText = `Question ${currentQuestion + 1}/${selectedQuestions.length}`;
+            
+            let html = `<p style="font-size: 18px; font-weight: 600; margin-bottom: 20px;">${qData.q}</p>`;
+            qData.options.forEach(opt => {
+                html += `<button class="quiz-btn" onclick="checkAnswer('${opt}', this)">${opt}</button>`;
+            });
+
+            document.getElementById('exam-content').innerHTML = html;
+        }
+
+        function checkAnswer(selected, btn) {
+            const qData = selectedQuestions[currentQuestion];
+            const allBtns = document.querySelectorAll('.quiz-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === qData.answer) {
+                btn.style.background = 'var(--success)';
+                score++;
+            } else {
+                btn.style.background = 'var(--danger)';
+                // Highlight correct
+                allBtns.forEach(b => {
+                    if(b.innerText === qData.answer) b.style.background = 'var(--success)';
+                });
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                loadQuestion();
+            }, 1000);
+        }
+
+        async function finishExam() {
+            clearInterval(timerInterval);
+            const percentage = (score / 10) * 100;
+            const passed = percentage >= 80; // 80% Pass mark for final exam
+
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            let html = `
+                <div style="text-align: center; padding: 40px 20px; background: var(--card-bg); border-radius: 16px; border: 2px solid ${passed ? 'var(--gold)' : 'var(--danger)'};">
+                    <h2 style="font-size: 32px; color: ${passed ? 'var(--gold)' : 'var(--danger)'}; margin-bottom: 10px;">
+                        ${passed ? '🏆 You Passed!' : '📉 You Failed'}
+                    </h2>
+                    <p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / 10</strong> (${percentage}%)</p>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">${passed ? 'You are now eligible for your certificate.' : 'You need 80% to earn the certificate. Try again!'}</p>
+            `;
+
+            if (passed) {
+                // Save to database
+                await supabaseClient.from('profiles').update({ 
+                    certificate_earned: true,
+                    certificate_date: new Date().toISOString().split('T')[0]
+                }).eq('id', user.id);
+
+                html += `<a href="certificate.html" class="btn-gold" style="text-decoration: none;">🎓 View Certificate</a>`;
+            } else {
+                html += `<a href="final_exam.html" class="btn-gold" style="text-decoration: none; background: var(--danger); color: white;">🔄 Retry Exam</a>`;
+                html += `<a href="season1.html" style="display: block; margin-top: 16px; color: var(--text-muted); text-decoration: none;">Back to Lessons</a>`;
+            }
+
+            html += `</div>`;
+            document.getElementById('exam-content').innerHTML = html;
+            document.getElementById('timer').style.display = 'none'; // Hide timer
+        }
+
+        initExam();
+    </script>
+</body>
+</html>
