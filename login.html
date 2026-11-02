@@ -5,27 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login — Talphapy</title>
     
-    <!-- SEO Description -->
     <meta name="description" content="Learn Python step by step with Talphapy. Interactive lessons, real coding playground, and a fun reward system. Start your coding journey today!">
 
     <!-- Social Media Preview Tags -->
     <meta property="og:title" content="Join Teaching Python by Talpha 🐍">
     <meta property="og:description" content="Learn Python step by step, build real apps, and earn certificates. Join me on Talphapy!">
-    
-    <!-- NEW IMAGE LINK INTEGRATED HERE -->
     <meta property="og:image" content="https://i.postimg.cc/Gp75PwKX/IMG-20261007-WA3794.jpg">
-    
     <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="1200"> 
+    <meta property="og:image:height" content="1200">
     <meta property="og:url" content="https://talphapy-app.vercel.app/login.html">
     <meta property="og:type" content="website">
     
-    <!-- Twitter Preview Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Join Teaching Python by Talpha 🐍">
     <meta name="twitter:description" content="Learn Python step by step, build real apps, and earn certificates. Join me on Talphapy!">
-    
-    <!-- NEW IMAGE LINK INTEGRATED HERE TOO -->
     <meta name="twitter:image" content="https://i.postimg.cc/Gp75PwKX/IMG-20261007-WA3794.jpg">
 
     <style>
@@ -60,9 +53,9 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Check for referral link in URL
+        // Check for referral in URL OR Local Storage (Guest Mode)
         const urlParams = new URLSearchParams(window.location.search);
-        const referrerId = urlParams.get('ref');
+        let referrerId = urlParams.get('ref') || localStorage.getItem('pending_ref');
 
         function showError(msg) {
             const err = document.getElementById('error-msg');
@@ -91,25 +84,22 @@
 
             // If there's a referrer, link the accounts!
             if (referrerId && data.user) {
-                // 1. Set the referred_by for the new user
                 await supabaseClient.from('profiles').update({ referred_by: referrerId }).eq('id', data.user.id);
 
-                // 2. Increment the inviter's invite_count
                 let { data: inviterProfile } = await supabaseClient.from('profiles').select('invite_count, unlocked_s1').eq('id', referrerId).single();
                 if (inviterProfile) {
                     let newCount = (inviterProfile.invite_count || 0) + 1;
                     let unlock = inviterProfile.unlocked_s1 || false;
                     
-                    // If they reach 3 invites, unlock Season 1!
-                    if (newCount >= 3) {
-                        unlock = true;
-                    }
+                    if (newCount >= 3) unlock = true;
 
                     await supabaseClient.from('profiles').update({ 
                         invite_count: newCount,
                         unlocked_s1: unlock 
                     }).eq('id', referrerId);
                 }
+                // Clear the pending ref so it doesn't apply to future accounts
+                localStorage.removeItem('pending_ref');
             }
             
             window.location.href = "index.html";
