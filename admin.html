@@ -9,26 +9,43 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         
-        .admin-box { width: 100%; max-width: 600px; background: var(--card-bg); padding: 32px 24px; border-radius: 16px; border: 1px solid var(--gold); text-align: center; }
-        .logo { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 8px; }
-        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+        .admin-box { width: 100%; max-width: 800px; background: var(--card-bg); padding: 24px; border-radius: 16px; border: 1px solid var(--gold); }
+        .logo { font-size: 28px; font-weight: 800; color: var(--gold); margin-bottom: 8px; text-align: center;}
+        .subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; text-align: center;}
         
         input { width: 100%; padding: 14px; margin-bottom: 16px; border-radius: 10px; background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 16px; outline: none; }
         input:focus { border-color: var(--gold); }
         
-        .btn { width: 100%; padding: 14px; border-radius: 10px; font-weight: 700; font-size: 16px; border: none; cursor: pointer; margin-bottom: 12px; }
-        .btn-gold { background: var(--gold); color: var(--bg-color); }
-        .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); }
-        .btn-success { background: var(--success); color: white; font-size: 14px; padding: 10px; margin: 0; width: auto; }
+        .btn { padding: 10px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; border: none; cursor: pointer; margin: 2px; text-align: center;}
+        .btn-gold { background: var(--gold); color: var(--bg-color); width: 100%; padding: 14px; font-size: 16px;}
+        .btn-dark { background: rgba(255,255,255,0.1); color: var(--text-main); width: 100%; padding: 14px; font-size: 16px;}
+        
+        .btn-s1 { background: #3b82f6; color: white; }
+        .btn-s2 { background: #8b5cf6; color: white; }
+        .btn-cert { background: #10b981; color: white; }
+        .btn-complete { background: #f59e0b; color: white; }
+        .btn-reset { background: #ef4444; color: white; }
+
+        /* ANALYTICS DASHBOARD */
+        .analytics-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+        .stat-card { background: #0d1425; padding: 16px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.05); }
+        .stat-val { font-size: 24px; font-weight: 800; color: var(--gold); }
+        .stat-lbl { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
         
         /* User List Styles */
-        .user-list { text-align: left; max-height: 60vh; overflow-y: auto; margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; }
-        .user-card { background: #0d1425; padding: 16px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
-        .user-email { font-size: 14px; font-weight: 600; color: var(--text-main); }
-        .user-stats { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
-        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: bold; margin-top: 8px; }
+        .user-list { margin-top: 20px; border-top: 1px solid #333; padding-top: 20px; }
+        .user-card { background: #0d1425; padding: 16px; border-radius: 12px; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 8px;}
+        .user-email { font-size: 16px; font-weight: 700; color: var(--gold); }
+        .user-stats { font-size: 12px; color: var(--text-muted); }
+        
+        .badges { margin-bottom: 12px; display: flex; gap: 6px; flex-wrap: wrap;}
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
         .bg-locked { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
         .bg-unlocked { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .bg-cert { background: rgba(240, 192, 64, 0.2); color: var(--gold); }
+        
+        .actions { display: flex; flex-wrap: wrap; gap: 6px; }
     </style>
 </head>
 <body>
@@ -42,12 +59,37 @@
 
     <!-- DASHBOARD SCREEN -->
     <div class="admin-box" id="dashboard-section" style="display: none;">
-        <div class="logo">🛠️ User Manager</div>
-        <div class="subtitle">All registered users. Unlock those who paid.</div>
+        <div class="logo">🛠️ Master Control</div>
+        <div class="subtitle">Manage all users, unlocks, and certificates.</div>
         
-        <button class="btn btn-dark" onclick="loadUsers()">🔄 Refresh List</button>
-        <button class="btn btn-dark" onclick="logoutAdmin()">Log Out</button>
+        <!-- ANALYTICS SECTION -->
+        <div class="analytics-grid">
+            <div class="stat-card">
+                <div class="stat-val" id="total-users">0</div>
+                <div class="stat-lbl">Total Users</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="active-today">0</div>
+                <div class="stat-lbl">Active Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="premium-users">0</div>
+                <div class="stat-lbl">S1 Unlocked</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val" id="cert-users">0</div>
+                <div class="stat-lbl">Certificates</div>
+            </div>
+        </div>
+
+        <button class="btn btn-dark" onclick="loadUsers()">🔄 Refresh Data</button>
+        <button class="btn btn-dark" style="margin-top: 8px;" onclick="logoutAdmin()">Log Out</button>
         
+        <br><br>
+
+        <!-- SEARCH BAR -->
+        <input type="text" id="search-bar" placeholder="🔍 Search by email address..." oninput="filterUsers()">
+
         <div id="user-list-container" class="user-list">
             <div style="text-align:center; color: var(--text-muted);">Loading users...</div>
         </div>
@@ -59,8 +101,8 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // CHANGE THIS TO YOUR PASSWORD
         const ADMIN_PASSWORD = "BashirAdmin2026"; 
+        let allUsersData = []; // Store data here for searching
 
         function checkPassword() {
             const pass = document.getElementById('admin-password').value;
@@ -98,53 +140,95 @@
                 return;
             }
 
-            if (!users || users.length === 0) {
+            allUsersData = users || [];
+            calculateAnalytics();
+            renderUsers(allUsersData);
+        }
+
+        function calculateAnalytics() {
+            const today = new Date().toISOString().split('T')[0];
+            
+            let activeToday = 0;
+            let unlockedS1 = 0;
+            let certs = 0;
+
+            allUsersData.forEach(u => {
+                if (u.last_login === today) activeToday++;
+                if (u.unlocked_s1) unlockedS1++;
+                if (u.certificate_earned) certs++;
+            });
+
+            document.getElementById('total-users').innerText = allUsersData.length;
+            document.getElementById('active-today').innerText = activeToday;
+            document.getElementById('premium-users').innerText = unlockedS1;
+            document.getElementById('cert-users').innerText = certs;
+        }
+
+        function filterUsers() {
+            const query = document.getElementById('search-bar').value.toLowerCase();
+            const filtered = allUsersData.filter(u => u.email.toLowerCase().includes(query));
+            renderUsers(filtered);
+        }
+
+        function renderUsers(users) {
+            const container = document.getElementById('user-list-container');
+            
+            if (users.length === 0) {
                 container.innerHTML = `<div style="text-align:center; color: var(--text-muted);">No users found.</div>`;
                 return;
             }
 
-            container.innerHTML = ''; // Clear loading
+            container.innerHTML = ''; 
 
             users.forEach(user => {
-                const isUnlocked = user.unlocked_s1;
-                const badge = isUnlocked 
-                    ? `<span class="status-badge bg-unlocked">✅ Unlocked</span>` 
-                    : `<span class="status-badge bg-locked">🔒 Locked</span>`;
+                const s1 = user.unlocked_s1 ? `<span class="badge bg-unlocked">S1 Unlocked</span>` : `<span class="badge bg-locked">S1 Locked</span>`;
+                const s2 = user.unlocked_s2 ? `<span class="badge bg-unlocked">S2 Unlocked</span>` : ``;
+                const cert = user.certificate_earned ? `<span class="badge bg-cert">🎓 Certified</span>` : ``;
                 
-                const actionBtn = isUnlocked 
-                    ? '' 
-                    : `<button class="btn btn-success" onclick="unlockUser('${user.email}')">Unlock</button>`;
-
                 container.innerHTML += `
                     <div class="user-card">
-                        <div>
+                        <div class="user-header">
                             <div class="user-email">${user.email}</div>
                             <div class="user-stats">💎 ${user.diamonds || 0} | ⭐ ${user.xp || 0}</div>
-                            ${badge}
                         </div>
-                        <div>
-                            ${actionBtn}
+                        <div class="badges">
+                            ${s1} ${s2} ${cert}
+                        </div>
+                        <div class="actions">
+                            <button class="btn btn-s1" onclick="manageUser('${user.email}', 'unlock_s1')">Unlock S1</button>
+                            <button class="btn btn-s2" onclick="manageUser('${user.email}', 'unlock_s2')">Unlock S2</button>
+                            <button class="btn btn-cert" onclick="manageUser('${user.email}', 'unlock_cert')">Give Cert</button>
+                            <button class="btn btn-complete" onclick="manageUser('${user.email}', 'complete_all')">Complete All</button>
+                            <button class="btn btn-reset" onclick="manageUser('${user.email}', 'reset')">Reset</button>
                         </div>
                     </div>
                 `;
             });
         }
 
-        async function unlockUser(email) {
-            if(!confirm(`Are you sure you want to unlock Season 1 for ${email}?`)) return;
+        async function manageUser(email, action) {
+            let confirmMsg = "";
+            if (action === 'unlock_s1') confirmMsg = `Unlock Season 1 for ${email}?`;
+            if (action === 'unlock_s2') confirmMsg = `Unlock Season 2 for ${email}?`;
+            if (action === 'unlock_cert') confirmMsg = `Give Certificate to ${email}?`;
+            if (action === 'complete_all') confirmMsg = `Mark ALL 7 lessons as complete for ${email}?`;
+            if (action === 'reset') confirmMsg = `⚠️ Are you sure you want to RESET all progress for ${email}?`;
 
-            const { data, error } = await supabaseClient.rpc('admin_unlock', { 
-                user_email: email, 
-                admin_password: ADMIN_PASSWORD 
+            if(!confirm(confirmMsg)) return;
+
+            const { data, error } = await supabaseClient.rpc('admin_manage_user', { 
+                p_email: email, 
+                p_admin_password: ADMIN_PASSWORD,
+                p_action: action
             });
 
             if (error) {
                 alert("Error: " + error.message);
             } else if (data === true) {
-                alert(`✅ Successfully unlocked Season 1 for ${email}`);
+                alert(`✅ Action "${action}" successful for ${email}`);
                 loadUsers(); // Refresh the list
             } else {
-                alert("❌ User not found or password incorrect.");
+                alert("❌ Failed. Check your admin password.");
             }
         }
     </script>
