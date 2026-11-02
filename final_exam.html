@@ -15,40 +15,53 @@
         .progress { font-size: 14px; color: var(--text-muted); }
         
         .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
-        .code-block { background-color: #0d1425; padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 16px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
         
         .quiz-btn { display: block; width: 100%; padding: 16px; background: var(--card-bg); color: var(--text-main); border-radius: 12px; font-weight: 600; font-size: 16px; text-align: left; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; margin-bottom: 12px; }
         .quiz-btn:disabled { opacity: 0.6; }
         
-        .feedback { margin-top: 20px; padding: 16px; border-radius: 8px; display: none; font-size: 15px; line-height: 1.5; }
         .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
+        
+        input[type="text"] { width: 100%; padding: 16px; margin-bottom: 20px; border-radius: 10px; background: #0d1425; border: 1px solid rgba(255,255,255,0.1); color: white; font-size: 16px; outline: none; text-align: center; }
+        input[type="text"]:focus { border-color: var(--gold); }
     </style>
 </head>
 <body>
     <div class="app-container">
         
-        <div class="header">
-            <div>
-                <div class="progress" id="question-progress">Question 1/10</div>
-                <div style="font-size: 12px; color: var(--text-muted);">Season 1 Final Exam</div>
-            </div>
-            <div class="timer" id="timer">10:00</div>
+        <!-- NAME ENTRY SCREEN -->
+        <div id="name-entry" class="content" style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
+            <h2 style="color: var(--gold); margin-bottom: 10px;">🏆 Final Exam</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">You are about to start a 10-minute timed exam.<br>You need <strong>80%</strong> to earn your certificate.</p>
+            
+            <p style="text-align: left; margin-bottom: 10px; font-weight: bold;">Full Name for Certificate:</p>
+            <input type="text" id="real-name" placeholder="e.g. Bashir Adams">
+            
+            <button class="btn-gold" onclick="startExam()">Start Exam</button>
         </div>
 
-        <div id="exam-content" class="content">
-            <!-- Questions injected here -->
+        <!-- EXAM SCREEN (Hidden initially) -->
+        <div id="exam-screen" style="display: none; flex-direction: column; flex-grow: 1;">
+            <div class="header">
+                <div>
+                    <div class="progress" id="question-progress">Question 1/10</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Season 1 Final Exam</div>
+                </div>
+                <div class="timer" id="timer">10:00</div>
+            </div>
+
+            <div id="exam-content" class="content">
+                <!-- Questions injected here -->
+            </div>
         </div>
         
     </div>
 
-    <script src="editor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 12 Hard Questions (We will randomly pick 10)
         const questionBank = [
             { q: "What is the output of: print(10 // 3)?", options: ["3.3", "3", "4", "1"], answer: "3" },
             { q: "Which of these is a valid variable name?", options: ["2name", "my-name", "my_name", "my name"], answer: "my_name" },
@@ -67,18 +80,31 @@
         let selectedQuestions = [];
         let currentQuestion = 0;
         let score = 0;
-        let timeLeft = 600; // 10 minutes in seconds
+        let timeLeft = 600; // 10 minutes
         let timerInterval;
 
-        async function initExam() {
+        async function startExam() {
+            const nameInput = document.getElementById('real-name').value.trim();
+            if (nameInput.length < 3) {
+                alert("Please enter your full name.");
+                return;
+            }
+
             const { data: { user } } = await supabaseClient.auth.getUser();
             if(!user) return window.location.href = "login.html";
 
-            // 1. Shuffle and pick 10 questions
+            // Save the name to the database
+            await supabaseClient.from('profiles').update({ certificate_name: nameInput }).eq('id', user.id);
+
+            // Hide name entry, show exam
+            document.getElementById('name-entry').style.display = 'none';
+            document.getElementById('exam-screen').style.display = 'flex';
+
+            // Shuffle and pick 10
             const shuffled = questionBank.sort(() => 0.5 - Math.random());
             selectedQuestions = shuffled.slice(0, 10);
 
-            // 2. Start Timer
+            // Start Timer
             timerInterval = setInterval(() => {
                 timeLeft--;
                 const minutes = Math.floor(timeLeft / 60);
@@ -122,7 +148,6 @@
                 score++;
             } else {
                 btn.style.background = 'var(--danger)';
-                // Highlight correct
                 allBtns.forEach(b => {
                     if(b.innerText === qData.answer) b.style.background = 'var(--success)';
                 });
@@ -137,7 +162,7 @@
         async function finishExam() {
             clearInterval(timerInterval);
             const percentage = (score / 10) * 100;
-            const passed = percentage >= 80; // 80% Pass mark for final exam
+            const passed = percentage >= 80; // 80% Pass mark
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             
@@ -151,7 +176,6 @@
             `;
 
             if (passed) {
-                // Save to database
                 await supabaseClient.from('profiles').update({ 
                     certificate_earned: true,
                     certificate_date: new Date().toISOString().split('T')[0]
@@ -165,10 +189,8 @@
 
             html += `</div>`;
             document.getElementById('exam-content').innerHTML = html;
-            document.getElementById('timer').style.display = 'none'; // Hide timer
+            document.getElementById('timer').style.display = 'none';
         }
-
-        initExam();
     </script>
 </body>
 </html>
