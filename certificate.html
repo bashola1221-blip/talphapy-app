@@ -40,20 +40,20 @@
             font-style: italic; 
         }
         
+        /* REMOVED (SEASON 1) FROM THIS TEXT */
         .cert-text { font-size: 14px; color: #333; line-height: 1.5; max-width: 480px; margin: 0 auto 20px auto; }
         
-        /* ADJUSTED FOOTER ALIGNMENT WITHOUT SEAL */
         .cert-footer { 
             display: flex; 
-            justify-content: space-around; /* Spreads them evenly */
+            justify-content: space-around; 
             align-items: flex-end; 
-            margin-top: 40px; 
+            margin-top: 30px; 
             padding: 0 20px; 
         }
         
         .signature { 
             text-align: center; 
-            width: 45%; /* Gives them more space since the seal is gone */
+            width: 45%; 
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -73,6 +73,14 @@
         .signature-line { width: 100%; height: 1px; background: #333; margin-bottom: 5px; }
         .signature-name { font-size: 12px; font-weight: 700; }
         .signature-title { font-size: 9px; color: #666; }
+
+        /* NEW STYLE FOR DATE AT THE BOTTOM */
+        .date-text {
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 8px; /* Spacing below the word 'Issued' */
+            color: #333;
+        }
         
         .cert-id { font-size: 9px; color: #999; margin-top: 30px; font-family: monospace; }
 
@@ -91,7 +99,7 @@
             <div class="cert-name" id="student-name">Loading...</div>
             
             <div class="cert-text">
-                has successfully completed the <strong>Python Foundations (Season 1)</strong> curriculum at Talphapy, demonstrating a solid understanding of variables, loops, conditionals, functions, and data structures.
+                has successfully completed the <strong>Python Foundations</strong> curriculum at Talphapy, demonstrating a solid understanding of variables, loops, conditionals, functions, and data structures.
             </div>
             
             <div class="cert-footer">
@@ -103,9 +111,11 @@
                 </div>
                 
                 <div class="signature">
-                    <div class="signature-line" id="date-line"></div>
+                    <div class="signature-line"></div>
                     <div class="signature-name">Date</div>
                     <div class="signature-title">Issued</div>
+                    <!-- DATE IS NOW PLACED HERE, BELOW 'ISSUED' -->
+                    <div class="date-text" id="date-text"></div>
                 </div>
             </div>
             
@@ -155,7 +165,7 @@
             const certId = "TAL-" + user.id.substring(0, 8).toUpperCase();
 
             document.getElementById('student-name').innerText = realName;
-            document.getElementById('date-line').innerText = dateString;
+            document.getElementById('date-text').innerText = dateString;
             document.getElementById('cert-id').innerText = "Certificate ID: " + certId;
         }
 
