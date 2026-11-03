@@ -21,7 +21,6 @@
         .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
         .code-string { color: #98c379; }
         .code-keyword { color: #c678dd; }
-        .code-number { color: #d19a66; }
         .bottom-action { padding-top: 20px; padding-bottom: 20px;}
         .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s; }
         .btn-gold:active { transform: scale(0.98); }
@@ -36,63 +35,60 @@
         <div class="top-bar">
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
-        <div class="lesson-title">4. Input & Output</div>
-        <div id="subtitle" class="lesson-subtitle">Introduction: Talking to the Computer</div>
+        <div class="lesson-title">4. String Manipulation</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Working with Text</div>
         
-        <!-- INTRODUCTION -->
         <div id="intro" class="content">
-            <p>So far, we have only been telling the computer what to do (Output). But to make interactive apps, games, and calculators, we need the computer to ask us questions and wait for our answers (Input).</p>
-            
-            <p><strong>Why is this important?</strong></p>
-            <p>Every time you log into Instagram, type a message in WhatsApp, or search for a video on YouTube, you are providing <strong>input</strong>. In Python, we use a special function called <code>input()</code> to get information from the user.</p>
+            <p>In Lesson 2, we learned that a <strong>String</strong> is just text wrapped in quotes. But Python gives us superpowers to change, combine, and analyze that text.</p>
+            <p>Whether you are building a chat app, a game, or a website, you will spend 80% of your time manipulating text. Let's learn how to do it.</p>
         </div>
 
-        <!-- PART 1 -->
         <div id="part1" class="content hidden">
-            <p><strong>The input() function</strong></p>
-            <p><code>print()</code> sends text to the screen. <code>input()</code> pauses the program and waits for the user to type something and press Enter.</p>
-            <div class="code-block">name = input(<span class="code-string">"What is your name? "</span>)<br>print(<span class="code-string">"Hello, " + name</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;What is your name? &quot;)\nprint(&quot;Hello, &quot; + name)')">💻 Practice this code</button>
-            <p>When you run this in the playground, a box will pop up asking for your name. Whatever you type gets stored in the variable <code>name</code>.</p>
+            <p><strong>Joining Strings (Concatenation)</strong></p>
+            <p>You can stick two strings together using the plus <code>+</code> sign. Think of it like gluing two pieces of paper together.</p>
+            <div class="code-block">first_name = <span class="code-string">"Ada"</span><br>last_name = <span class="code-string">"Okafor"</span><br>full_name = first_name + <span class="code-string">" "</span> + last_name<br>print(full_name)</div>
+            <button class="btn-practice" onclick="openEditorModal('first_name = &quot;Ada&quot;\nlast_name = &quot;Okafor&quot;\nfull_name = first_name + &quot; &quot; + last_name\nprint(full_name)')">💻 Practice this code</button>
         </div>
 
-        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>The Big Catch: input() is always text</strong></p>
-            <p>This is the #1 mistake beginners make. No matter what the user types, Python treats it as a <strong>String (text)</strong>.</p>
-            <div class="code-block">age = input(<span class="code-string">"Your age: "</span>)<br><span class="code-keyword"># If you type 14, age is now "14" (text), not 14 (number)</span><br>print(age + <span class="code-number">1</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('age = input(&quot;Your age: &quot;)\nprint(age + 1)')">💻 See what happens when you try to add 1</button>
-            <p>If you run this and type 14, it will crash! You can't add a number to text.</p>
+            <p><strong>The Magic of f-strings</strong></p>
+            <p>Using <code>+</code> to join variables and text can get messy. The modern, easiest way to mix text and variables is using an <strong>f-string</strong>.</p>
+            <p>Just put an <code>f</code> before the quotes, and put variables inside curly brackets <code>{ }</code>.</p>
+            <div class="code-block">name = <span class="code-string">"Ada"</span><br>age = <span class="code-number">14</span><br>print(<span class="code-keyword">f</span><span class="code-string">"Hello, my name is {name} and I am {age} years old."</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('name = &quot;Ada&quot;\nage = 14\nprint(f&quot;Hello, my name is {name} and I am {age} years old.&quot;)')">💻 Practice f-strings</button>
         </div>
 
-        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p>🎯 <strong>How to fix it: int()</strong></p>
-            <p>To do math with user input, you must convert the text to a number using <code>int()</code> (for whole numbers) or <code>float()</code> (for decimals).</p>
-            <div class="code-block">age = int(input(<span class="code-string">"Your age: "</span>))<br>print(age + <span class="code-number">1</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('age = int(input(&quot;Your age: &quot;))\nprint(age + 1)')">💻 Practice the fixed version</button>
-            <p>Now, if you type 14, Python converts it to a real number, and prints 15.</p>
+            <p><strong>Changing Case</strong></p>
+            <p>You can easily change text to uppercase or lowercase using <strong>methods</strong>. A method is like a built-in tool attached to the string.</p>
+            <ul>
+                <li><code>.upper()</code> makes everything CAPITAL LETTERS.</li>
+                <li><code>.lower()</code> makes everything lowercase letters.</li>
+            </ul>
+            <div class="code-block">message = <span class="code-string">"Hello World"</span><br>print(message.upper())<br>print(message.lower())</div>
+            <button class="btn-practice" onclick="openEditorModal('message = &quot;Hello World&quot;\nprint(message.upper())\nprint(message.lower())')">💻 Practice changing case</button>
         </div>
 
-        <!-- PART 4 -->
         <div id="part4" class="content hidden">
-            <p><strong>Putting it together</strong></p>
-            <p>You can also convert numbers back to text using <code>str()</code> if you want to join them with other words.</p>
-            <div class="code-block">name = input(<span class="code-string">"Your name: "</span>)<br>age = int(input(<span class="code-string">"Your age: "</span>))<br>print(<span class="code-string">"Hello " + name + "! Next year you will be " + str(age + 1)</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;Your name: &quot;)\nage = int(input(&quot;Your age: &quot;))\nprint(&quot;Hello &quot; + name + &quot;! Next year you will be &quot; + str(age + 1))')">💻 Practice the full program</button>
+            <p><strong>Counting & Replacing</strong></p>
+            <p>Two more super useful tools:</p>
+            <ul>
+                <li><code>len()</code> counts how many characters (letters/spaces) are in a string.</li>
+                <li><code>.replace()</code> swaps out a word for another word.</li>
+            </ul>
+            <div class="code-block">sentence = <span class="code-string">"I love Java"</span><br>print(len(sentence))<br>print(sentence.replace(<span class="code-string">"Java"</span>, <span class="code-string">"Python"</span>))</div>
+            <button class="btn-practice" onclick="openEditorModal('sentence = &quot;I love Java&quot;\nprint(len(sentence))\nprint(sentence.replace(&quot;Java&quot;, &quot;Python&quot;))')">💻 Practice count & replace</button>
         </div>
 
-        <!-- PART 5 -->
         <div id="part5" class="content hidden">
             <p>🎯 <strong>Quick Summary</strong></p>
-            <p>• <strong>input()</strong> asks the user for information.</p>
-            <p>• It <em>always</em> returns a String (text).</p>
-            <p>• Use <strong>int()</strong> to convert text to a whole number.</p>
-            <p>• Use <strong>str()</strong> to convert a number back to text for printing.</p>
+            <p>• Use <strong>+</strong> or <strong>f-strings</strong> to join text.</p>
+            <p>• <strong>.upper()</strong> and <strong>.lower()</strong> change the case.</p>
+            <p>• <strong>len()</strong> counts the characters in a string.</p>
+            <p>• <strong>.replace()</strong> swaps words.</p>
             <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
         </div>
 
-        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -112,15 +108,15 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Security Check: Must be unlocked AND completed Lesson 3
+        // Security Check: Must complete Lesson 3 first
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
             
-            let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
             let completed = profile.completed_lessons || [];
             
-            if (!profile.unlocked_s1 || !completed.includes('lesson3')) {
+            if (!completed.includes('lesson3')) {
                 window.location.replace('season1.html');
             }
         }
@@ -128,39 +124,38 @@
 
         let currentStep = 1;
         
-        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "What type does input() always return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String", explain: "input() always returns text, even if the user types numbers." },
-            { q: "How do you fix this: age = input(); print(age + 1)?", options: ["age = int(input())", "age = str(input())", "age = float(input())", "Nothing is wrong"], answer: "age = int(input())", explain: "You must convert the text to an integer to do math with it." },
-            { q: "💻 Coding Challenge 1: Write the code to ask the user for their favorite color and store it in a variable called 'color'.", type: "coding", answer: "color=input(\"Favorite color: \")", explain: "Use the input() function and assign it to the variable 'color'." },
-            { q: "💻 Coding Challenge 2: Write the code to print the result of converting the text \"50\" into a number.", type: "coding", answer: "print(int(\"50\"))", explain: "Use int() to convert the string to a number, then print it." },
-            { q: "What does str(5) do?", options: ["Turns 5 into \"5\"", "Turns \"5\" into 5", "Doubles 5", "Nothing"], answer: "Turns 5 into \"5\"", explain: "str() converts numbers into strings (text)." }
+            { q: "What does \"Hello\" + \"World\" output?", options: ["Hello World", "HelloWorld", "Hello+World", "Error"], answer: "HelloWorld", explain: "The + sign glues them together exactly, without adding a space." },
+            { q: "Which method makes a string all uppercase?", options: [".upper()", ".uppercase()", ".caps()", ".big()"], answer: ".upper()", explain: ".upper() converts all letters to capital letters." },
+            { q: "💻 Coding Challenge 1: Write the code to print the length of the word \"Python\".", type: "coding", answer: "print(len(\"Python\"))", explain: "Use len() inside print() to count the characters." },
+            { q: "💻 Coding Challenge 2: Write an f-string to print exactly 'Hello Ada' using the variable name = \"Ada\".", type: "coding", answer: "print(f\"Hello Ada\")", explain: "Use an f-string with {name} inside the quotes. Note: The system removes spaces for checking." },
+            { q: "What is the output of len(\"Coding\")?", options: ["5", "6", "7", "Error"], answer: "6", explain: "C-o-d-i-n-g is exactly 6 characters long." }
         ];
         
         let currentQuestion = 0;
         let score = 0;
-        let wrongAnswers = []; // Tracks failed questions
+        let wrongAnswers = [];
 
         function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('intro').classList.add('hidden');
                 document.getElementById('part1').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 1: The input() function';
+                document.getElementById('subtitle').innerText = 'Part 1: Joining Strings';
                 currentStep = 2;
             } else if (currentStep === 2) {
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: The Big Catch';
+                document.getElementById('subtitle').innerText = 'Part 2: f-strings';
                 currentStep = 3;
             } else if (currentStep === 3) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: Fixing it with int()';
+                document.getElementById('subtitle').innerText = 'Part 3: Changing Case';
                 currentStep = 4;
             } else if (currentStep === 4) {
                 document.getElementById('part3').classList.add('hidden');
                 document.getElementById('part4').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 4: Putting it together';
+                document.getElementById('subtitle').innerText = 'Part 4: Counting & Replacing';
                 currentStep = 5;
             } else if (currentStep === 5) {
                 document.getElementById('part4').classList.add('hidden');
@@ -169,6 +164,12 @@
                 document.getElementById('nextBtn').innerText = 'Start Quiz →';
                 currentStep = 6;
             } else if (currentStep === 6) {
+                const { data: { user } } = await supabaseClient.auth.getUser();
+                if (!user) {
+                    alert("🎉 You finished the lesson!\n\nCreate a free account to take the quiz, earn 💎 Diamonds, and save your progress!");
+                    window.location.href = "login.html";
+                    return;
+                }
                 document.getElementById('part5').classList.add('hidden');
                 document.getElementById('quiz-section').classList.remove('hidden');
                 document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
@@ -190,12 +191,13 @@
                         <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
                         
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
-                            <button onclick="insertSymbol('=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">=</button>
                             <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
                             <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
                             <button onclick="insertSymbol('&#39;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">'</button>
                             <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
-                            <button onclick="insertSymbol('input()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">input()</button>
+                            <button onclick="insertSymbol('{', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">{</button>
+                            <button onclick="insertSymbol('}', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">}</button>
+                            <button onclick="insertSymbol('len()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">len()</button>
                             <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
                         </div>
                         <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
@@ -320,7 +322,6 @@
             let statusMessage = "";
             let btnHtml = "";
 
-            // Build the Mistake Review HTML
             let reviewHtml = "";
             if (wrongAnswers.length > 0) {
                 reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
