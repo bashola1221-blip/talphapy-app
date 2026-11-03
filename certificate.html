@@ -12,35 +12,57 @@
         
         .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
+        /* COMPRESSED CERTIFICATE STYLING */
         #certificate-box {
             width: 100%;
             background: #ffffff;
             color: #0a1a3a;
-            padding: 40px;
+            padding: 30px 20px; /* Reduced padding */
             border-radius: 8px;
-            border: 15px solid #0a1a3a;
-            outline: 4px solid #f0c040;
-            outline-offset: -25px;
+            border: 10px solid #0a1a3a; /* Thinner border */
+            outline: 3px solid #f0c040;
+            outline-offset: -15px;
             text-align: center;
             position: relative;
         }
 
-        .cert-header { font-size: 32px; font-weight: 800; letter-spacing: 4px; color: #0a1a3a; margin-bottom: 10px; }
-        .cert-sub { font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; }
+        .cert-header { font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #0a1a3a; margin-bottom: 5px; }
+        .cert-sub { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
         
-        .cert-name { font-size: 36px; font-weight: 800; color: #f0c040; border-bottom: 2px solid #ddd; display: inline-block; padding-bottom: 8px; margin-bottom: 20px; font-family: "Georgia", serif; }
+        .cert-name { 
+            font-size: 30px; /* Reduced from 36px */
+            font-weight: 800; 
+            color: #f0c040; 
+            border-bottom: 2px solid #ddd; 
+            display: inline-block; 
+            padding-bottom: 5px; 
+            margin-bottom: 15px; 
+            font-family: "Georgia", serif; 
+            font-style: italic; 
+        }
         
-        .cert-text { font-size: 16px; color: #333; line-height: 1.6; max-width: 500px; margin: 0 auto 30px auto; }
+        .cert-text { font-size: 14px; color: #333; line-height: 1.5; max-width: 480px; margin: 0 auto 20px auto; }
         
-        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding: 0 20px; }
-        .signature { text-align: center; }
-        .signature-line { width: 150px; height: 1px; background: #333; margin-bottom: 8px; }
-        .signature-name { font-size: 14px; font-weight: 700; }
-        .signature-title { font-size: 10px; color: #666; }
+        .cert-footer { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 20px; padding: 0 10px; }
+        .signature { text-align: center; width: 35%; }
         
-        .seal { width: 80px; height: 80px; background: #f0c040; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #0a1a3a; font-size: 12px; text-align: center; border: 4px dashed #fff; box-shadow: 0 0 0 2px #f0c040; }
+        /* SIGNATURE IMAGE STYLING */
+        .signature-img {
+            height: 50px; /* Made slightly smaller to fit better */
+            width: auto;
+            max-width: 160px;
+            object-fit: contain;
+            margin-bottom: 2px;
+            mix-blend-mode: multiply; 
+        }
         
-        .cert-id { font-size: 10px; color: #999; margin-top: 20px; font-family: monospace; }
+        .signature-line { width: 100%; height: 1px; background: #333; margin-bottom: 5px; }
+        .signature-name { font-size: 12px; font-weight: 700; }
+        .signature-title { font-size: 9px; color: #666; }
+        
+        .seal { width: 70px; height: 70px; background: #f0c040; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: #0a1a3a; font-size: 11px; text-align: center; border: 3px dashed #fff; box-shadow: 0 0 0 2px #f0c040; margin: 0 auto; }
+        
+        .cert-id { font-size: 9px; color: #999; margin-top: 15px; font-family: monospace; }
 
         .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
         .loading-text { color: var(--text-muted); font-size: 14px; }
@@ -53,7 +75,7 @@
             <div class="cert-header">CERTIFICATE</div>
             <div class="cert-sub">of Completion</div>
             
-            <div style="font-size: 14px; color: #666; margin-bottom: 10px;">This certifies that</div>
+            <div style="font-size: 13px; color: #666; margin-bottom: 5px;">This certifies that</div>
             <div class="cert-name" id="student-name">Loading...</div>
             
             <div class="cert-text">
@@ -62,6 +84,9 @@
             
             <div class="cert-footer">
                 <div class="signature">
+                    <!-- YOUR SIGNATURE LINK IS INTEGRATED HERE -->
+                    <img src="https://i.postimg.cc/vmrTgZYp/IMG-20261102-WA6465-3.jpg" crossorigin="anonymous" class="signature-img" alt="Signature">
+                    
                     <div class="signature-line"></div>
                     <div class="signature-name">Talpa</div>
                     <div class="signature-title">Founder, Talphapy</div>
@@ -101,11 +126,15 @@
                 return;
             }
 
-            // Use the real name they entered before the exam
             const realName = profile.certificate_name || "Talphapy Student";
             
-            const date = new Date(profile.certificate_date);
-            const dateString = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            let dateString = "";
+            if (profile.certificate_date) {
+                const date = new Date(profile.certificate_date);
+                dateString = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            } else {
+                dateString = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+            }
 
             const certId = "TAL-" + user.id.substring(0, 8).toUpperCase();
 
@@ -122,7 +151,7 @@
 
             const certBox = document.getElementById('certificate-box');
 
-            html2canvas(certBox, { scale: 2 }).then(canvas => {
+            html2canvas(certBox, { scale: 2, useCORS: true }).then(canvas => {
                 const image = canvas.toDataURL("image/png");
                 const link = document.createElement('a');
                 link.download = 'Talphapy_Certificate.png';
