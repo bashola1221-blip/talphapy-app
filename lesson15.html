@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lesson 15 — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; --success: #10b981; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-bar { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; }
+        .lesson-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .lesson-subtitle { font-size: 14px; color: var(--gold); margin-bottom: 24px; transition: opacity 0.3s; }
+        .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
+        .content p { margin-bottom: 16px; }
+        .content strong { color: var(--text-main); }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .code-string { color: #98c379; }
+        .code-keyword { color: #c678dd; }
+        .code-number { color: #d19a66; }
+        .bottom-action { padding-top: 20px; padding-bottom: 20px;}
+        .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s; }
+        .btn-gold:active { transform: scale(0.98); }
+        .quiz-btn { display: block; width: 100%; padding: 16px; background: var(--card-bg); color: var(--text-main); border-radius: 12px; font-weight: 600; font-size: 16px; text-align: left; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.1s; }
+        .quiz-btn:active { transform: scale(0.98); }
+        .quiz-btn:disabled { opacity: 0.8; cursor: default; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-bar">
+            <a href="season1.html" class="back-btn">← Back to Season 1</a>
+        </div>
+        <div class="lesson-title">15. Project 2: Guess Game</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Build a Game</div>
+        
+        <div id="intro" class="content">
+            <p>You have learned loops, conditionals, and random numbers. Now we are going to combine them to build a fully playable game: <strong>Guess the Number</strong>.</p>
+            <p>The computer will pick a random number between 1 and 10. You will have to guess it. The computer will tell you if your guess is too high or too low.</p>
+        </div>
+
+        <div id="part1" class="content hidden">
+            <p><strong>Step 1: The Secret Number</strong></p>
+            <p>First, import random and let the computer pick a secret number.</p>
+            <div class="code-block"><span class="code-keyword">import</span> random<br>secret = random.randint(<span class="code-number">1</span>, <span class="code-number">10</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('import random\nsecret = random.randint(1, 10)\nprint(secret)')">💻 Practice getting the secret number</button>
+        </div>
+
+        <div id="part2" class="content hidden">
+            <p><strong>Step 2: The Guessing Loop</strong></p>
+            <p>We need to keep asking the user for a guess until they get it right. A <code>while</code> loop is perfect for this.</p>
+            <div class="code-block">guess = <span class="code-number">0</span><br><span class="code-keyword">while</span> guess != secret:<br>    guess = int(input(<span class="code-string">"Guess a number: "</span>))</div>
+            <button class="btn-practice" onclick="openEditorModal('import random\nsecret = random.randint(1, 10)\nguess = 0\nwhile guess != secret:\n    guess = int(input(&quot;Guess a number: &quot;))')">💻 Practice the loop</button>
+        </div>
+
+        <div id="part3" class="content hidden">
+            <p><strong>Step 3: Too High or Too Low?</strong></p>
+            <p>Inside the loop, let's add an <code>if/else</code> statement to give the player a hint.</p>
+            <div class="code-block"><span class="code-keyword">while</span> guess != secret:<br>    guess = int(input(<span class="code-string">"Guess a number: "</span>))<br>    <span class="code-keyword">if</span> guess &lt; secret:<br>        print(<span class="code-string">"Too low!"</span>)<br>    <span class="code-keyword">elif</span> guess &gt; secret:<br>        print(<span class="code-string">"Too high!"</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('import random\nsecret = random.randint(1, 10)\nguess = 0\nwhile guess != secret:\n    guess = int(input(&quot;Guess a number: &quot;))\n    if guess < secret:\n        print(&quot;Too low!&quot;)\n    elif guess > secret:\n        print(&quot;Too high!&quot;)')">💻 Practice the hints</button>
+        </div>
+
+        <div id="part4" class="content hidden">
+            <p><strong>Step 4: The Winning Message</strong></p>
+            <p>When the loop ends, it means the user guessed correctly. Let's congratulate them!</p>
+            <div class="code-block"><span class="code-keyword">while</span> guess != secret:<br>    guess = int(input(<span class="code-string">"Guess a number: "</span>))<br>    <span class="code-keyword">if</span> guess &lt; secret:<br>        print(<span class="code-string">"Too low!"</span>)<br>    <span class="code-keyword">elif</span> guess &gt; secret:<br>        print(<span class="code-string">"Too high!"</span>)<br><br>print(<span class="code-string">"You got it! The number was "</span>, secret)</div>
+            <button class="btn-practice" onclick="openEditorModal('import random\nsecret = random.randint(1, 10)\nguess = 0\nwhile guess != secret:\n    guess = int(input(&quot;Guess a number: &quot;))\n    if guess < secret:\n        print(&quot;Too low!&quot;)\n    elif guess > secret:\n        print(&quot;Too high!&quot;)\nprint(&quot;You got it! The number was&quot;, secret)')">💻 Play the full game!</button>
+        </div>
+
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• You combined <strong>Random numbers</strong>, <strong>While loops</strong>, and <strong>If/Else</strong>.</p>
+            <p>• The loop continues until the guess equals the secret.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <div id="quiz-section" class="content hidden">
+            <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
+            <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
+        </div>
+
+        <div class="bottom-action">
+            <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
+        </div>
+    </div>
+
+    <script src="editor.js"></script>
+    <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { window.location.replace('login.html'); return; }
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            if (!completed.includes('lesson14')) { window.location.replace('season1.html'); }
+        }
+        checkLock();
+
+        let currentStep = 1;
+        const questions = [
+            { q: "Why do we use a 'while' loop in this game?", options: ["To make it look cool", "Because we don't know how many guesses it will take", "To print the secret number", "To add numbers"], answer: "Because we don't know how many guesses it will take", explain: "A while loop keeps going until the condition (guess == secret) is met." },
+            { q: "What does int(input()) do in the game?", options: ["Gets the user's guess as a number", "Prints the guess", "Generates a random number", "Ends the game"], answer: "Gets the user's guess as a number", explain: "It waits for the user to type a number and stores it." },
+            { q: "💻 Coding Challenge 1: Write a while loop that runs as long as guess is NOT equal to secret.", type: "coding", answer: "whileguess!=secret:", explain: "Use != to check if they are not equal." },
+            { q: "💻 Coding Challenge 2: Write the line to import the random module.", type: "coding", answer: "importrandom", explain: "Use the import keyword." },
+            { q: "If guess is 3 and secret is 7, what is printed?", options: ["Too high!", "Too low!", "You got it!", "Nothing"], answer: "Too low!", explain: "3 is less than 7, so the program tells you it's too low." }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let wrongAnswers = [];
+
+        function nextStep() {
+            if (currentStep === 1) { document.getElementById('intro').classList.add('hidden'); document.getElementById('part1').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 1: The Secret Number'; currentStep = 2; }
+            else if (currentStep === 2) { document.getElementById('part1').classList.add('hidden'); document.getElementById('part2').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 2: The Guessing Loop'; currentStep = 3; }
+            else if (currentStep === 3) { document.getElementById('part2').classList.add('hidden'); document.getElementById('part3').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 3: Too High or Too Low?'; currentStep = 4; }
+            else if (currentStep === 4) { document.getElementById('part3').classList.add('hidden'); document.getElementById('part4').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 4: The Winning Message'; currentStep = 5; }
+            else if (currentStep === 5) { document.getElementById('part4').classList.add('hidden'); document.getElementById('part5').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 5: Quick Summary'; document.getElementById('nextBtn').innerText = 'Start Quiz →'; currentStep = 6; }
+            else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            const qData = questions[currentQuestion];
+            document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; 
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol(':', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">:</button>
+                            <button onclick="insertSymbol('!=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">!=</button>
+                            <button onclick="insertSymbol('while ', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">while</button>
+                            <button onclick="insertSymbol('import random', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">import</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>`;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button'); btn.innerText = option; btn.className = 'quiz-btn'; btn.onclick = () => checkAnswer(option, btn); optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            if (userCode === correct) {
+                score++; feedback.style.background = 'rgba(16, 185, 129, 0.1)'; feedback.style.color = 'var(--success)'; feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({ q: questions[currentQuestion].q, user: userCodeRaw || "(empty)", correct: questions[currentQuestion].answer });
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)'; feedback.style.color = 'var(--danger)'; feedback.innerHTML = `❌ <strong>Incorrect.</strong><br><br><strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br><strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>${questions[currentQuestion].explain}`;
+            }
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button'); nextQBtn.className = 'btn-gold'; nextQBtn.style.marginTop = '20px'; nextQBtn.innerText = 'Next Question →'; nextQBtn.onclick = () => { currentQuestion++; document.getElementById('feedback').style.display = 'none'; loadQuestion(); }; feedback.appendChild(nextQBtn);
+        }
+
+        function checkAnswer(selected, btnClicked) {
+            const qData = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const allBtns = document.querySelectorAll('#options-container button');
+            allBtns.forEach(b => b.disabled = true);
+            if (selected === qData.answer) {
+                btnClicked.style.background = 'var(--success)'; btnClicked.style.borderColor = 'var(--success)'; btnClicked.style.color = '#fff'; score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)'; feedback.style.color = 'var(--success)'; feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
+            } else {
+                wrongAnswers.push({ q: qData.q, user: selected, correct: qData.answer });
+                btnClicked.style.background = 'var(--danger)'; btnClicked.style.borderColor = 'var(--danger)'; btnClicked.style.color = '#fff';
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)'; feedback.style.color = 'var(--danger)'; feedback.innerHTML = `❌ <strong>Not quite.</strong> The correct answer is: <strong>${qData.answer}</strong><br>${qData.explain}`;
+                allBtns.forEach(b => { if (b.innerText === qData.answer) { b.style.background = 'var(--success)'; b.style.borderColor = 'var(--success)'; b.style.color = '#fff'; } });
+            }
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button'); nextQBtn.className = 'btn-gold'; nextQBtn.style.marginTop = '20px';
+            if (currentQuestion < questions.length - 1) { nextQBtn.innerText = 'Next Question →'; nextQBtn.onclick = () => { currentQuestion++; document.getElementById('feedback').style.display = 'none'; loadQuestion(); }; } 
+            else { nextQBtn.innerText = 'See Results 🎉'; nextQBtn.onclick = showResults; }
+            feedback.appendChild(nextQBtn);
+        }
+
+        async function showResults() {
+            document.getElementById('question-text').innerText = "Saving progress...";
+            document.getElementById('options-container').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            const percentage = Math.round((score / questions.length) * 100);
+            const passed = percentage >= 70;
+            let rewardMessage = "", statusMessage = "", btnHtml = "";
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;"><h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item) => { reviewHtml += `<div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;"><strong>${item.q}</strong><br><span style="color: #ef4444;">Your answer: ${item.user}</span><br><span style="color: #10b981;">Correct answer: ${item.correct}</span></div>`; });
+                reviewHtml += `</div>`;
+            }
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+                const completed = profile.completed_lessons || [];
+                if (passed) {
+                    if (!completed.includes('lesson15')) {
+                        const newCompleted = [...completed, 'lesson15'];
+                        await supabaseClient.from('profiles').update({ diamonds: (profile.diamonds || 0) + 2, xp: (profile.xp || 0) + 20, completed_lessons: newCompleted }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else { rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`; }
+                    statusMessage = "🌟 Excellent! You passed!"; document.getElementById('subtitle').innerText = "Lesson 15 Unlocked"; btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
+                } else {
+                    if (!localStorage.getItem('lesson15_partial_reward')) {
+                        await supabaseClient.from('profiles').update({ diamonds: (profile.diamonds || 0) + 1, xp: (profile.xp || 0) + 10 }).eq('id', user.id);
+                        localStorage.setItem('lesson15_partial_reward', 'true'); rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else { rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`; }
+                    statusMessage = "📉 You need 70% to pass."; document.getElementById('subtitle').innerText = "Lesson Locked"; btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
+                }
+            }
+            document.getElementById('question-text').innerText = "Assessment Complete!";
+            document.getElementById('options-container').innerHTML = `<div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;"><h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">${statusMessage}</h2><p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>${rewardMessage}${btnHtml}${reviewHtml}</div>`;
+        }
+    </script>
+</body>
+</html>
