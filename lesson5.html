@@ -36,70 +36,51 @@
         <div class="top-bar">
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
-        <div class="lesson-title">5. Conditionals</div>
-        <div id="subtitle" class="lesson-subtitle">Introduction: Making Decisions</div>
+        <div class="lesson-title">5. Basic Math</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Python as a Calculator</div>
         
-        <!-- INTRODUCTION -->
         <div id="intro" class="content">
-            <p>Think of your car's fuel gauge. If the tank is low, a light comes on. If it's fine, the light stays off. The car is making a decision based on a condition.</p>
-            <p>In Python, we use <strong>conditionals</strong> to tell the computer: <em>"If this is true, do that. Otherwise, do something else."</em></p>
-            <p>This is how apps know to show a "Login" button if you aren't signed in, and a "Profile" button if you are.</p>
+            <p>Python is incredibly powerful at math. You can use it like a regular calculator to add, subtract, multiply, and divide.</p>
+            <p>Whether you are building a game (calculating health points), a business app (calculating profit), or an AI (calculating probabilities), you will use math operators every single day as a programmer.</p>
         </div>
 
-        <!-- PART 1 -->
         <div id="part1" class="content hidden">
-            <p><strong>The `if` statement</strong></p>
-            <p>We use the <code>if</code> keyword to check a condition. If the condition is True, the indented code below it runs.</p>
-            <div class="code-block">age = <span class="code-number">15</span><br><span class="code-keyword">if</span> age >= <span class="code-number">18</span>:<br>    print(<span class="code-string">"You can vote"</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('age = 15\nif age >= 18:\n    print(&quot;You can vote&quot;)')">💻 Practice this code</button>
-            <p>⚠️ Notice the colon <strong>:</strong> at the end of the if line. And the 4 spaces (indentation) on the line below. Both are strictly required in Python!</p>
+            <p><strong>Addition & Subtraction</strong></p>
+            <p>These use the exact same symbols you use in normal math.</p>
+            <div class="code-block">print(<span class="code-number">5</span> <span class="code-keyword">+</span> <span class="code-number">3</span>)  <span class="code-keyword"># Output: 8</span><br>print(<span class="code-number">10</span> <span class="code-keyword">-</span> <span class="code-number">4</span>) <span class="code-keyword"># Output: 6</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(5 + 3)\nprint(10 - 4)')">💻 Practice this code</button>
         </div>
 
-        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>Handling the alternative: `else`</strong></p>
-            <p>What if the condition is False? We use <code>else</code> to catch everything that isn't True.</p>
-            <div class="code-block"><span class="code-keyword">if</span> age >= <span class="code-number">18</span>:<br>    print(<span class="code-string">"You can vote"</span>)<br><span class="code-keyword">else</span>:<br>    print(<span class="code-string">"Too young to vote"</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('age = 15\nif age >= 18:\n    print(&quot;You can vote&quot;)\nelse:\n    print(&quot;Too young to vote&quot;)')">💻 Practice the else statement</button>
+            <p><strong>Multiplication & Division</strong></p>
+            <p>Multiplication uses the asterisk <strong>*</strong> (Shift + 8 on your keyboard). Division uses the forward slash <strong>/</strong>.</p>
+            <div class="code-block">print(<span class="code-number">4</span> <span class="code-keyword">*</span> <span class="code-number">3</span>)  <span class="code-keyword"># Output: 12</span><br>print(<span class="code-number">10</span> <span class="code-keyword">/</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 5.0</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(4 * 3)\nprint(10 / 2)')">💻 Practice this code</button>
         </div>
 
-        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p><strong>More than two choices: `elif`</strong></p>
-            <p>If you have multiple conditions to check, use <code>elif</code> (short for "else if"). Python checks them from top to bottom, and runs the first one that is True.</p>
-            <div class="code-block">score = <span class="code-number">75</span><br><span class="code-keyword">if</span> score >= <span class="code-number">90</span>:<br>    print(<span class="code-string">"A"</span>)<br><span class="code-keyword">elif</span> score >= <span class="code-number">70</span>:<br>    print(<span class="code-string">"B"</span>)<br><span class="code-keyword">else</span>:<br>    print(<span class="code-string">"C"</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('score = 75\nif score >= 90:\n    print(&quot;A&quot;)\nelif score >= 70:\n    print(&quot;B&quot;)\nelse:\n    print(&quot;C&quot;)')">💻 Practice elif</button>
+            <p>🎯 <strong>The Division Rule</strong></p>
+            <p>Notice that <code>10 / 2</code> outputted <code>5.0</code> instead of <code>5</code>. </p>
+            <p>In Python, the division symbol <strong>/</strong> <em>always</em> gives you a decimal (Float), even if the numbers divide perfectly. This is a very important rule to remember!</p>
+            <div class="code-block">print(<span class="code-number">100</span> <span class="code-keyword">/</span> <span class="code-number">10</span>) <span class="code-keyword"># Output: 10.0</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(100 / 10)')">💻 Try it</button>
         </div>
 
-        <!-- PART 4 -->
         <div id="part4" class="content hidden">
-            <p><strong>The Comparison Operators</strong></p>
-            <p>To build conditions, you use these symbols:</p>
-            <ul>
-                <li><code>==</code> Equal to</li>
-                <li><code>!=</code> Not equal to</li>
-                <li><code>&gt;</code> Greater than</li>
-                <li><code>&lt;</code> Less than</li>
-                <li><code>&gt;=</code> Greater than or equal to</li>
-                <li><code>&lt;=</code> Less than or equal to</li>
-            </ul>
-            <p>⚠️ <strong>The #1 Mistake:</strong> Do not confuse <code>=</code> (assigning a value) with <code>==</code> (checking if two things are equal).</p>
-            <div class="code-block">x = <span class="code-number">5</span>    <span class="code-keyword"># Assigns 5 to x</span><br>x == <span class="code-number">5</span>   <span class="code-keyword"># Asks: is x equal to 5?</span></div>
-            <button class="btn-practice" onclick="openEditorModal('x = 5\nif x == 5:\n    print(&quot;Yes, it is equal!&quot;)')">💻 Practice the double equals</button>
+            <p><strong>Using Variables with Math</strong></p>
+            <p>You can do math with variables too! Just like algebra.</p>
+            <div class="code-block">apples = <span class="code-number">10</span><br>eaten = <span class="code-number">3</span><br>remaining = apples - eaten<br>print(remaining)</div>
+            <button class="btn-practice" onclick="openEditorModal('apples = 10\neaten = 3\nremaining = apples - eaten\nprint(remaining)')">💻 Practice with variables</button>
         </div>
 
-        <!-- PART 5 -->
         <div id="part5" class="content hidden">
             <p>🎯 <strong>Quick Summary</strong></p>
-            <p>• <strong>if</strong> checks a condition and runs code if True.</p>
-            <p>• <strong>else</strong> catches any case that isn't True.</p>
-            <p>• <strong>elif</strong> lets you check multiple conditions.</p>
-            <p>• Always end the line with a colon <strong>:</strong> and indent the next line.</p>
-            <p>• Use <strong>==</strong> to compare, and <strong>=</strong> to assign.</p>
+            <p>• <strong>+</strong> is Addition, <strong>-</strong> is Subtraction</p>
+            <p>• <strong>*</strong> is Multiplication, <strong>/</strong> is Division</p>
+            <p>• Division <strong>/</strong> always gives a decimal.</p>
             <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
         </div>
 
-        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -119,7 +100,7 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Security Check: Must complete Lesson 4 first
+        // Security Check: Must be unlocked AND completed Lesson 4
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
@@ -135,39 +116,38 @@
 
         let currentStep = 1;
         
-        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "Which symbol means 'is equal to' in a condition?", options: ["=", "==", "===", "!="], answer: "==", explain: "== compares values, while = assigns them." },
-            { q: "What's wrong with this code: if x = 5: print('yes')", options: ["Should be x == 5", "Missing else", "Missing colon", "Nothing is wrong"], answer: "Should be x == 5", explain: "You must use == to compare values, not =." },
-            { q: "💻 Coding Challenge 1: Write an if statement that checks if 'age' is greater than 18. (Include the colon)", type: "coding", answer: "ifage>18:", explain: "Start with 'if', the variable, the > symbol, the number, and a colon." },
-            { q: "💻 Coding Challenge 2: Write the keyword used to catch any case that is False, followed by a colon.", type: "coding", answer: "else:", explain: "The else keyword catches everything else. Don't forget the colon!" },
-            { q: "If score = 65, what is the output of: if score >= 70: print('A') elif score >= 60: print('B') else: print('C')?", options: ["A", "B", "C", "Nothing"], answer: "B", explain: "65 is not >= 70, so it checks the elif. 65 is >= 60, so it prints B." }
+            { q: "What is the output of: print(5 + 3)?", options: ["2", "8", "15", "53"], answer: "8", explain: "The + symbol adds the numbers together." },
+            { q: "Which symbol is used for multiplication?", options: ["x", "*", "+", "&"], answer: "*", explain: "Python uses the asterisk (*) for multiplication." },
+            { q: "💻 Coding Challenge: Write the code to print the result of 10 - 4.", type: "coding", answer: "print(10-4)", explain: "Use the - symbol inside print()." },
+            { q: "💻 Coding Challenge: Write the code to print the result of 6 * 6.", type: "coding", answer: "print(6*6)", explain: "Use the * symbol for multiplication." },
+            { q: "What is the output of: print(10 / 2)?", options: ["5", "5.0", "2", "Error"], answer: "5.0", explain: "In Python, division (/) always returns a float (decimal)." }
         ];
         
         let currentQuestion = 0;
         let score = 0;
-        let wrongAnswers = []; // Tracks failed questions
+        let wrongAnswers = [];
 
         function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('intro').classList.add('hidden');
                 document.getElementById('part1').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 1: The if statement';
+                document.getElementById('subtitle').innerText = 'Part 1: Addition & Subtraction';
                 currentStep = 2;
             } else if (currentStep === 2) {
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: The else statement';
+                document.getElementById('subtitle').innerText = 'Part 2: Multiplication & Division';
                 currentStep = 3;
             } else if (currentStep === 3) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: elif';
+                document.getElementById('subtitle').innerText = 'Part 3: The Division Rule';
                 currentStep = 4;
             } else if (currentStep === 4) {
                 document.getElementById('part3').classList.add('hidden');
                 document.getElementById('part4').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 4: Comparison Operators';
+                document.getElementById('subtitle').innerText = 'Part 4: Variables & Math';
                 currentStep = 5;
             } else if (currentStep === 5) {
                 document.getElementById('part4').classList.add('hidden');
@@ -197,13 +177,13 @@
                         <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
                         
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
-                            <button onclick="insertSymbol(':', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">:</button>
-                            <button onclick="insertSymbol('>', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">></button>
-                            <button onclick="insertSymbol('<', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;"><</button>
-                            <button onclick="insertSymbol('==', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">==</button>
-                            <button onclick="insertSymbol('!=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">!=</button>
-                            <button onclick="insertSymbol('if ', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">if</button>
-                            <button onclick="insertSymbol('else:', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">else:</button>
+                            <button onclick="insertSymbol('+', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">+</button>
+                            <button onclick="insertSymbol('-', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">-</button>
+                            <button onclick="insertSymbol('*', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">*</button>
+                            <button onclick="insertSymbol('/', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">/</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
                         </div>
                         <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
                     </div>
@@ -327,7 +307,6 @@
             let statusMessage = "";
             let btnHtml = "";
 
-            // Build the Mistake Review HTML
             let reviewHtml = "";
             if (wrongAnswers.length > 0) {
                 reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
