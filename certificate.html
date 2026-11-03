@@ -40,45 +40,42 @@
             font-style: italic; 
         }
         
-        /* REMOVED (SEASON 1) FROM THIS TEXT */
         .cert-text { font-size: 14px; color: #333; line-height: 1.5; max-width: 480px; margin: 0 auto 20px auto; }
         
+        /* GRID LAYOUT FIXES THE OVERLAPPING */
         .cert-footer { 
-            display: flex; 
-            justify-content: space-around; 
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Two equal halves */
+            gap: 20px;
             align-items: flex-end; 
             margin-top: 30px; 
-            padding: 0 20px; 
+            padding: 0 10px; 
         }
         
         .signature { 
             text-align: center; 
-            width: 45%; 
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
         
         .signature-img {
-            height: 50px; 
-            width: auto;
-            max-width: 160px;
+            max-width: 90%; /* Forces image to stay inside its half */
+            height: auto;
+            max-height: 50px; 
             object-fit: contain;
             margin-bottom: 5px;
-            display: block; 
-            margin-left: auto;
-            margin-right: auto;
         }
         
         .signature-line { width: 100%; height: 1px; background: #333; margin-bottom: 5px; }
         .signature-name { font-size: 12px; font-weight: 700; }
         .signature-title { font-size: 9px; color: #666; }
 
-        /* NEW STYLE FOR DATE AT THE BOTTOM */
         .date-text {
             font-size: 14px;
             font-weight: 600;
-            margin-top: 8px; /* Spacing below the word 'Issued' */
+            margin-top: 8px;
             color: #333;
         }
         
@@ -114,7 +111,6 @@
                     <div class="signature-line"></div>
                     <div class="signature-name">Date</div>
                     <div class="signature-title">Issued</div>
-                    <!-- DATE IS NOW PLACED HERE, BELOW 'ISSUED' -->
                     <div class="date-text" id="date-text"></div>
                 </div>
             </div>
