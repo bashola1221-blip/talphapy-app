@@ -36,70 +36,54 @@
         <div class="top-bar">
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
-        <div class="lesson-title">7. Lists</div>
-        <div id="subtitle" class="lesson-subtitle">Introduction: Storing Multiple Things</div>
+        <div class="lesson-title">7. Input & Output</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Talking to the Computer</div>
         
-        <!-- INTRODUCTION -->
         <div id="intro" class="content">
-            <p>So far, our variables could only hold <strong>one</strong> thing at a time (like one name or one age). But what if you want to store the names of 50 students in a class?</p>
-            <p>You could make 50 variables (<code>student1</code>, <code>student2</code>...), but that would be a nightmare. Instead, we use a <strong>List</strong>.</p>
-            <p>Think of a class register. It's one book (one list) that holds many names in a specific order.</p>
+            <p>So far, we have only been telling the computer what to do (Output). But to make interactive apps, games, and calculators, we need the computer to ask us questions and wait for our answers (Input).</p>
+            <p>Every time you log into Instagram, type a message in WhatsApp, or search on YouTube, you are providing <strong>input</strong>.</p>
         </div>
 
-        <!-- PART 1 -->
         <div id="part1" class="content hidden">
-            <p><strong>Creating a List</strong></p>
-            <p>Lists are wrapped in square brackets <code>[ ]</code>, and the items inside are separated by commas.</p>
-            <div class="code-block">fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"cherry"</span>]</div>
-            <button class="btn-practice" onclick="openEditorModal('fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]\nprint(fruits)')">💻 Practice creating a list</button>
-            <p>To get a single item from the list, you use its <strong>index</strong> (its position number).</p>
-            <div class="code-block">print(fruits[<span class="code-number">0</span>])  <span class="code-keyword"># Output: apple</span></div>
-            <button class="btn-practice" onclick="openEditorModal('fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]\nprint(fruits[0])')">💻 Practice indexing</button>
-            <p>⚠️ <strong>Important:</strong> Computers start counting at <strong>0</strong>, not 1. So the first item is at index 0, the second at index 1, etc.</p>
+            <p><strong>The input() function</strong></p>
+            <p><code>print()</code> sends text to the screen. <code>input()</code> pauses the program and waits for the user to type something and press Enter.</p>
+            <div class="code-block">name = input(<span class="code-string">"What is your name? "</span>)<br>print(<span class="code-string">"Hello, " + name</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;What is your name? &quot;)\nprint(&quot;Hello, &quot; + name)')">💻 Practice this code</button>
+            <p>The text inside the brackets is the prompt shown to the user.</p>
         </div>
 
-        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>Changing a List</strong></p>
-            <p>Lists are mutable — meaning you can change them after you create them. Think of editing a register when a new student joins.</p>
-            <ul>
-                <li><code>fruits.append("orange")</code> — Adds "orange" to the end.</li>
-                <li><code>fruits.remove("banana")</code> — Removes "banana".</li>
-                <li><code>fruits[0] = "mango"</code> — Changes the first item to "mango".</li>
-            </ul>
-            <div class="code-block">fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>]<br>fruits.append(<span class="code-string">"orange"</span>)<br>print(fruits)</div>
-            <button class="btn-practice" onclick="openEditorModal('fruits = [&quot;apple&quot;, &quot;banana&quot;]\nfruits.append(&quot;orange&quot;)\nprint(fruits)')">💻 Practice append()</button>
+            <p><strong>The Big Catch: input() is always text</strong></p>
+            <p>This is the #1 mistake beginners make. No matter what the user types, Python treats it as a <strong>String (text)</strong>.</p>
+            <div class="code-block">age = input(<span class="code-string">"Your age: "</span>)<br><span class="code-keyword"># If you type 14, age is now "14" (text), not 14 (number)</span><br>print(age + <span class="code-number">1</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('age = input(&quot;Your age: &quot;)\nprint(age + 1)')">💻 See what happens when you try to add 1</button>
+            <p>If you run this and type 14, it will crash! You can't add a number to text.</p>
         </div>
 
-        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p><strong>How many items are inside?</strong></p>
-            <p>If you want to know how many items are in a list, you use the <code>len()</code> function (short for length).</p>
-            <div class="code-block">fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"cherry"</span>]<br>print(len(fruits))  <span class="code-keyword"># Output: 3</span></div>
-            <button class="btn-practice" onclick="openEditorModal('fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]\nprint(len(fruits))')">💻 Practice len()</button>
+            <p>🎯 <strong>How to fix it: int()</strong></p>
+            <p>To do math with user input, you must convert the text to a number using <code>int()</code> (for whole numbers) or <code>float()</code> (for decimals).</p>
+            <div class="code-block">age = int(input(<span class="code-string">"Your age: "</span>))<br>print(age + <span class="code-number">1</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('age = int(input(&quot;Your age: &quot;))\nprint(age + 1)')">💻 Practice the fixed version</button>
+            <p>Now, if you type 14, Python converts it to a real number, and prints 15.</p>
         </div>
 
-        <!-- PART 4 -->
         <div id="part4" class="content hidden">
-            <p>🎯 <strong>Looping through a List</strong></p>
-            <p>The most powerful thing you can do with a list is go through every item one by one. This is like calling names from the register.</p>
-            <div class="code-block">fruits = [<span class="code-string">"apple"</span>, <span class="code-string">"banana"</span>, <span class="code-string">"cherry"</span>]<br><span class="code-keyword">for</span> fruit <span class="code-keyword">in</span> fruits:<br>    print(fruit)</div>
-            <button class="btn-practice" onclick="openEditorModal('fruits = [&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;]\nfor fruit in fruits:\n    print(fruit)')">💻 Practice looping a list</button>
-            <p>Notice we didn't need <code>range()</code>. Python automatically visits every item in the list, one by one.</p>
+            <p><strong>Putting it together</strong></p>
+            <p>You can also convert numbers back to text using <code>str()</code> if you want to join them with other words.</p>
+            <div class="code-block">name = input(<span class="code-string">"Your name: "</span>)<br>age = int(input(<span class="code-string">"Your age: "</span>))<br>print(<span class="code-string">"Hello " + name + "! Next year you will be " + str(age + 1)</span>)</div>
+            <button class="btn-practice" onclick="openEditorModal('name = input(&quot;Your name: &quot;)\nage = int(input(&quot;Your age: &quot;))\nprint(&quot;Hello &quot; + name + &quot;! Next year you will be &quot; + str(age + 1))')">💻 Practice the full program</button>
         </div>
 
-        <!-- PART 5 -->
         <div id="part5" class="content hidden">
             <p>🎯 <strong>Quick Summary</strong></p>
-            <p>• <strong>Lists</strong> store multiple values in one variable, wrapped in <code>[ ]</code>.</p>
-            <p>• You access items using their index, starting at <strong>0</strong>.</p>
-            <p>• Use <strong>append()</strong> to add, <strong>remove()</strong> to delete.</p>
-            <p>• Use <strong>len()</strong> to count the items.</p>
-            <p>• You can loop through a list using <code>for item in list:</code>.</p>
-            <p>You're ready for the final assessment of Season 1. You need to get 4 out of 5 correct to pass!</p>
+            <p>• <strong>input()</strong> asks the user for information.</p>
+            <p>• It <em>always</em> returns a String (text).</p>
+            <p>• Use <strong>int()</strong> to convert text to a whole number.</p>
+            <p>• Use <strong>str()</strong> to convert a number back to text for printing.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
         </div>
 
-        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -119,7 +103,7 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Security Check: Must complete Lesson 6 first
+        // Security Check: Must be unlocked AND completed Lesson 6
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
@@ -135,39 +119,38 @@
 
         let currentStep = 1;
         
-        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "If fruits = [\"apple\", \"banana\"], what is fruits[0]?", options: ["apple", "banana", "0", "Error"], answer: "apple", explain: "Indexes start at 0, so fruits[0] is the first item." },
-            { q: "How do you add \"orange\" to the end of a list called fruits?", options: ["fruits.add(\"orange\")", "fruits.append(\"orange\")", "fruits + \"orange\"", "fruits.push(\"orange\")"], answer: "fruits.append(\"orange\")", explain: "append() is the built-in method to add to the end of a list." },
-            { q: "💻 Coding Challenge 1: Write the code to create a list called 'colors' with the items \"red\" and \"blue\".", type: "coding", answer: "colors=[\"red\",\"blue\"]", explain: "Use square brackets and separate the strings with a comma." },
-            { q: "💻 Coding Challenge 2: Write the code to print the length of a list called 'cars'.", type: "coding", answer: "print(len(cars))", explain: "Wrap the list name inside len(), and put that inside print()." },
-            { q: "What does len([1, 2, 3, 4]) return?", options: ["3", "4", "5", "Error"], answer: "4", explain: "len() counts the number of items in the list." }
+            { q: "What type does input() always return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String", explain: "input() always returns text, even if the user types numbers." },
+            { q: "How do you fix this: age = input(); print(age + 1)?", options: ["age = int(input())", "age = str(input())", "age = float(input())", "Nothing is wrong"], answer: "age = int(input())", explain: "You must convert the text to an integer to do math with it." },
+            { q: "💻 Coding Challenge 1: Write the code to ask the user for their favorite color and store it in a variable called 'color'.", type: "coding", answer: "color=input(\"Favorite color: \")", explain: "Use the input() function and assign it to the variable 'color'." },
+            { q: "💻 Coding Challenge 2: Write the code to print the result of converting the text \"50\" into a number.", type: "coding", answer: "print(int(\"50\"))", explain: "Use int() to convert the string to a number, then print it." },
+            { q: "What does str(5) do?", options: ["Turns 5 into \"5\"", "Turns \"5\" into 5", "Doubles 5", "Nothing"], answer: "Turns 5 into \"5\"", explain: "str() converts numbers into strings (text)." }
         ];
         
         let currentQuestion = 0;
         let score = 0;
-        let wrongAnswers = []; // Tracks failed questions
+        let wrongAnswers = [];
 
         function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('intro').classList.add('hidden');
                 document.getElementById('part1').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 1: Creating a List';
+                document.getElementById('subtitle').innerText = 'Part 1: The input() function';
                 currentStep = 2;
             } else if (currentStep === 2) {
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: Changing a List';
+                document.getElementById('subtitle').innerText = 'Part 2: The Big Catch';
                 currentStep = 3;
             } else if (currentStep === 3) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: len()';
+                document.getElementById('subtitle').innerText = 'Part 3: Fixing it with int()';
                 currentStep = 4;
             } else if (currentStep === 4) {
                 document.getElementById('part3').classList.add('hidden');
                 document.getElementById('part4').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 4: Looping through a List';
+                document.getElementById('subtitle').innerText = 'Part 4: Putting it together';
                 currentStep = 5;
             } else if (currentStep === 5) {
                 document.getElementById('part4').classList.add('hidden');
@@ -198,11 +181,11 @@
                         
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
                             <button onclick="insertSymbol('=', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">=</button>
-                            <button onclick="insertSymbol('[', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">[</button>
-                            <button onclick="insertSymbol(']', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">]</button>
-                            <button onclick="insertSymbol(',', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">,</button>
+                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
+                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
                             <button onclick="insertSymbol('&#39;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">'</button>
                             <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
+                            <button onclick="insertSymbol('input()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">input()</button>
                             <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
                         </div>
                         <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
@@ -327,7 +310,6 @@
             let statusMessage = "";
             let btnHtml = "";
 
-            // Build the Mistake Review HTML
             let reviewHtml = "";
             if (wrongAnswers.length > 0) {
                 reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
@@ -362,9 +344,9 @@
                         rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`;
                     }
                     
-                    statusMessage = "🌟 Congratulations! You finished Season 1!";
-                    document.getElementById('subtitle').innerText = "Season 1 Complete!";
-                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Back to Season 1</a>`;
+                    statusMessage = "🌟 Excellent! You passed!";
+                    document.getElementById('subtitle').innerText = "Lesson 7 Unlocked";
+                    btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
                 } else {
                     if (!localStorage.getItem('lesson7_partial_reward')) {
                         await supabaseClient.from('profiles').update({
