@@ -28,6 +28,7 @@
         .cert-header { font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #0a1a3a; margin-bottom: 5px; }
         .cert-sub { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
         
+        /* NAME STYLING UPDATED HERE */
         .cert-name { 
             font-size: 30px; 
             font-weight: 800; 
@@ -37,15 +38,16 @@
             padding-bottom: 5px; 
             margin-bottom: 15px; 
             font-family: "Georgia", serif; 
-            font-style: italic; 
+            font-style: italic; /* Slanted */
+            text-transform: uppercase; /* ALL CAPITAL LETTERS */
+            letter-spacing: 2px; /* Elegant spacing */
         }
         
         .cert-text { font-size: 14px; color: #333; line-height: 1.5; max-width: 480px; margin: 0 auto 20px auto; }
         
-        /* GRID LAYOUT FIXES THE OVERLAPPING */
         .cert-footer { 
             display: grid;
-            grid-template-columns: 1fr 1fr; /* Two equal halves */
+            grid-template-columns: 1fr 1fr; 
             gap: 20px;
             align-items: flex-end; 
             margin-top: 30px; 
@@ -61,7 +63,7 @@
         }
         
         .signature-img {
-            max-width: 90%; /* Forces image to stay inside its half */
+            max-width: 90%; 
             height: auto;
             max-height: 50px; 
             object-fit: contain;
