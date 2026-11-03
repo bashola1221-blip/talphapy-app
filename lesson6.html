@@ -36,66 +36,54 @@
         <div class="top-bar">
             <a href="season1.html" class="back-btn">← Back to Season 1</a>
         </div>
-        <div class="lesson-title">6. Loops</div>
-        <div id="subtitle" class="lesson-subtitle">Introduction: Why Loops?</div>
+        <div class="lesson-title">6. Advanced Math</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: The Tricky Operators</div>
         
-        <!-- INTRODUCTION -->
         <div id="intro" class="content">
-            <p>Imagine doing 100 push-ups. You don't do them in one single move. You do one, then repeat, then repeat... counting as you go.</p>
-            <p>A <strong>loop</strong> is Python's way of doing the same thing many times without making you write the same code 100 times.</p>
-            <p>Loops are the engine of programming. They are used in games (to keep the game running), in apps (to display a list of messages), and in AI (to train a model millions of times).</p>
+            <p>You know how to add, subtract, multiply, and divide. But Python has three more math symbols that are incredibly powerful and used all the time in programming.</p>
+            <p>Let's look at Floor Division, Remainder, and Powers.</p>
         </div>
 
-        <!-- PART 1 -->
         <div id="part1" class="content hidden">
-            <p><strong>The `for` loop</strong></p>
-            <p>A <code>for</code> loop repeats a block of code a specific number of times. We use the <code>range()</code> function to tell Python how many times to loop.</p>
-            <div class="code-block"><span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(<span class="code-number">5</span>):<br>    print(<span class="code-string">"Hello"</span>)</div>
-            <button class="btn-practice" onclick="openEditorModal('for i in range(5):\n    print(&quot;Hello&quot;)')">💻 Practice this code</button>
-            <p><strong>range(5)</strong> means "give me the numbers 0, 1, 2, 3, 4" (5 numbers starting from 0).</p>
+            <p><strong>Floor Division (//)</strong></p>
+            <p>Imagine you have <strong>7 oranges</strong> and you want to share them equally among <strong>2 friends</strong>. You can't give them 3.5 oranges each. You give them 3 each, and 1 is left over.</p>
+            <p>The <code>//</code> operator gives you the whole number share, dropping the decimal completely.</p>
+            <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">//</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 3</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(7 // 2)')">💻 Practice Floor Division</button>
         </div>
 
-        <!-- PART 2 -->
         <div id="part2" class="content hidden">
-            <p><strong>Using the Loop Variable</strong></p>
-            <p>Notice the <code>i</code> in the code above? That is a variable that holds the current number of the loop. You can print it to see which loop you are currently on.</p>
-            <div class="code-block"><span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(<span class="code-number">5</span>):<br>    print(i)</div>
-            <button class="btn-practice" onclick="openEditorModal('for i in range(5):\n    print(i)')">💻 Practice the loop variable</button>
-            <p>This will output: 0, 1, 2, 3, 4.</p>
-            <p>If you want to start at 1 instead of 0, use <code>range(1, 6)</code>. (It stops right before the second number).</p>
-            <div class="code-block"><span class="code-keyword">for</span> i <span class="code-keyword">in</span> range(<span class="code-number">1</span>, <span class="code-number">6</span>):<br>    print(i)</div>
-            <button class="btn-practice" onclick="openEditorModal('for i in range(1, 6):\n    print(i)')">💻 Practice range(1, 6)</button>
+            <p><strong>Remainder (%)</strong></p>
+            <p>Remember those 7 oranges shared among 2 friends? The <code>%</code> operator tells you what is <strong>left over</strong> (the remainder).</p>
+            <div class="code-block">print(<span class="code-number">7</span> <span class="code-keyword">%</span> <span class="code-number">2</span>)  <span class="code-keyword"># Output: 1</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(7 % 2)')">💻 Practice Remainder</button>
+            <p>This is super useful for checking if a number is even or odd! (If <code>x % 2 == 0</code>, it's even).</p>
         </div>
 
-        <!-- PART 3 -->
         <div id="part3" class="content hidden">
-            <p><strong>The `while` loop</strong></p>
-            <p><code>for</code> loops repeat a known number of times. A <code>while</code> loop repeats <em>as long as a condition is True</em> — like running laps until you are tired.</p>
-            <div class="code-block">count = <span class="code-number">1</span><br><span class="code-keyword">while</span> count <= <span class="code-number">5</span>:<br>    print(count)<br>    count = count + <span class="code-number">1</span></div>
-            <button class="btn-practice" onclick="openEditorModal('count = 1\nwhile count <= 5:\n    print(count)\n    count = count + 1')">💻 Practice the while loop</button>
-            <p>Read it as: <em>"While count is 5 or less, print it and add 1."</em></p>
+            <p>🎯 <strong>Powers (**)</strong></p>
+            <p>If you want to multiply a number by itself multiple times, you use <code>**</code> (two asterisks).</p>
+            <p>For example, 2 to the power of 3 (2 × 2 × 2):</p>
+            <div class="code-block">print(<span class="code-number">2</span> <span class="code-keyword">**</span> <span class="code-number">3</span>)  <span class="code-keyword"># Output: 8</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(2 ** 3)')">💻 Practice Powers</button>
         </div>
 
-        <!-- PART 4 -->
         <div id="part4" class="content hidden">
-            <p>🎯 <strong>The Infinite Loop Warning</strong></p>
-            <p>If you write a <code>while</code> loop and forget to update the variable (like <code>count = count + 1</code>), the condition will always be True, and the loop will run forever. Your program will freeze!</p>
-            <div class="code-block"><span class="code-keyword">while</span> x < <span class="code-number">5</span>:<br>    print(<span class="code-string">"This will run forever"</span>)<br>    <span class="code-keyword"># Missing x = x + 1</span></div>
-            <button class="btn-practice" onclick="openEditorModal('x = 0\nwhile x < 5:\n    print(&quot;This will run forever&quot;)')">💻 See an infinite loop (be careful!)</button>
-            <p>If you run this in the playground, you will have to refresh the page to stop it!</p>
+            <p><strong>BODMAS (Order of Operations)</strong></p>
+            <p>Python follows the exact same math rules you learned in school: <strong>B</strong>rackets, <strong>O</strong>rders (Powers), <strong>D</strong>ivision/Multiplication, <strong>A</strong>ddition/Subtraction.</p>
+            <div class="code-block">print(<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span> <span class="code-keyword">*</span> <span class="code-number">4</span>)  <span class="code-keyword"># Output: 14 (Not 20!)</span><br>print((<span class="code-number">2</span> <span class="code-keyword">+</span> <span class="code-number">3</span>) <span class="code-keyword">*</span> <span class="code-number">4</span>) <span class="code-keyword"># Output: 20</span></div>
+            <button class="btn-practice" onclick="openEditorModal('print(2 + 3 * 4)\nprint((2 + 3) * 4)')">💻 Practice BODMAS</button>
         </div>
 
-        <!-- PART 5 -->
         <div id="part5" class="content hidden">
             <p>🎯 <strong>Quick Summary</strong></p>
-            <p>• <strong>for</strong> loops repeat a known number of times (using <code>range()</code>).</p>
-            <p>• <strong>while</strong> loops repeat as long as a condition is True.</p>
-            <p>• <strong>range(5)</strong> starts at 0 and stops before 5.</p>
-            <p>• Always make sure something inside a <code>while</code> loop changes the condition to avoid infinite loops!</p>
+            <p>• <strong>//</strong> gives the whole number share.</p>
+            <p>• <strong>%</strong> gives the remainder.</p>
+            <p>• <strong>**</strong> gives the power.</p>
+            <p>• Python follows <strong>BODMAS</strong>. Use brackets <strong>( )</strong> to control the order.</p>
             <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
         </div>
 
-        <!-- QUIZ SECTION -->
         <div id="quiz-section" class="content hidden">
             <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
             <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
@@ -115,7 +103,7 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // Security Check: Must complete Lesson 5 first
+        // Security Check: Must be unlocked AND completed Lesson 5
         async function checkLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) { window.location.replace('login.html'); return; }
@@ -131,39 +119,38 @@
 
         let currentStep = 1;
         
-        // 5 Questions (2 Coding Challenges!)
         const questions = [
-            { q: "for i in range(3): print('Hello') — how many times does it print?", options: ["1", "2", "3", "4"], answer: "3", explain: "range(3) gives 0, 1, 2 — which is three numbers." },
-            { q: "What does range(1, 4) produce?", options: ["1, 2, 3, 4", "1, 2, 3", "0, 1, 2, 3", "1, 4"], answer: "1, 2, 3", explain: "range starts at the first number and stops before the second number." },
-            { q: "💻 Coding Challenge 1: Write a 'for' loop that prints \"Hi\" 5 times using the variable 'i'.", type: "coding", answer: "foriinrange(5):print(\"Hi\")", explain: "Start with 'for i in range(5):' and then print Hi." },
-            { q: "💻 Coding Challenge 2: Write the keyword to start a loop that runs while 'x < 5', followed by the colon.", type: "coding", answer: "whilex<5:", explain: "Use the while keyword, the condition, and don't forget the colon." },
-            { q: "What is wrong with this code: while x < 5: print(x)?", options: ["x never changes (infinite loop)", "Should be for x", "Missing colon", "Nothing is wrong"], answer: "x never changes (infinite loop)", explain: "Without changing x inside the loop, the condition is always true, and it runs forever." }
+            { q: "What is the output of: print(10 // 3)?", options: ["3.33", "3", "4", "1"], answer: "3", explain: "Floor division drops the decimal and gives the whole number." },
+            { q: "What is the output of: print(10 % 3)?", options: ["3", "1", "0", "3.33"], answer: "1", explain: "10 divided by 3 is 9, with 1 left over." },
+            { q: "💻 Coding Challenge 1: Write the code to print 5 to the power of 2.", type: "coding", answer: "print(5**2)", explain: "Use the ** operator for powers." },
+            { q: "💻 Coding Challenge 2: Write the code to print the remainder of 15 divided by 4.", type: "coding", answer: "print(15%4)", explain: "Use the % operator for remainders." },
+            { q: "What is the output of: print(2 + 3 * 4)?", options: ["20", "14", "24", "9"], answer: "14", explain: "Multiplication happens before addition (3*4=12, then 2+12=14)." }
         ];
         
         let currentQuestion = 0;
         let score = 0;
-        let wrongAnswers = []; // Tracks failed questions
+        let wrongAnswers = [];
 
         function nextStep() {
             if (currentStep === 1) {
                 document.getElementById('intro').classList.add('hidden');
                 document.getElementById('part1').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 1: The for loop';
+                document.getElementById('subtitle').innerText = 'Part 1: Floor Division (//)';
                 currentStep = 2;
             } else if (currentStep === 2) {
                 document.getElementById('part1').classList.add('hidden');
                 document.getElementById('part2').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 2: The Loop Variable';
+                document.getElementById('subtitle').innerText = 'Part 2: Remainder (%)';
                 currentStep = 3;
             } else if (currentStep === 3) {
                 document.getElementById('part2').classList.add('hidden');
                 document.getElementById('part3').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 3: The while loop';
+                document.getElementById('subtitle').innerText = 'Part 3: Powers (**)';
                 currentStep = 4;
             } else if (currentStep === 4) {
                 document.getElementById('part3').classList.add('hidden');
                 document.getElementById('part4').classList.remove('hidden');
-                document.getElementById('subtitle').innerText = 'Part 4: Infinite Loops';
+                document.getElementById('subtitle').innerText = 'Part 4: BODMAS';
                 currentStep = 5;
             } else if (currentStep === 5) {
                 document.getElementById('part4').classList.add('hidden');
@@ -193,12 +180,11 @@
                         <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
                         
                         <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
-                            <button onclick="insertSymbol(':', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">:</button>
-                            <button onclick="insertSymbol('<', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;"><</button>
-                            <button onclick="insertSymbol('(', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">(</button>
-                            <button onclick="insertSymbol(')', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">)</button>
-                            <button onclick="insertSymbol('for i in range(5):', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">for</button>
-                            <button onclick="insertSymbol('while ', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">while</button>
+                            <button onclick="insertSymbol('+', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">+</button>
+                            <button onclick="insertSymbol('*', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">*</button>
+                            <button onclick="insertSymbol('/', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">/</button>
+                            <button onclick="insertSymbol('%', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">%</button>
+                            <button onclick="insertSymbol('**', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">**</button>
                             <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
                         </div>
                         <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
@@ -323,7 +309,6 @@
             let statusMessage = "";
             let btnHtml = "";
 
-            // Build the Mistake Review HTML
             let reviewHtml = "";
             if (wrongAnswers.length > 0) {
                 reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;">
