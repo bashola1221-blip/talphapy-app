@@ -28,18 +28,16 @@
 <body>
     <div class="app-container">
         
-        <!-- NAME ENTRY SCREEN -->
         <div id="name-entry" class="content" style="display: flex; flex-direction: column; justify-content: center; text-align: center;">
             <h2 style="color: var(--gold); margin-bottom: 10px;">🏆 Final Exam</h2>
             <p style="color: var(--text-muted); margin-bottom: 30px;">You are about to start a 10-minute timed exam.<br>You need <strong>80%</strong> to earn your certificate.</p>
             
-            <p style="text-align: left; margin-bottom: 10px; font-weight: bold;">Full Name for Certificate:</p>
+            <p style="text-align: left; margin-bottom: 10px; font-weight: bold;">Enter your full name (It will appear exactly like this on your certificate):</p>
             <input type="text" id="real-name" placeholder="e.g. Bashir Adams">
             
             <button class="btn-gold" onclick="startExam()">Start Exam</button>
         </div>
 
-        <!-- EXAM SCREEN (Hidden initially) -->
         <div id="exam-screen" style="display: none; flex-direction: column; flex-grow: 1;">
             <div class="header">
                 <div>
@@ -62,28 +60,31 @@
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // 15 Hard Questions (covers all 20 lessons)
         const questionBank = [
             { q: "What is the output of: print(10 // 3)?", options: ["3.3", "3", "4", "1"], answer: "3" },
             { q: "Which of these is a valid variable name?", options: ["2name", "my-name", "my_name", "my name"], answer: "my_name" },
             { q: "What does input() return?", options: ["Integer", "Float", "String", "Boolean"], answer: "String" },
+            { q: "Which method makes a string all uppercase?", options: [".upper()", ".uppercase()", ".caps()", ".big()"], answer: ".upper()" },
             { q: "What is the output of: print(2 ** 3)?", options: ["6", "8", "9", "5"], answer: "8" },
-            { q: "If x = 5, what is the output of: if x > 3: print('Yes')?", options: ["Yes", "No", "Error", "Nothing"], answer: "Yes" },
-            { q: "Which keyword is used to stop a loop early?", options: ["stop", "end", "break", "exit"], answer: "break" },
             { q: "What is the index of the first item in a list?", options: ["1", "0", "-1", "a"], answer: "0" },
-            { q: "What is the output of: print(len([10, 20, 30]))?", options: ["2", "3", "30", "Error"], answer: "3" },
             { q: "How do you add an item to the end of a list?", options: [".add()", ".push()", ".append()", ".insert()"], answer: ".append()" },
-            { q: "What is the output of: print('5' + '5')?", options: ["10", "55", "Error", "5 5"], answer: "55" },
-            { q: "Which symbol is used for comments in Python?", options: ["//", "#", "/*", "--"], answer: "#" },
-            { q: "What is the result of: print(17 % 5)?", options: ["3", "2", "3.4", "0"], answer: "2" }
+            { q: "Which keyword is used to define a function?", options: ["def", "function", "fun", "create"], answer: "def" },
+            { q: "What does random.randint(1, 10) do?", options: ["Picks a random number between 1 and 10", "Prints 1 to 10", "Adds 1 and 10", "Error"], answer: "Picks a random number between 1 and 10" },
+            { q: "What brackets are used to create a dictionary?", options: ["( )", "[ ]", "{ }", "< >"], answer: "{ }" },
+            { q: "What does the 'break' keyword do?", options: ["Pauses the loop", "Exits the loop immediately", "Restarts the loop", "Deletes the loop"], answer: "Exits the loop immediately" },
+            { q: "If score = 65, what is the output of: if score >= 70: 'A' elif score >= 60: 'B' else: 'C'?", options: ["A", "B", "C", "Nothing"], answer: "B" },
+            { q: "What does 'except ValueError:' do?", options: ["Catches number conversion errors", "Catches syntax errors", "Creates a variable", "Loops the code"], answer: "Catches number conversion errors" },
+            { q: "What is the output of: print(len([10, 20, 30]))?", options: ["2", "3", "30", "Error"], answer: "3" },
+            { q: "What does str(5) do?", options: ["Turns 5 into \"5\"", "Turns \"5\" into 5", "Doubles 5", "Nothing"], answer: "Turns 5 into \"5\"" }
         ];
 
         let selectedQuestions = [];
         let currentQuestion = 0;
         let score = 0;
-        let timeLeft = 600; // 10 minutes
+        let timeLeft = 600;
         let timerInterval;
 
-        // SECURITY CHECK: Run this as soon as the page loads
         async function checkExamLock() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if(!user) return window.location.href = "login.html";
@@ -91,10 +92,10 @@
             let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
             let completed = profile.completed_lessons || [];
             
-            const allLessonsCompleted = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7'].every(l => completed.includes(l));
+            const allLessons = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7','lesson8','lesson9','lesson10','lesson11','lesson12','lesson13','lesson14','lesson15','lesson16','lesson17','lesson18','lesson19','lesson20'];
             
-            if (!allLessonsCompleted) {
-                alert("You must complete all 7 lessons before taking the final exam!");
+            if (!allLessons.every(l => completed.includes(l))) {
+                alert("You must complete all 20 lessons before taking the final exam!");
                 window.location.href = "season1.html";
             }
         }
@@ -110,18 +111,14 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             if(!user) return window.location.href = "login.html";
 
-            // Save the name to the database
             await supabaseClient.from('profiles').update({ certificate_name: nameInput }).eq('id', user.id);
 
-            // Hide name entry, show exam
             document.getElementById('name-entry').style.display = 'none';
             document.getElementById('exam-screen').style.display = 'flex';
 
-            // Shuffle and pick 10 questions
             const shuffled = questionBank.sort(() => 0.5 - Math.random());
             selectedQuestions = shuffled.slice(0, 10);
 
-            // Start Timer
             timerInterval = setInterval(() => {
                 timeLeft--;
                 const minutes = Math.floor(timeLeft / 60);
@@ -179,7 +176,7 @@
         async function finishExam() {
             clearInterval(timerInterval);
             const percentage = (score / 10) * 100;
-            const passed = percentage >= 80; // 80% Pass mark
+            const passed = percentage >= 80;
 
             const { data: { user } } = await supabaseClient.auth.getUser();
             
