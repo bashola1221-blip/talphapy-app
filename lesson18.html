@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lesson 18 — Talphapy</title>
+    <style>
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --code-bg: #0d1425; --success: #10b981; --danger: #ef4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
+        .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; min-height: 100vh; }
+        .top-bar { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { color: var(--gold); text-decoration: none; font-size: 14px; font-weight: 600; }
+        .lesson-title { font-size: 24px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; }
+        .lesson-subtitle { font-size: 14px; color: var(--gold); margin-bottom: 24px; transition: opacity 0.3s; }
+        .content { font-size: 16px; line-height: 1.6; color: #e2e8f0; flex-grow: 1; }
+        .content p { margin-bottom: 16px; }
+        .content strong { color: var(--text-main); }
+        .content ul, .content ol { margin-left: 20px; margin-bottom: 16px; }
+        .content li { margin-bottom: 8px; }
+        .code-block { background-color: var(--code-bg); padding: 16px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #a7b6c2; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; line-height: 1.5; }
+        .code-string { color: #98c379; }
+        .code-keyword { color: #c678dd; }
+        .code-number { color: #d19a66; }
+        .bottom-action { padding-top: 20px; padding-bottom: 20px;}
+        .btn-gold { display: block; width: 100%; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; text-decoration: none; border: none; cursor: pointer; transition: transform 0.1s; }
+        .btn-gold:active { transform: scale(0.98); }
+        .quiz-btn { display: block; width: 100%; padding: 16px; background: var(--card-bg); color: var(--text-main); border-radius: 12px; font-weight: 600; font-size: 16px; text-align: left; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: transform 0.1s; }
+        .quiz-btn:active { transform: scale(0.98); }
+        .quiz-btn:disabled { opacity: 0.8; cursor: default; }
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="top-bar">
+            <a href="season1.html" class="back-btn">← Back to Season 1</a>
+        </div>
+        <div class="lesson-title">18. Dictionaries</div>
+        <div id="subtitle" class="lesson-subtitle">Introduction: Key-Value Pairs</div>
+        
+        <div id="intro" class="content">
+            <p>Think of a real-world dictionary. You look up a <strong>word</strong> (the key) to find its <strong>meaning</strong> (the value).</p>
+            <p>In Python, a <strong>Dictionary</strong> works the exact same way. It stores data in pairs: a Key and a Value. Instead of using index numbers (like Lists), you use the Key to get the Value.</p>
+        </div>
+
+        <div id="part1" class="content hidden">
+            <p><strong>Creating a Dictionary</strong></p>
+            <p>We use curly braces <code>{ }</code> to create a dictionary. Each pair is written as <code>key: value</code>.</p>
+            <div class="code-block">student = {<br>    <span class="code-string">"name"</span>: <span class="code-string">"Ada"</span>,<br>    <span class="code-string">"age"</span>: <span class="code-number">14</span>,<br>    <span class="code-string">"course"</span>: <span class="code-string">"Python"</span><br>}<br>print(student)</div>
+            <button class="btn-practice" onclick="openEditorModal('student = {\n    &quot;name&quot;: &quot;Ada&quot;,\n    &quot;age&quot;: 14,\n    &quot;course&quot;: &quot;Python&quot;\n}\nprint(student)')">💻 Practice creating a dictionary</button>
+        </div>
+
+        <div id="part2" class="content hidden">
+            <p><strong>Accessing Values</strong></p>
+            <p>To get a value, you put the key inside square brackets, just like a list index.</p>
+            <div class="code-block">print(student[<span class="code-string">"name"</span>])  <span class="code-keyword"># Output: Ada</span><br>print(student[<span class="code-string">"course"</span>]) <span class="code-keyword"># Output: Python</span></div>
+            <button class="btn-practice" onclick="openEditorModal('student = {\n    &quot;name&quot;: &quot;Ada&quot;,\n    &quot;age&quot;: 14\n}\nprint(student[&quot;name&quot;])')">💻 Practice accessing values</button>
+        </div>
+
+        <div id="part3" class="content hidden">
+            <p>🎯 <strong>Adding and Changing</strong></p>
+            <p>You can add a new key-value pair or change an existing one by assigning a value to the key.</p>
+            <div class="code-block">student[<span class="code-string">"age"</span>] = <span class="code-number">15</span>  <span class="code-keyword"># Changes age to 15</span><br>student[<span class="code-string">"city"</span>] = <span class="code-string">"Lagos"</span> <span class="code-keyword"># Adds a new city key</span><br>print(student)</div>
+            <button class="btn-practice" onclick="openEditorModal('student = {&quot;name&quot;: &quot;Ada&quot;, &quot;age&quot;: 14}\nstudent[&quot;age&quot;] = 15\nstudent[&quot;city&quot;] = &quot;Lagos&quot;\nprint(student)')">💻 Practice changing values</button>
+        </div>
+
+        <div id="part4" class="content hidden">
+            <p><strong>Looping through a Dictionary</strong></p>
+            <p>You can loop through all the keys in a dictionary.</p>
+            <div class="code-block">student = {<span class="code-string">"name"</span>: <span class="code-string">"Ada"</span>, <span class="code-string">"age"</span>: <span class="code-number">14</span>}<br><span class="code-keyword">for</span> key <span class="code-keyword">in</span> student:<br>    print(key, <span class="code-string">":"</span>, student[key])</div>
+            <button class="btn-practice" onclick="openEditorModal('student = {&quot;name&quot;: &quot;Ada&quot;, &quot;age&quot;: 14}\nfor key in student:\n    print(key, &quot;:&quot;, student[key])')">💻 Practice looping</button>
+        </div>
+
+        <div id="part5" class="content hidden">
+            <p>🎯 <strong>Quick Summary</strong></p>
+            <p>• <strong>Dictionaries</strong> store Key: Value pairs.</p>
+            <p>• Use <strong>{ }</strong> to create them.</p>
+            <p>• Access values using the key: <code>dict["key"]</code>.</p>
+            <p>• You can add or change values easily.</p>
+            <p>You're ready for the assessment. You need to get 4 out of 5 correct to pass!</p>
+        </div>
+
+        <div id="quiz-section" class="content hidden">
+            <h3 id="question-text" style="margin-bottom: 20px; font-size: 18px;"></h3>
+            <div id="options-container" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            <div id="feedback" style="margin-top: 20px; padding: 16px; border-radius: 8px; display: none; line-height: 1.5; font-size: 15px;"></div>
+        </div>
+
+        <div class="bottom-action">
+            <button id="nextBtn" class="btn-gold" onclick="nextStep()">Next →</button>
+        </div>
+    </div>
+
+    <script src="editor.js"></script>
+    <script src="nav.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        async function checkLock() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (!user) { window.location.replace('login.html'); return; }
+            let { data: profile } = await supabaseClient.from('profiles').select('completed_lessons').eq('id', user.id).single();
+            let completed = profile.completed_lessons || [];
+            if (!completed.includes('lesson17')) { window.location.replace('season1.html'); }
+        }
+        checkLock();
+
+        let currentStep = 1;
+        const questions = [
+            { q: "What brackets are used to create a dictionary?", options: ["( )", "[ ]", "{ }", "< >"], answer: "{ }", explain: "Curly braces {} are used for dictionaries." },
+            { q: "How do you access the value of 'name' in a dictionary called person?", options: ["person[0]", "person.name", "person[\"name\"]", "person(name)"], answer: "person[\"name\"]", explain: "You use the key inside square brackets to get the value." },
+            { q: "💻 Coding Challenge 1: Create a dictionary called 'car' with the key \"brand\" and value \"Toyota\".", type: "coding", answer: "car={\"brand\":\"Toyota\"}", explain: "Use curly braces, the key in quotes, a colon, and the value in quotes." },
+            { q: "💻 Coding Challenge 2: Print the value of the key \"age\" from a dictionary called user.", type: "coding", answer: "print(user[\"age\"])", explain: "Use print() and the key inside square brackets." },
+            { q: "What is a dictionary?", options: ["A list of numbers", "A key-value store", "A type of loop", "A function"], answer: "A key-value store", explain: "Dictionaries store data as key-value pairs." }
+        ];
+        
+        let currentQuestion = 0;
+        let score = 0;
+        let wrongAnswers = [];
+
+        function nextStep() {
+            if (currentStep === 1) { document.getElementById('intro').classList.add('hidden'); document.getElementById('part1').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 1: Creating a Dictionary'; currentStep = 2; }
+            else if (currentStep === 2) { document.getElementById('part1').classList.add('hidden'); document.getElementById('part2').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 2: Accessing Values'; currentStep = 3; }
+            else if (currentStep === 3) { document.getElementById('part2').classList.add('hidden'); document.getElementById('part3').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 3: Adding and Changing'; currentStep = 4; }
+            else if (currentStep === 4) { document.getElementById('part3').classList.add('hidden'); document.getElementById('part4').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 4: Looping'; currentStep = 5; }
+            else if (currentStep === 5) { document.getElementById('part4').classList.add('hidden'); document.getElementById('part5').classList.remove('hidden'); document.getElementById('subtitle').innerText = 'Part 5: Quick Summary'; document.getElementById('nextBtn').innerText = 'Start Quiz →'; currentStep = 6; }
+            else if (currentStep === 6) {
+                document.getElementById('part5').classList.add('hidden');
+                document.getElementById('quiz-section').classList.remove('hidden');
+                document.getElementById('subtitle').innerText = 'Assessment (4/5 to pass)';
+                document.getElementById('nextBtn').classList.add('hidden');
+                currentStep = 7;
+                loadQuestion();
+            }
+        }
+
+        function loadQuestion() {
+            const qData = questions[currentQuestion];
+            document.getElementById('question-text').innerText = `Q${currentQuestion + 1}/${questions.length}: ${qData.q}`;
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = ''; 
+            if (qData.type === 'coding') {
+                optionsContainer.innerHTML = `
+                    <div style="background: var(--card-bg); padding: 16px; border-radius: 8px;">
+                        <textarea id="quiz-code" style="width: 100%; height: 80px; background: #1e1e1e; color: #d4d4d4; border: 1px solid #333; border-radius: 8px; padding: 10px; font-family: monospace; font-size: 14px; outline: none; resize: none;" placeholder="Type your code here..."></textarea>
+                        <div class="symbol-bar" style="margin-top: 8px; margin-bottom: 12px; display: flex; overflow-x: auto; background: #2d2d2d; padding: 6px; border-radius: 6px; gap: 6px;">
+                            <button onclick="insertSymbol('{', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">{</button>
+                            <button onclick="insertSymbol('}', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">}</button>
+                            <button onclick="insertSymbol(':', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">:</button>
+                            <button onclick="insertSymbol('&quot;', 'quiz-code')" style="background:#3c3c3c;color:#fff;border:none;padding:6px 10px;border-radius:4px;font-family:monospace;">"</button>
+                            <button onclick="insertSymbol('print()', 'quiz-code')" style="background:#3c3c3c;color:var(--gold);border:none;padding:6px 10px;border-radius:4px;font-family:monospace;font-weight:bold;">print()</button>
+                        </div>
+                        <button onclick="checkCodingAnswer()" class="btn-gold" style="width: 100%;">Submit Code</button>
+                    </div>`;
+            } else {
+                qData.options.forEach(option => {
+                    const btn = document.createElement('button'); btn.innerText = option; btn.className = 'quiz-btn'; btn.onclick = () => checkAnswer(option, btn); optionsContainer.appendChild(btn);
+                });
+            }
+        }
+
+        function checkCodingAnswer() {
+            const userCodeRaw = document.getElementById('quiz-code').value;
+            const userCode = userCodeRaw.replace(/\s+/g, ''); 
+            const correct = questions[currentQuestion].answer.replace(/\s+/g, '');
+            const feedback = document.getElementById('feedback');
+            if (userCode === correct) {
+                score++; feedback.style.background = 'rgba(16, 185, 129, 0.1)'; feedback.style.color = 'var(--success)'; feedback.innerHTML = `✅ <strong>Correct!</strong><br>${questions[currentQuestion].explain}`;
+            } else {
+                wrongAnswers.push({ q: questions[currentQuestion].q, user: userCodeRaw || "(empty)", correct: questions[currentQuestion].answer });
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)'; feedback.style.color = 'var(--danger)'; feedback.innerHTML = `❌ <strong>Incorrect.</strong><br><br><strong>You wrote:</strong><br><code>${userCodeRaw || "(empty)"}</code><br><br><strong>Expected:</strong><br><code>${questions[currentQuestion].answer}</code><br><br>${questions[currentQuestion].explain}`;
+            }
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button'); nextQBtn.className = 'btn-gold'; nextQBtn.style.marginTop = '20px'; nextQBtn.innerText = 'Next Question →'; nextQBtn.onclick = () => { currentQuestion++; document.getElementById('feedback').style.display = 'none'; loadQuestion(); }; feedback.appendChild(nextQBtn);
+        }
+
+        function checkAnswer(selected, btnClicked) {
+            const qData = questions[currentQuestion];
+            const feedback = document.getElementById('feedback');
+            const allBtns = document.querySelectorAll('#options-container button');
+            allBtns.forEach(b => b.disabled = true);
+            if (selected === qData.answer) {
+                btnClicked.style.background = 'var(--success)'; btnClicked.style.borderColor = 'var(--success)'; btnClicked.style.color = '#fff'; score++;
+                feedback.style.background = 'rgba(16, 185, 129, 0.1)'; feedback.style.color = 'var(--success)'; feedback.innerHTML = `✅ <strong>Correct!</strong><br>${qData.explain}`;
+            } else {
+                wrongAnswers.push({ q: qData.q, user: selected, correct: qData.answer });
+                btnClicked.style.background = 'var(--danger)'; btnClicked.style.borderColor = 'var(--danger)'; btnClicked.style.color = '#fff';
+                feedback.style.background = 'rgba(239, 68, 68, 0.1)'; feedback.style.color = 'var(--danger)'; feedback.innerHTML = `❌ <strong>Not quite.</strong> The correct answer is: <strong>${qData.answer}</strong><br>${qData.explain}`;
+                allBtns.forEach(b => { if (b.innerText === qData.answer) { b.style.background = 'var(--success)'; b.style.borderColor = 'var(--success)'; b.style.color = '#fff'; } });
+            }
+            feedback.style.display = 'block';
+            const nextQBtn = document.createElement('button'); nextQBtn.className = 'btn-gold'; nextQBtn.style.marginTop = '20px';
+            if (currentQuestion < questions.length - 1) { nextQBtn.innerText = 'Next Question →'; nextQBtn.onclick = () => { currentQuestion++; document.getElementById('feedback').style.display = 'none'; loadQuestion(); }; } 
+            else { nextQBtn.innerText = 'See Results 🎉'; nextQBtn.onclick = showResults; }
+            feedback.appendChild(nextQBtn);
+        }
+
+        async function showResults() {
+            document.getElementById('question-text').innerText = "Saving progress...";
+            document.getElementById('options-container').innerHTML = '';
+            document.getElementById('feedback').style.display = 'none';
+            const percentage = Math.round((score / questions.length) * 100);
+            const passed = percentage >= 70;
+            let rewardMessage = "", statusMessage = "", btnHtml = "";
+            let reviewHtml = "";
+            if (wrongAnswers.length > 0) {
+                reviewHtml = `<div style="text-align: left; margin-top: 24px; background: #0d1425; padding: 16px; border-radius: 8px;"><h3 style="color: var(--danger); margin-bottom: 12px; font-size: 16px;">Review Your Mistakes:</h3>`;
+                wrongAnswers.forEach((item) => { reviewHtml += `<div style="margin-bottom: 12px; font-size: 14px; border-bottom: 1px solid #333; padding-bottom: 8px;"><strong>${item.q}</strong><br><span style="color: #ef4444;">Your answer: ${item.user}</span><br><span style="color: #10b981;">Correct answer: ${item.correct}</span></div>`; });
+                reviewHtml += `</div>`;
+            }
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
+                const completed = profile.completed_lessons || [];
+                if (passed) {
+                    if (!completed.includes('lesson18')) {
+                        const newCompleted = [...completed, 'lesson18'];
+                        await supabaseClient.from('profiles').update({ diamonds: (profile.diamonds || 0) + 2, xp: (profile.xp || 0) + 20, completed_lessons: newCompleted }).eq('id', user.id);
+                        rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +2 Diamonds • ⭐ +20 XP</p>`;
+                    } else { rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Practice run complete (Reward already claimed)</p>`; }
+                    statusMessage = "🌟 Excellent! You passed!"; document.getElementById('subtitle').innerText = "Lesson 18 Unlocked"; btnHtml = `<a href="season1.html" class="btn-gold" style="display: block; text-decoration: none;">Next Lesson →</a>`;
+                } else {
+                    if (!localStorage.getItem('lesson18_partial_reward')) {
+                        await supabaseClient.from('profiles').update({ diamonds: (profile.diamonds || 0) + 1, xp: (profile.xp || 0) + 10 }).eq('id', user.id);
+                        localStorage.setItem('lesson18_partial_reward', 'true'); rewardMessage = `<p style="color: var(--gold); font-weight: bold; margin-bottom: 24px;">💎 +1 Diamond • ⭐ +10 XP (Effort Reward)</p>`;
+                    } else { rewardMessage = `<p style="color: var(--text-muted); font-weight: bold; margin-bottom: 24px; font-size: 14px;">Keep trying! You already received the effort reward.</p>`; }
+                    statusMessage = "📉 You need 70% to pass."; document.getElementById('subtitle').innerText = "Lesson Locked"; btnHtml = `<button onclick="window.location.reload()" class="btn-gold" style="display: block; text-decoration: none; width: 100%;">🔄 Retry Quiz</button>`;
+                }
+            }
+            document.getElementById('question-text').innerText = "Assessment Complete!";
+            document.getElementById('options-container').innerHTML = `<div style="text-align: center; padding: 24px; background: var(--card-bg); border-radius: 12px;"><h2 style="font-size: 28px; color: ${passed ? 'var(--success)' : 'var(--danger)'}; margin-bottom: 10px;">${statusMessage}</h2><p style="font-size: 18px; margin-bottom: 20px;">You scored <strong>${score} / ${questions.length}</strong> (${percentage}%)</p>${rewardMessage}${btnHtml}${reviewHtml}</div>`;
+        }
+    </script>
+</body>
+</html>
