@@ -112,9 +112,13 @@
             <div class="lesson-info"><h3>19. 🏆 Project 3: Contact Book</h3><p>Build a real app</p></div>
             <div class="lesson-icon" id="icon-lesson19">🔒</div>
         </div>
+        <div class="lesson-card locked" id="card-lesson20" onclick="tryLockedLesson('lesson20.html')">
+            <div class="lesson-info"><h3>20. Error Handling</h3><p>Preventing crashes</p></div>
+            <div class="lesson-icon" id="icon-lesson20">🔒</div>
+        </div>
         
         <div class="lesson-card locked" id="card-exam" onclick="tryLockedLesson('final_exam.html')">
-            <div class="lesson-info"><h3>🏆 Final Exam</h3><p>Complete all lessons to unlock</p></div>
+            <div class="lesson-info"><h3>🏆 Final Exam</h3><p>Complete all 20 lessons to unlock</p></div>
             <div class="lesson-icon" id="icon-exam">🔒</div>
         </div>
     </div>
@@ -177,6 +181,13 @@
             if (isUnlocked && completed.includes('lesson16')) { document.getElementById('card-lesson17').classList.remove('locked'); document.getElementById('icon-lesson17').innerText = completed.includes('lesson17') ? '✅' : '📘'; }
             if (isUnlocked && completed.includes('lesson17')) { document.getElementById('card-lesson18').classList.remove('locked'); document.getElementById('icon-lesson18').innerText = completed.includes('lesson18') ? '✅' : '📘'; }
             if (isUnlocked && completed.includes('lesson18')) { document.getElementById('card-lesson19').classList.remove('locked'); document.getElementById('icon-lesson19').innerText = completed.includes('lesson19') ? '✅' : '📘'; }
+            if (isUnlocked && completed.includes('lesson19')) { document.getElementById('card-lesson20').classList.remove('locked'); document.getElementById('icon-lesson20').innerText = completed.includes('lesson20') ? '✅' : '📘'; }
+            
+            const allLessons = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7','lesson8','lesson9','lesson10','lesson11','lesson12','lesson13','lesson14','lesson15','lesson16','lesson17','lesson18','lesson19','lesson20'];
+            if (allLessons.every(l => completed.includes(l))) {
+                document.getElementById('card-exam').classList.remove('locked');
+                document.getElementById('icon-exam').innerText = profile.certificate_earned ? '🎓' : '📝';
+            }
         }
 
         function tryLockedLesson(url) {
