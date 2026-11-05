@@ -94,8 +94,9 @@ function setupGlobalEditor() {
                 <button class="close-modal" onclick="document.getElementById('editor-modal').style.display='none'">✖</button>
             </div>
             
-            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 150px;"></textarea>
+            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 120px; flex-shrink: 0;"></textarea>
             
+            <!-- SCROLL FIX IS HERE -->
             <div class="symbol-bar">
                 <button onclick="insertSymbol(',', 'modal-code')">,</button>
                 <button onclick="insertSymbol('[', 'modal-code')">[</button>
@@ -129,7 +130,7 @@ function setupGlobalEditor() {
             <button id="modal-run-btn" class="run-btn" onclick="runModalCode()">▶ Run Code</button>
             
             <div class="output-header">Output:</div>
-            <pre id="modal-output" class="code-output" style="max-height: 150px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
+            <pre id="modal-output" class="code-output" style="max-height: 100px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
         </div>
     `;
     document.body.appendChild(modal);
@@ -153,42 +154,49 @@ document.addEventListener("DOMContentLoaded", () => {
             z-index: 1500; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
         .fab-editor:active { transform: scale(0.95); }
+        
         .editor-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center;
-            z-index: 2000; padding: 20px;
+            z-index: 2000; padding: 15px;
         }
+        
         .editor-modal-content {
             background: #1e1e1e; width: 100%; max-width: 480px; border-radius: 12px;
-            border: 1px solid #333; overflow: hidden; display: flex; flex-direction: column;
-            max-height: 90dvh;
+            border: 1px solid #333; display: flex; flex-direction: column;
+            max-height: 95dvh; /* Fits the keyboard opening */
+            overflow-y: auto; /* Allows vertical scroll of the whole modal if needed */
         }
+        
         .editor-modal-header {
             background: #2d2d2d; color: #ccc; padding: 12px; font-weight: bold;
             display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 10;
         }
+        
         .close-modal { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
         .code-area { width: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
         
+        /* THE SCROLL FIX */
         .symbol-bar { 
             display: flex; 
-            overflow-x: auto; 
+            flex-wrap: nowrap; /* Forces single line */
+            overflow-x: auto; /* Enables side scrolling */
             background: #2d2d2d; 
             padding: 8px; 
             gap: 8px; 
-            -webkit-overflow-scrolling: touch; 
-            touch-action: pan-x; 
+            -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
+            touch-action: pan-x; /* Tells phone to only scroll sideways here */
+            scrollbar-width: none; /* Hides scrollbar on Firefox */
         }
-        .symbol-bar::-webkit-scrollbar { display: none; }
-        .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; flex-shrink: 0; }
+        .symbol-bar::-webkit-scrollbar { display: none; } /* Hides scrollbar on Chrome */
+        .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; flex-shrink: 0; /* Prevents buttons from squishing */ }
         .symbol-bar button:active { background: #555; }
-        .run-btn { width: 100%; padding: 12px; background: #4CAF50; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; }
+        .run-btn { width: 100%; padding: 12px; background: #4CAF50; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; flex-shrink: 0; }
         .run-btn:disabled { background: #2e7d32; opacity: 0.7; }
         .output-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 4px 12px; }
         .code-output { background: #000; color: #fff; min-height: 40px; padding: 12px; font-size: 14px; white-space: pre-wrap; line-height: 1.4; }
-        .btn-practice { display: inline-block; background: rgba(240,192,64,0.1); color: var(--gold); border: 1px dashed var(--gold); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: bold; margin-top: -16px; margin-bottom: 24px; cursor: pointer; }
-
-        /* DESKTOP FIX: Hide mobile keyboard on laptops */
+        
         @media (min-width: 768px) {
             .symbol-bar { display: none; }
             .editor-modal-content { max-width: 800px; }
