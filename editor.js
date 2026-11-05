@@ -35,6 +35,18 @@ function openEditorModal(initialCode = '') {
     ta.focus();
 }
 
+function copyCode() {
+    const code = document.getElementById('modal-code').value;
+    navigator.clipboard.writeText(code).then(() => {
+        alert("Code copied!");
+    });
+}
+
+function clearCode() {
+    document.getElementById('modal-code').value = "";
+    document.getElementById('modal-output').innerText = "";
+}
+
 async function runModalCode() {
     const code = document.getElementById('modal-code').value;
     const output = document.getElementById('modal-output');
@@ -94,43 +106,42 @@ function setupGlobalEditor() {
                 <button class="close-modal" onclick="document.getElementById('editor-modal').style.display='none'">✖</button>
             </div>
             
-            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 120px; flex-shrink: 0;"></textarea>
+            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 100px; flex-shrink: 0;"></textarea>
             
-            <!-- SCROLL FIX IS HERE -->
+            <!-- BUTTONS NOW WRAP INSTEAD OF SCROLL -->
             <div class="symbol-bar">
-                <button onclick="insertSymbol(',', 'modal-code')">,</button>
+                <button onclick="insertSymbol('(', 'modal-code')">(</button>
+                <button onclick="insertSymbol(')', 'modal-code')">)</button>
                 <button onclick="insertSymbol('[', 'modal-code')">[</button>
                 <button onclick="insertSymbol(']', 'modal-code')">]</button>
+                <button onclick="insertSymbol('&quot;', 'modal-code')">"</button>
+                <button onclick="insertSymbol('&#39;', 'modal-code')">'</button>
+                <button onclick="insertSymbol(':', 'modal-code')">:</button>
+                <button onclick="insertSymbol(',', 'modal-code')">,</button>
+                <button onclick="insertSymbol('=', 'modal-code')">=</button>
+                <button onclick="insertSymbol('==', 'modal-code')">==</button>
                 <button onclick="insertSymbol('+', 'modal-code')">+</button>
                 <button onclick="insertSymbol('-', 'modal-code')">-</button>
                 <button onclick="insertSymbol('*', 'modal-code')">*</button>
                 <button onclick="insertSymbol('/', 'modal-code')">/</button>
                 <button onclick="insertSymbol('%', 'modal-code')">%</button>
-                <button onclick="insertSymbol('=', 'modal-code')">=</button>
-                <button onclick="insertSymbol('==', 'modal-code')">==</button>
-                <button onclick="insertSymbol('!=', 'modal-code')">!=</button>
-                <button onclick="insertSymbol('<', 'modal-code')">&lt;</button>
-                <button onclick="insertSymbol('>', 'modal-code')">&gt;</button>
-                <button onclick="insertSymbol(':', 'modal-code')">:</button>
+                <button onclick="insertSymbol('**', 'modal-code')">**</button>
                 <button onclick="insertSymbol('#', 'modal-code')">#</button>
-                <button onclick="insertSymbol('&#39;', 'modal-code')">'</button>
-                <button onclick="insertSymbol('&quot;', 'modal-code')">"</button>
-                <button onclick="insertSymbol('(', 'modal-code')">(</button>
-                <button onclick="insertSymbol(')', 'modal-code')">)</button>
+                
+                <!-- Shortcuts -->
                 <button onclick="insertSymbol('print()', 'modal-code')" style="color: var(--gold); font-weight: bold;">print()</button>
                 <button onclick="insertSymbol('input()', 'modal-code')" style="color: var(--gold); font-weight: bold;">input()</button>
-                <button onclick="insertSymbol('range()', 'modal-code')" style="color: #61afef; font-weight: bold;">range()</button>
-                <button onclick="insertSymbol('if ', 'modal-code')" style="color: #c678dd; font-weight: bold;">if</button>
-                <button onclick="insertSymbol('else:', 'modal-code')" style="color: #c678dd; font-weight: bold;">else:</button>
-                <button onclick="insertSymbol('for i in range():', 'modal-code')" style="color: #c678dd; font-weight: bold;">for</button>
-                <button onclick="insertSymbol('import ', 'modal-code')" style="color: #61afef; font-weight: bold;">import</button>
-                <button onclick="insertSymbol('time.sleep(1)', 'modal-code')" style="color: #61afef; font-weight: bold;">sleep()</button>
+                <button onclick="insertSymbol('for i in range():', 'modal-code')" style="color: #c678dd; font-weight: bold;">for loop</button>
             </div>
             
-            <button id="modal-run-btn" class="run-btn" onclick="runModalCode()">▶ Run Code</button>
+            <div style="display: flex; gap: 8px; padding: 8px; background: #2d2d2d;">
+                <button id="modal-run-btn" class="run-btn" onclick="runModalCode()" style="flex: 2;">▶ Run Code</button>
+                <button class="run-btn" onclick="copyCode()" style="flex: 1; background: #4b5563;">📋 Copy</button>
+                <button class="run-btn" onclick="clearCode()" style="flex: 1; background: #ef4444;">🗑️ Clear</button>
+            </div>
             
             <div class="output-header">Output:</div>
-            <pre id="modal-output" class="code-output" style="max-height: 100px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
+            <pre id="modal-output" class="code-output" style="max-height: 80px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
         </div>
     `;
     document.body.appendChild(modal);
@@ -158,14 +169,14 @@ document.addEventListener("DOMContentLoaded", () => {
         .editor-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center;
-            z-index: 2000; padding: 15px;
+            z-index: 2000; padding: 10px;
         }
         
         .editor-modal-content {
             background: #1e1e1e; width: 100%; max-width: 480px; border-radius: 12px;
             border: 1px solid #333; display: flex; flex-direction: column;
-            max-height: 95dvh; /* Fits the keyboard opening */
-            overflow-y: auto; /* Allows vertical scroll of the whole modal if needed */
+            max-height: 90dvh; 
+            overflow-y: auto;
         }
         
         .editor-modal-header {
@@ -177,22 +188,27 @@ document.addEventListener("DOMContentLoaded", () => {
         .close-modal { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
         .code-area { width: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
         
-        /* THE SCROLL FIX */
+        /* THE FIX: Flex-wrap puts buttons on multiple lines */
         .symbol-bar { 
             display: flex; 
-            flex-wrap: nowrap; /* Forces single line */
-            overflow-x: auto; /* Enables side scrolling */
+            flex-wrap: wrap; 
             background: #2d2d2d; 
             padding: 8px; 
-            gap: 8px; 
-            -webkit-overflow-scrolling: touch; /* Smooth iOS scroll */
-            touch-action: pan-x; /* Tells phone to only scroll sideways here */
-            scrollbar-width: none; /* Hides scrollbar on Firefox */
+            gap: 6px; 
         }
-        .symbol-bar::-webkit-scrollbar { display: none; } /* Hides scrollbar on Chrome */
-        .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; flex-shrink: 0; /* Prevents buttons from squishing */ }
+        .symbol-bar button { 
+            background: #3c3c3c; 
+            color: #fff; 
+            border: none; 
+            padding: 6px 10px; 
+            border-radius: 6px; 
+            font-size: 14px; 
+            font-family: monospace; 
+            cursor: pointer; 
+        }
         .symbol-bar button:active { background: #555; }
-        .run-btn { width: 100%; padding: 12px; background: #4CAF50; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; flex-shrink: 0; }
+        
+        .run-btn { padding: 12px; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; border-radius: 6px; }
         .run-btn:disabled { background: #2e7d32; opacity: 0.7; }
         .output-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 4px 12px; }
         .code-output { background: #000; color: #fff; min-height: 40px; padding: 12px; font-size: 14px; white-space: pre-wrap; line-height: 1.4; }
