@@ -36,93 +36,95 @@
         <div class="page-title">Season 1</div>
         <div class="page-subtitle">Python Foundations</div>
 
-        <a href="lesson1.html" class="lesson-card" id="card-lesson1">
+        <!-- Note: onclick now passes the lesson NUMBER to a single handler function -->
+        <div class="lesson-card" id="card-lesson1" onclick="handleLessonClick(1)">
             <div class="lesson-info"><h3>1. The Print Function</h3><p>Making the computer speak</p></div>
             <div class="lesson-icon" id="icon-lesson1">📘</div>
-        </a>
-        <div class="lesson-card locked" id="card-lesson2" onclick="tryLockedLesson('lesson2.html')">
+        </div>
+        <div class="lesson-card locked" id="card-lesson2" onclick="handleLessonClick(2)">
             <div class="lesson-info"><h3>2. Variables</h3><p>Storing data in boxes</p></div>
             <div class="lesson-icon" id="icon-lesson2">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson3" onclick="tryLockedLesson('lesson3.html')">
+        <div class="lesson-card locked" id="card-lesson3" onclick="handleLessonClick(3)">
             <div class="lesson-info"><h3>3. Data Types</h3><p>Strings, Integers, and Floats</p></div>
             <div class="lesson-icon" id="icon-lesson3">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson4" onclick="tryLockedLesson('lesson4.html')">
+        <div class="lesson-card locked" id="card-lesson4" onclick="handleLessonClick(4)">
             <div class="lesson-info"><h3>4. String Manipulation</h3><p>Working with text</p></div>
             <div class="lesson-icon" id="icon-lesson4">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson5" onclick="tryLockedLesson('lesson5.html')">
+        <div class="lesson-card locked" id="card-lesson5" onclick="handleLessonClick(5)">
             <div class="lesson-info"><h3>5. Basic Math</h3><p>Addition, Subtraction, Division</p></div>
             <div class="lesson-icon" id="icon-lesson5">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson6" onclick="tryLockedLesson('lesson6.html')">
+        <div class="lesson-card locked" id="card-lesson6" onclick="handleLessonClick(6)">
             <div class="lesson-info"><h3>6. Advanced Math</h3><p>Floor Division, Remainder, Powers</p></div>
             <div class="lesson-icon" id="icon-lesson6">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson7" onclick="tryLockedLesson('lesson7.html')">
+        <div class="lesson-card locked" id="card-lesson7" onclick="handleLessonClick(7)">
             <div class="lesson-info"><h3>7. Input & Output</h3><p>Talking to the computer</p></div>
             <div class="lesson-icon" id="icon-lesson7">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson8" onclick="tryLockedLesson('lesson8.html')">
+        <div class="lesson-card locked" id="card-lesson8" onclick="handleLessonClick(8)">
             <div class="lesson-info"><h3>8. Conditionals (Part 1)</h3><p>If and Else statements</p></div>
             <div class="lesson-icon" id="icon-lesson8">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson9" onclick="tryLockedLesson('lesson9.html')">
+        <div class="lesson-card locked" id="card-lesson9" onclick="handleLessonClick(9)">
             <div class="lesson-info"><h3>9. Conditionals (Part 2)</h3><p>Else If (Elif) statements</p></div>
             <div class="lesson-icon" id="icon-lesson9">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson10" onclick="tryLockedLesson('lesson10.html')">
+        <div class="lesson-card locked" id="card-lesson10" onclick="handleLessonClick(10)">
             <div class="lesson-info"><h3>10. 🏆 Project 1: Grade Checker</h3><p>Test your conditionals</p></div>
             <div class="lesson-icon" id="icon-lesson10">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson11" onclick="tryLockedLesson('lesson11.html')">
+        <div class="lesson-card locked" id="card-lesson11" onclick="handleLessonClick(11)">
             <div class="lesson-info"><h3>11. For Loops</h3><p>Repeating actions</p></div>
             <div class="lesson-icon" id="icon-lesson11">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson12" onclick="tryLockedLesson('lesson12.html')">
+        <div class="lesson-card locked" id="card-lesson12" onclick="handleLessonClick(12)">
             <div class="lesson-info"><h3>12. While Loops</h3><p>Repeating until a condition</p></div>
             <div class="lesson-icon" id="icon-lesson12">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson13" onclick="tryLockedLesson('lesson13.html')">
+        <div class="lesson-card locked" id="card-lesson13" onclick="handleLessonClick(13)">
             <div class="lesson-info"><h3>13. Functions</h3><p>Reusable blocks of code</p></div>
             <div class="lesson-icon" id="icon-lesson13">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson14" onclick="tryLockedLesson('lesson14.html')">
+        <div class="lesson-card locked" id="card-lesson14" onclick="handleLessonClick(14)">
             <div class="lesson-info"><h3>14. Modules & Random</h3><p>Importing tools</p></div>
             <div class="lesson-icon" id="icon-lesson14">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson15" onclick="tryLockedLesson('lesson15.html')">
+        <div class="lesson-card locked" id="card-lesson15" onclick="handleLessonClick(15)">
             <div class="lesson-info"><h3>15. 🏆 Project 2: Guess Game</h3><p>Build a guessing game</p></div>
             <div class="lesson-icon" id="icon-lesson15">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson16" onclick="tryLockedLesson('lesson16.html')">
+        <div class="lesson-card locked" id="card-lesson16" onclick="handleLessonClick(16)">
             <div class="lesson-info"><h3>16. Intro to Lists</h3><p>Storing multiple items</p></div>
             <div class="lesson-icon" id="icon-lesson16">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson17" onclick="tryLockedLesson('lesson17.html')">
+        <div class="lesson-card locked" id="card-lesson17" onclick="handleLessonClick(17)">
             <div class="lesson-info"><h3>17. List Methods</h3><p>Adding, removing, sorting</p></div>
             <div class="lesson-icon" id="icon-lesson17">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson18" onclick="tryLockedLesson('lesson18.html')">
+        <div class="lesson-card locked" id="card-lesson18" onclick="handleLessonClick(18)">
             <div class="lesson-info"><h3>18. Dictionaries</h3><p>Storing key-value pairs</p></div>
             <div class="lesson-icon" id="icon-lesson18">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson19" onclick="tryLockedLesson('lesson19.html')">
+        <div class="lesson-card locked" id="card-lesson19" onclick="handleLessonClick(19)">
             <div class="lesson-info"><h3>19. 🏆 Project 3: Contact Book</h3><p>Build a real app</p></div>
             <div class="lesson-icon" id="icon-lesson19">🔒</div>
         </div>
-        <div class="lesson-card locked" id="card-lesson20" onclick="tryLockedLesson('lesson20.html')">
+        <div class="lesson-card locked" id="card-lesson20" onclick="handleLessonClick(20)">
             <div class="lesson-info"><h3>20. Error Handling</h3><p>Preventing crashes</p></div>
             <div class="lesson-icon" id="icon-lesson20">🔒</div>
         </div>
         
-        <div class="lesson-card locked" id="card-exam" onclick="tryLockedLesson('final_exam.html')">
+        <div class="lesson-card locked" id="card-exam" onclick="handleExamClick()">
             <div class="lesson-info"><h3>🏆 Final Exam</h3><p>Complete all 20 lessons to unlock</p></div>
             <div class="lesson-icon" id="icon-exam">🔒</div>
         </div>
     </div>
 
+    <!-- PAYWALL MODAL -->
     <div class="modal-overlay" id="paywall-modal">
         <div class="modal-content">
             <h2>🔒 Unlock Season 1</h2>
@@ -149,50 +151,84 @@
         const SUPABASE_URL = "https://kbdchkkzoaoveryxzxdz.supabase.co";
         const SUPABASE_KEY = "sb_publishable_ePAkGvIAevOmSg6wwn2BdA_PW9FRbhk";
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
         let isUnlocked = false;
         let currentUser = null;
+        let userCompletedLessons = [];
 
         async function loadProgress() {
             const { data: { user } } = await supabaseClient.auth.getUser();
             if (!user) return; 
             currentUser = user;
+            
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
-            let completed = profile.completed_lessons || [];
+            userCompletedLessons = profile.completed_lessons || [];
             isUnlocked = profile.unlocked_s1 || (profile.invite_count >= 3);
+
             if (profile.invite_count >= 3 && !profile.unlocked_s1) {
-                await supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', user.id); isUnlocked = true;
+                await supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', user.id); 
+                isUnlocked = true;
             }
-            if (completed.includes('lesson1')) document.getElementById('icon-lesson1').innerText = '✅';
-            if (completed.includes('lesson1')) { document.getElementById('card-lesson2').classList.remove('locked'); document.getElementById('icon-lesson2').innerText = completed.includes('lesson2') ? '✅' : '📘'; }
-            if (completed.includes('lesson2')) { document.getElementById('card-lesson3').classList.remove('locked'); document.getElementById('icon-lesson3').innerText = completed.includes('lesson3') ? '✅' : '📘'; }
-            if (completed.includes('lesson3')) { document.getElementById('card-lesson4').classList.remove('locked'); document.getElementById('icon-lesson4').innerText = completed.includes('lesson4') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson4')) { document.getElementById('card-lesson5').classList.remove('locked'); document.getElementById('icon-lesson5').innerText = completed.includes('lesson5') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson5')) { document.getElementById('card-lesson6').classList.remove('locked'); document.getElementById('icon-lesson6').innerText = completed.includes('lesson6') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson6')) { document.getElementById('card-lesson7').classList.remove('locked'); document.getElementById('icon-lesson7').innerText = completed.includes('lesson7') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson7')) { document.getElementById('card-lesson8').classList.remove('locked'); document.getElementById('icon-lesson8').innerText = completed.includes('lesson8') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson8')) { document.getElementById('card-lesson9').classList.remove('locked'); document.getElementById('icon-lesson9').innerText = completed.includes('lesson9') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson9')) { document.getElementById('card-lesson10').classList.remove('locked'); document.getElementById('icon-lesson10').innerText = completed.includes('lesson10') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson10')) { document.getElementById('card-lesson11').classList.remove('locked'); document.getElementById('icon-lesson11').innerText = completed.includes('lesson11') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson11')) { document.getElementById('card-lesson12').classList.remove('locked'); document.getElementById('icon-lesson12').innerText = completed.includes('lesson12') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson12')) { document.getElementById('card-lesson13').classList.remove('locked'); document.getElementById('icon-lesson13').innerText = completed.includes('lesson13') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson13')) { document.getElementById('card-lesson14').classList.remove('locked'); document.getElementById('icon-lesson14').innerText = completed.includes('lesson14') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson14')) { document.getElementById('card-lesson15').classList.remove('locked'); document.getElementById('icon-lesson15').innerText = completed.includes('lesson15') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson15')) { document.getElementById('card-lesson16').classList.remove('locked'); document.getElementById('icon-lesson16').innerText = completed.includes('lesson16') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson16')) { document.getElementById('card-lesson17').classList.remove('locked'); document.getElementById('icon-lesson17').innerText = completed.includes('lesson17') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson17')) { document.getElementById('card-lesson18').classList.remove('locked'); document.getElementById('icon-lesson18').innerText = completed.includes('lesson18') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson18')) { document.getElementById('card-lesson19').classList.remove('locked'); document.getElementById('icon-lesson19').innerText = completed.includes('lesson19') ? '✅' : '📘'; }
-            if (isUnlocked && completed.includes('lesson19')) { document.getElementById('card-lesson20').classList.remove('locked'); document.getElementById('icon-lesson20').innerText = completed.includes('lesson20') ? '✅' : '📘'; }
+
+            // VISUAL UPDATES ONLY
+            if (userCompletedLessons.includes('lesson1')) document.getElementById('icon-lesson1').innerText = '✅';
+            
+            if (userCompletedLessons.includes('lesson1')) { document.getElementById('card-lesson2').classList.remove('locked'); document.getElementById('icon-lesson2').innerText = userCompletedLessons.includes('lesson2') ? '✅' : '📘'; }
+            if (userCompletedLessons.includes('lesson2')) { document.getElementById('card-lesson3').classList.remove('locked'); document.getElementById('icon-lesson3').innerText = userCompletedLessons.includes('lesson3') ? '✅' : '📘'; }
+            if (userCompletedLessons.includes('lesson3')) { document.getElementById('card-lesson4').classList.remove('locked'); document.getElementById('icon-lesson4').innerText = userCompletedLessons.includes('lesson4') ? '✅' : '📘'; }
+            
+            if (isUnlocked && userCompletedLessons.includes('lesson4')) { document.getElementById('card-lesson5').classList.remove('locked'); document.getElementById('icon-lesson5').innerText = userCompletedLessons.includes('lesson5') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson5')) { document.getElementById('card-lesson6').classList.remove('locked'); document.getElementById('icon-lesson6').innerText = userCompletedLessons.includes('lesson6') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson6')) { document.getElementById('card-lesson7').classList.remove('locked'); document.getElementById('icon-lesson7').innerText = userCompletedLessons.includes('lesson7') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson7')) { document.getElementById('card-lesson8').classList.remove('locked'); document.getElementById('icon-lesson8').innerText = userCompletedLessons.includes('lesson8') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson8')) { document.getElementById('card-lesson9').classList.remove('locked'); document.getElementById('icon-lesson9').innerText = userCompletedLessons.includes('lesson9') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson9')) { document.getElementById('card-lesson10').classList.remove('locked'); document.getElementById('icon-lesson10').innerText = userCompletedLessons.includes('lesson10') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson10')) { document.getElementById('card-lesson11').classList.remove('locked'); document.getElementById('icon-lesson11').innerText = userCompletedLessons.includes('lesson11') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson11')) { document.getElementById('card-lesson12').classList.remove('locked'); document.getElementById('icon-lesson12').innerText = userCompletedLessons.includes('lesson12') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson12')) { document.getElementById('card-lesson13').classList.remove('locked'); document.getElementById('icon-lesson13').innerText = userCompletedLessons.includes('lesson13') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson13')) { document.getElementById('card-lesson14').classList.remove('locked'); document.getElementById('icon-lesson14').innerText = userCompletedLessons.includes('lesson14') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson14')) { document.getElementById('card-lesson15').classList.remove('locked'); document.getElementById('icon-lesson15').innerText = userCompletedLessons.includes('lesson15') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson15')) { document.getElementById('card-lesson16').classList.remove('locked'); document.getElementById('icon-lesson16').innerText = userCompletedLessons.includes('lesson16') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson16')) { document.getElementById('card-lesson17').classList.remove('locked'); document.getElementById('icon-lesson17').innerText = userCompletedLessons.includes('lesson17') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson17')) { document.getElementById('card-lesson18').classList.remove('locked'); document.getElementById('icon-lesson18').innerText = userCompletedLessons.includes('lesson18') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson18')) { document.getElementById('card-lesson19').classList.remove('locked'); document.getElementById('icon-lesson19').innerText = userCompletedLessons.includes('lesson19') ? '✅' : '📘'; }
+            if (isUnlocked && userCompletedLessons.includes('lesson19')) { document.getElementById('card-lesson20').classList.remove('locked'); document.getElementById('icon-lesson20').innerText = userCompletedLessons.includes('lesson20') ? '✅' : '📘'; }
             
             const allLessons = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7','lesson8','lesson9','lesson10','lesson11','lesson12','lesson13','lesson14','lesson15','lesson16','lesson17','lesson18','lesson19','lesson20'];
-            if (allLessons.every(l => completed.includes(l))) {
+            if (allLessons.every(l => userCompletedLessons.includes(l))) {
                 document.getElementById('card-exam').classList.remove('locked');
                 document.getElementById('icon-exam').innerText = profile.certificate_earned ? '🎓' : '📝';
             }
         }
 
-        function tryLockedLesson(url) {
-            if (isUnlocked) { window.location.href = url; } 
-            else { document.getElementById('paywall-modal').style.display = 'flex'; }
+        // --- THE NEW SMART CLICK HANDLER ---
+        function handleLessonClick(lessonNum) {
+            // 1. Check Progression (Must complete previous lesson)
+            if (lessonNum > 1) {
+                const prevLesson = 'lesson' + (lessonNum - 1);
+                if (!userCompletedLessons.includes(prevLesson)) {
+                    alert(`⚠️ Please complete Lesson ${lessonNum - 1} first!`);
+                    return;
+                }
+            }
+
+            // 2. Check Paywall (Only for Lesson 5 and above)
+            if (lessonNum >= 5 && !isUnlocked) {
+                document.getElementById('paywall-modal').style.display = 'flex';
+                return;
+            }
+
+            // 3. All good! Go to the lesson.
+            window.location.href = `lesson${lessonNum}.html`;
+        }
+
+        function handleExamClick() {
+            const allLessons = ['lesson1','lesson2','lesson3','lesson4','lesson5','lesson6','lesson7','lesson8','lesson9','lesson10','lesson11','lesson12','lesson13','lesson14','lesson15','lesson16','lesson17','lesson18','lesson19','lesson20'];
+            if (allLessons.every(l => userCompletedLessons.includes(l))) {
+                window.location.href = 'final_exam.html';
+            } else {
+                alert("🔒 You must complete all 20 lessons to unlock the Final Exam.");
+            }
         }
 
         function generateInvite() {
