@@ -35,6 +35,22 @@ document.addEventListener("DOMContentLoaded", function() {
         body {
             padding-bottom: 80px !important;
         }
+
+        /* --- LAPTOP/DESKTOP FIXES --- */
+        @media (min-width: 768px) {
+            .app-container, .login-box, .admin-box, .container {
+                max-width: 900px !important; /* Widens the app on laptops */
+                margin: 0 auto;
+            }
+            .bottom-nav {
+                max-width: 900px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-radius: 12px 12px 0 0;
+                border: 1px solid rgba(255,255,255,0.1);
+                border-bottom: none;
+            }
+        }
     </style>
     <div class="bottom-nav">
         <a href="index.html" class="nav-item">
@@ -58,24 +74,16 @@ document.addEventListener("DOMContentLoaded", function() {
     document.body.insertAdjacentHTML('beforeend', navHTML);
 
     // --- 2. PWA INSTALL PROMPT ---
-    // Check if the user has already dismissed the prompt
     if (localStorage.getItem('pwa_prompt_dismissed') === 'true') return;
-
-    // Check if the app is already installed/running in standalone mode
     if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) {
         return; 
     }
 
     let deferredPrompt;
 
-    // Listen for the browser telling us the app is installable
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the default mini-infobar from appearing on mobile
         e.preventDefault();
-        // Stash the event so it can be triggered later.
         deferredPrompt = e;
-        
-        // Show our custom banner
         showInstallBanner();
     });
 
@@ -86,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <style>
                 #pwa-install-banner {
                     position: fixed;
-                    bottom: 70px; /* Just above the bottom nav */
+                    bottom: 70px;
                     left: 10px;
                     right: 10px;
                     background: linear-gradient(135deg, #15264d, #0a1a3a);
@@ -130,6 +138,16 @@ document.addEventListener("DOMContentLoaded", function() {
                     cursor: pointer;
                     padding: 0 8px;
                 }
+                
+                /* LAPTOP/DESKTOP FIX FOR BANNER */
+                @media (min-width: 768px) {
+                    #pwa-install-banner {
+                        max-width: 400px;
+                        left: auto;
+                        right: 20px;
+                        bottom: 90px;
+                    }
+                }
             </style>
             <div class="pwa-text">
                 <span style="font-size: 24px;">📱</span>
@@ -156,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
         document.getElementById('close-btn').addEventListener('click', () => {
             banner.remove();
-            // Remember that they dismissed it so we don't annoy them again
             localStorage.setItem('pwa_prompt_dismissed', 'true');
         });
     }
