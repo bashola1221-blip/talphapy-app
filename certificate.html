@@ -6,60 +6,83 @@
     <title>Certificate — Talphapy</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
+        :root { 
+            --bg-color: #0a1a3a; 
+            --cert-bg: #fdfbf5; 
+            --gold: #c5a059; 
+            --dark-blue: #0a1a3a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: var(--bg-color); color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px 16px; }
         
         .container { width: 100%; max-width: 800px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
 
+        /* THE CERTIFICATE BOX */
         #certificate-box {
             width: 100%;
-            background: #ffffff;
-            color: #0a1a3a;
-            padding: 30px 20px;
-            border-radius: 8px;
-            border: 10px solid #0a1a3a;
-            outline: 3px solid #f0c040;
-            outline-offset: -15px;
+            background: var(--cert-bg);
+            color: #333;
+            padding: 40px 30px;
+            border: 12px solid var(--dark-blue);
+            outline: 2px solid var(--gold);
+            outline-offset: -8px;
             text-align: center;
             position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .cert-header { font-size: 28px; font-weight: 800; letter-spacing: 3px; color: #0a1a3a; margin-bottom: 5px; }
-        .cert-sub { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; }
+        /* Decorative inner corners */
+        #certificate-box::before, #certificate-box::after {
+            content: "";
+            position: absolute;
+            width: 40px; height: 40px;
+            border: 3px solid var(--gold);
+            pointer-events: none;
+        }
+        #certificate-box::before { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+        #certificate-box::after { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+        .corner-tl, .corner-tr, .corner-bl, .corner-br {
+            position: absolute; width: 40px; height: 40px; border: 3px solid var(--gold); pointer-events: none;
+        }
+        .corner-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+
+        /* TEXT STYLING */
+        .cert-header { font-family: "Georgia", serif; font-size: 42px; font-weight: 800; letter-spacing: 4px; color: var(--dark-blue); margin-bottom: 5px; text-transform: uppercase; }
+        .cert-sub { font-size: 14px; color: #555; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 30px; }
         
-        /* NAME STYLING UPDATED HERE */
         .cert-name { 
-            font-size: 30px; 
-            font-weight: 800; 
-            color: #f0c040; 
-            border-bottom: 2px solid #ddd; 
-            display: inline-block; 
-            padding-bottom: 5px; 
-            margin-bottom: 15px; 
             font-family: "Georgia", serif; 
-            font-style: italic; /* Slanted */
-            text-transform: uppercase; /* ALL CAPITAL LETTERS */
-            letter-spacing: 2px; /* Elegant spacing */
+            font-size: 48px; 
+            font-weight: 700; 
+            color: var(--gold); 
+            text-transform: uppercase; 
+            letter-spacing: 5px;
+            margin-bottom: 20px; 
         }
         
-        .cert-text { font-size: 14px; color: #333; line-height: 1.5; max-width: 480px; margin: 0 auto 20px auto; }
+        /* DECORATIVE DIVIDER */
+        .divider {
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0;
+        }
+        .divider-line { height: 1px; width: 80px; background: var(--gold); }
+        .divider-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+
+        .cert-text { font-size: 16px; color: #444; line-height: 1.6; max-width: 550px; margin: 0 auto 40px auto; }
         
+        /* 3-COLUMN FOOTER */
         .cert-footer { 
             display: grid;
-            grid-template-columns: 1fr 1fr; 
-            gap: 20px;
-            align-items: flex-end; 
-            margin-top: 30px; 
-            padding: 0 10px; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            align-items: end; 
+            margin-top: 20px; 
+            padding: 0 10px;
         }
         
         .signature { 
-            text-align: center; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
+            height: 100px;
         }
         
         .signature-img {
@@ -70,49 +93,87 @@
             margin-bottom: 5px;
         }
         
-        .signature-line { width: 100%; height: 1px; background: #333; margin-bottom: 5px; }
-        .signature-name { font-size: 12px; font-weight: 700; }
-        .signature-title { font-size: 9px; color: #666; }
+        .sig-line { width: 100%; height: 1px; background: #333; margin-bottom: 8px; }
+        .gold-line { background: var(--gold); height: 2px; }
+        .sig-name { font-size: 16px; font-weight: 700; color: var(--dark-blue); }
+        .sig-title { font-size: 12px; color: #666; }
 
-        .date-text {
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 8px;
-            color: #333;
+        /* GOLD SEAL */
+        .seal {
+            width: 90px; height: 90px;
+            background: linear-gradient(135deg, #f6d365 0%, #c5a059 100%);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            position: relative;
+            border: 3px dashed #fff;
+        }
+        .seal-inner {
+            width: 70px; height: 70px;
+            border: 2px solid var(--dark-blue);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px;
+            color: var(--dark-blue);
         }
         
-        .cert-id { font-size: 9px; color: #999; margin-top: 30px; font-family: monospace; }
+        .date-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100px;}
+        .date-title { font-size: 16px; font-weight: 700; color: var(--dark-blue); margin-bottom: 2px;}
+        .date-subtitle { font-size: 12px; color: #666; margin-bottom: 8px;}
+        .date-text { font-size: 16px; font-weight: 700; color: var(--dark-blue); margin-top: 8px;}
 
-        .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: var(--bg-color); border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
-        .loading-text { color: var(--text-muted); font-size: 14px; }
+        .cert-id { font-size: 11px; color: #888; margin-top: 40px; font-family: monospace; letter-spacing: 1px; }
+
+        .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: #fff; border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
+        .loading-text { color: #94a3b8; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
         
         <div id="certificate-box">
+            <!-- Corner Decorations -->
+            <div class="corner-tr"></div>
+            <div class="corner-bl"></div>
+
             <div class="cert-header">CERTIFICATE</div>
-            <div class="cert-sub">of Completion</div>
+            <div class="cert-sub">OF COMPLETION</div>
             
-            <div style="font-size: 13px; color: #666; margin-bottom: 5px;">This certifies that</div>
+            <div style="font-size: 16px; color: #555; margin-bottom: 10px;">This certifies that</div>
             <div class="cert-name" id="student-name">Loading...</div>
             
+            <div class="divider">
+                <div class="divider-line"></div>
+                <div class="divider-diamond"></div>
+                <div class="divider-diamond" style="width: 4px; height: 4px;"></div>
+                <div class="divider-diamond"></div>
+                <div class="divider-line"></div>
+            </div>
+
             <div class="cert-text">
                 has successfully completed the <strong>Python Foundations</strong> curriculum at Talphapy, demonstrating a solid understanding of variables, loops, conditionals, functions, and data structures.
             </div>
             
             <div class="cert-footer">
+                <!-- Column 1: Signature -->
                 <div class="signature">
                     <img src="https://i.postimg.cc/0yBXM725/IMG-20261102-WA6465-3-removebg-preview.png" crossorigin="anonymous" class="signature-img" alt="Signature">
-                    <div class="signature-line"></div>
-                    <div class="signature-name">Talpa</div>
-                    <div class="signature-title">Founder, Talphapy</div>
+                    <div class="sig-line"></div>
+                    <div class="sig-name">Talpa</div>
+                    <div class="sig-title">Founder, Talphapy</div>
                 </div>
                 
-                <div class="signature">
-                    <div class="signature-line"></div>
-                    <div class="signature-name">Date</div>
-                    <div class="signature-title">Issued</div>
+                <!-- Column 2: Seal -->
+                <div class="seal">
+                    <div class="seal-inner">🐍</div>
+                </div>
+                
+                <!-- Column 3: Date -->
+                <div class="date-container">
+                    <div class="date-title">Date</div>
+                    <div class="date-subtitle">Issued</div>
+                    <div class="sig-line gold-line"></div>
                     <div class="date-text" id="date-text"></div>
                 </div>
             </div>
