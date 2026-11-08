@@ -22,7 +22,7 @@
             width: 100%;
             background: var(--cert-bg);
             color: #333;
-            padding: 40px 15px; /* Reduced side padding for mobile */
+            padding: 40px 15px; 
             border: 10px solid var(--dark-blue);
             outline: 2px solid var(--gold);
             outline-offset: -6px;
@@ -41,7 +41,6 @@
         .corner-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
         /* TEXT STYLING */
-        /* Reduced font size and letter-spacing so it doesn't cut off */
         .cert-header { 
             font-family: "Georgia", serif; 
             font-size: 32px; 
@@ -54,7 +53,6 @@
         }
         .cert-sub { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px; }
         
-        /* ITALIC NAME STYLING HERE */
         .cert-name { 
             font-family: "Georgia", serif; 
             font-size: 36px; 
@@ -63,7 +61,7 @@
             text-transform: uppercase; 
             letter-spacing: 3px;
             margin-bottom: 15px; 
-            font-style: italic; /* Slanted */
+            font-style: italic;
             word-wrap: break-word;
         }
         
@@ -103,7 +101,7 @@
         .sig-name { font-size: 14px; font-weight: 700; color: var(--dark-blue); }
         .sig-title { font-size: 10px; color: #666; }
 
-        /* GOLD SEAL (SNAKE REMOVED) */
+        /* GOLD SEAL */
         .seal {
             width: 75px; height: 75px;
             background: linear-gradient(135deg, #f6d365 0%, #c5a059 100%);
@@ -149,7 +147,6 @@
             
             <div style="font-size: 14px; color: #555; margin-bottom: 10px;">This certifies that</div>
             
-            <!-- Dynamic name goes here -->
             <div class="cert-name" id="student-name">Loading...</div>
             
             <div class="divider">
@@ -169,11 +166,12 @@
                 <div class="signature">
                     <img src="https://i.postimg.cc/0yBXM725/IMG-20261102-WA6465-3-removebg-preview.png" crossorigin="anonymous" class="signature-img" alt="Signature">
                     <div class="sig-line"></div>
-                    <div class="sig-name">Talpa</div>
-                    <div class="sig-title">Founder, Talphapy</div>
+                    <!-- TEXT CHANGED HERE -->
+                    <div class="sig-name">Talphapy</div>
+                    <div class="sig-title">Founder, Talpha</div>
                 </div>
                 
-                <!-- Column 2: Seal (Snake Removed, replaced with Star) -->
+                <!-- Column 2: Seal -->
                 <div class="seal">
                     <div class="seal-inner">★</div>
                 </div>
@@ -212,7 +210,6 @@
                 return;
             }
 
-            // This fetches the real name of the logged-in user
             let realName = profile.certificate_name;
             if (!realName || realName === "Talphapy Student") {
                 realName = prompt("Please enter your full name as you want it on your certificate:");
