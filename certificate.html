@@ -22,54 +22,59 @@
             width: 100%;
             background: var(--cert-bg);
             color: #333;
-            padding: 40px 30px;
-            border: 12px solid var(--dark-blue);
+            padding: 40px 15px; /* Reduced side padding for mobile */
+            border: 10px solid var(--dark-blue);
             outline: 2px solid var(--gold);
-            outline-offset: -8px;
+            outline-offset: -6px;
             text-align: center;
             position: relative;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
         /* Decorative inner corners */
-        #certificate-box::before, #certificate-box::after {
-            content: "";
-            position: absolute;
-            width: 40px; height: 40px;
-            border: 3px solid var(--gold);
-            pointer-events: none;
-        }
-        #certificate-box::before { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-        #certificate-box::after { bottom: 15px; right: 15px; border-left: none; border-top: none; }
-
         .corner-tl, .corner-tr, .corner-bl, .corner-br {
-            position: absolute; width: 40px; height: 40px; border: 3px solid var(--gold); pointer-events: none;
+            position: absolute; width: 30px; height: 30px; border: 2px solid var(--gold); pointer-events: none;
         }
-        .corner-tr { top: 15px; right: 15px; border-left: none; border-bottom: none; }
-        .corner-bl { bottom: 15px; left: 15px; border-right: none; border-top: none; }
+        .corner-tl { top: 12px; left: 12px; border-right: none; border-bottom: none; }
+        .corner-tr { top: 12px; right: 12px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 12px; left: 12px; border-right: none; border-top: none; }
+        .corner-br { bottom: 12px; right: 12px; border-left: none; border-top: none; }
 
         /* TEXT STYLING */
-        .cert-header { font-family: "Georgia", serif; font-size: 42px; font-weight: 800; letter-spacing: 4px; color: var(--dark-blue); margin-bottom: 5px; text-transform: uppercase; }
-        .cert-sub { font-size: 14px; color: #555; text-transform: uppercase; letter-spacing: 6px; margin-bottom: 30px; }
+        /* Reduced font size and letter-spacing so it doesn't cut off */
+        .cert-header { 
+            font-family: "Georgia", serif; 
+            font-size: 32px; 
+            font-weight: 800; 
+            letter-spacing: 2px; 
+            color: var(--dark-blue); 
+            margin-bottom: 5px; 
+            text-transform: uppercase; 
+            word-wrap: break-word;
+        }
+        .cert-sub { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 20px; }
         
+        /* ITALIC NAME STYLING HERE */
         .cert-name { 
             font-family: "Georgia", serif; 
-            font-size: 48px; 
+            font-size: 36px; 
             font-weight: 700; 
             color: var(--gold); 
             text-transform: uppercase; 
-            letter-spacing: 5px;
-            margin-bottom: 20px; 
+            letter-spacing: 3px;
+            margin-bottom: 15px; 
+            font-style: italic; /* Slanted */
+            word-wrap: break-word;
         }
         
         /* DECORATIVE DIVIDER */
         .divider {
-            display: flex; align-items: center; justify-content: center; gap: 10px; margin: 20px 0;
+            display: flex; align-items: center; justify-content: center; gap: 10px; margin: 15px 0;
         }
-        .divider-line { height: 1px; width: 80px; background: var(--gold); }
-        .divider-diamond { width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+        .divider-line { height: 1px; width: 60px; background: var(--gold); }
+        .divider-diamond { width: 6px; height: 6px; background: var(--gold); transform: rotate(45deg); }
 
-        .cert-text { font-size: 16px; color: #444; line-height: 1.6; max-width: 550px; margin: 0 auto 40px auto; }
+        .cert-text { font-size: 14px; color: #444; line-height: 1.6; max-width: 90%; margin: 0 auto 30px auto; }
         
         /* 3-COLUMN FOOTER */
         .cert-footer { 
@@ -77,53 +82,53 @@
             grid-template-columns: 1fr 1fr 1fr; 
             align-items: end; 
             margin-top: 20px; 
-            padding: 0 10px;
+            padding: 0 5px;
         }
         
         .signature { 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-            height: 100px;
+            height: 90px;
         }
         
         .signature-img {
             max-width: 90%; 
             height: auto;
-            max-height: 50px; 
+            max-height: 40px; 
             object-fit: contain;
             margin-bottom: 5px;
         }
         
-        .sig-line { width: 100%; height: 1px; background: #333; margin-bottom: 8px; }
+        .sig-line { width: 100%; height: 1px; background: #333; margin-bottom: 6px; }
         .gold-line { background: var(--gold); height: 2px; }
-        .sig-name { font-size: 16px; font-weight: 700; color: var(--dark-blue); }
-        .sig-title { font-size: 12px; color: #666; }
+        .sig-name { font-size: 14px; font-weight: 700; color: var(--dark-blue); }
+        .sig-title { font-size: 10px; color: #666; }
 
-        /* GOLD SEAL */
+        /* GOLD SEAL (SNAKE REMOVED) */
         .seal {
-            width: 90px; height: 90px;
+            width: 75px; height: 75px;
             background: linear-gradient(135deg, #f6d365 0%, #c5a059 100%);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             margin: 0 auto;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             position: relative;
-            border: 3px dashed #fff;
+            border: 2px dashed #fff;
         }
         .seal-inner {
-            width: 70px; height: 70px;
+            width: 55px; height: 55px;
             border: 2px solid var(--dark-blue);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            font-size: 30px;
+            font-size: 24px;
             color: var(--dark-blue);
         }
         
-        .date-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100px;}
-        .date-title { font-size: 16px; font-weight: 700; color: var(--dark-blue); margin-bottom: 2px;}
-        .date-subtitle { font-size: 12px; color: #666; margin-bottom: 8px;}
-        .date-text { font-size: 16px; font-weight: 700; color: var(--dark-blue); margin-top: 8px;}
+        .date-container { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 90px;}
+        .date-title { font-size: 14px; font-weight: 700; color: var(--dark-blue); margin-bottom: 2px;}
+        .date-subtitle { font-size: 10px; color: #666; margin-bottom: 6px;}
+        .date-text { font-size: 14px; font-weight: 700; color: var(--dark-blue); margin-top: 6px;}
 
-        .cert-id { font-size: 11px; color: #888; margin-top: 40px; font-family: monospace; letter-spacing: 1px; }
+        .cert-id { font-size: 10px; color: #888; margin-top: 30px; font-family: monospace; letter-spacing: 1px; }
 
         .btn-gold { display: block; width: 100%; max-width: 400px; padding: 16px; background: var(--gold); color: #fff; border-radius: 12px; font-weight: 700; font-size: 16px; text-align: center; border: none; cursor: pointer; }
         .loading-text { color: #94a3b8; font-size: 14px; }
@@ -134,13 +139,17 @@
         
         <div id="certificate-box">
             <!-- Corner Decorations -->
+            <div class="corner-tl"></div>
             <div class="corner-tr"></div>
             <div class="corner-bl"></div>
+            <div class="corner-br"></div>
 
             <div class="cert-header">CERTIFICATE</div>
             <div class="cert-sub">OF COMPLETION</div>
             
-            <div style="font-size: 16px; color: #555; margin-bottom: 10px;">This certifies that</div>
+            <div style="font-size: 14px; color: #555; margin-bottom: 10px;">This certifies that</div>
+            
+            <!-- Dynamic name goes here -->
             <div class="cert-name" id="student-name">Loading...</div>
             
             <div class="divider">
@@ -164,9 +173,9 @@
                     <div class="sig-title">Founder, Talphapy</div>
                 </div>
                 
-                <!-- Column 2: Seal -->
+                <!-- Column 2: Seal (Snake Removed, replaced with Star) -->
                 <div class="seal">
-                    <div class="seal-inner">🐍</div>
+                    <div class="seal-inner">★</div>
                 </div>
                 
                 <!-- Column 3: Date -->
@@ -203,6 +212,7 @@
                 return;
             }
 
+            // This fetches the real name of the logged-in user
             let realName = profile.certificate_name;
             if (!realName || realName === "Talphapy Student") {
                 realName = prompt("Please enter your full name as you want it on your certificate:");
