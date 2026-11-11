@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Season 1 — Talphapy</title>
-    <!-- PAYSTACK SCRIPT -->
     <script src="https://js.paystack.co/v1/inline.js"></script>
     <style>
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --danger: #ef4444; }
@@ -34,7 +33,6 @@
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 16px; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; text-decoration: none; margin-bottom: 12px; font-size: 16px; transition: transform 0.1s; }
         .btn:active { transform: scale(0.97); }
         
-        /* Juicy Paystack Button */
         .btn-paystack { background: #10b981; color: #fff; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); }
         .btn-paystack:hover { background: #059669; }
         
@@ -46,7 +44,6 @@
         .divider::before { margin-right: 10px; }
         .divider::after { margin-left: 10px; }
 
-        /* NOTIFICATION MODAL */
         #notif-modal .modal-content { border: 1px solid var(--danger); background: var(--card-bg); }
         #notif-modal h2 { color: var(--danger); }
     </style>
@@ -246,16 +243,16 @@
                 return;
             }
 
-            // --- FIX 1: CHECK PAYWALL FIRST ---
-            if (lessonNumber >= 5 && !isUnlocked) {
-                document.getElementById('paywall-modal').style.display = 'flex';
-                return;
-            }
-
-            // --- CHECK PREVIOUS LESSON SECOND ---
+            // --- FIX: CHECK PREVIOUS LESSON FIRST ---
             const prevLessonKey = 'lesson' + (lessonNumber - 1);
             if (!completedLessons.includes(prevLessonKey)) {
                 showNotification("🔒 Lesson Locked", `Please complete Lesson ${lessonNumber - 1} first to unlock this lesson!`);
+                return;
+            }
+
+            // --- THEN CHECK PAYWALL ---
+            if (lessonNumber >= 5 && !isUnlocked) {
+                document.getElementById('paywall-modal').style.display = 'flex';
                 return;
             }
 
@@ -266,9 +263,7 @@
             const link = `https://talphapy-app.vercel.app/index.html?ref=${currentUser.id}`;
             navigator.clipboard.writeText(link).then(() => {
                 document.getElementById('invite-progress').innerText = "Link copied to clipboard!";
-                setTimeout(() => {
-                    document.getElementById('invite-progress').innerText = "";
-                }, 3000);
+                setTimeout(() => { document.getElementById('invite-progress').innerText = ""; }, 3000);
             }).catch(() => { prompt("Copy your invite link:", link); });
         }
 
@@ -304,9 +299,7 @@
                     
                     supabaseClient.from('profiles').update({ unlocked_s1: true }).eq('id', currentUser.id)
                     .then(() => {
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000);
+                        setTimeout(() => { window.location.reload(); }, 2000);
                     });
                 }
             });
