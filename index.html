@@ -5,10 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Talphapy — Learn Python</title>
     
+    <!-- SEO Description -->
     <meta name="description" content="Learn Python step by step with Talphapy. Interactive lessons, real coding playground, and a fun reward system. Start your coding journey today!">
     
+    <!-- SOCIAL MEDIA PREVIEW TAGS ADDED HERE -->
+    <meta property="og:title" content="Join Teaching Python by Talpha 🐍">
+    <meta property="og:description" content="Learn Python step by step, build real apps, and earn certificates. Join me on Talphapy!">
+    <meta property="og:image" content="https://i.postimg.cc/Gp75PwKX/IMG-20261007-WA3794.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:url" content="https://talphapy-app.vercel.app/">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Join Teaching Python by Talpha 🐍">
+    <meta name="twitter:description" content="Learn Python step by step, build real apps, and earn certificates. Join me on Talphapy!">
+    <meta name="twitter:image" content="https://i.postimg.cc/Gp75PwKX/IMG-20261007-WA3794.jpg">
+
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#0a1a3a">
+    
     <style>
         :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
@@ -16,10 +32,24 @@
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 20px; }
         
         header { text-align: center; margin-bottom: 10px; margin-top: 20px; }
-        .logo { font-size: 32px; font-weight: 800; color: var(--gold); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; }
         
-        /* THE ONLY LINE CHANGED: max-width is now 100% instead of 320px */
-        .logo img { width: 100%; max-width: 100%; height: auto; border-radius: 12px; }
+        /* Logo Section - Stacked Vertically */
+        .logo { 
+            font-size: 32px; 
+            font-weight: 800; 
+            color: var(--gold); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+        }
+        .logo img {
+            width: 100%;
+            max-width: 320px; 
+            height: auto;
+            border-radius: 12px; 
+        }
         
         .welcome-text { color: var(--text-muted); font-size: 15px; margin-top: 8px; }
         .stats-bar { background: var(--card-bg); border-radius: 12px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.05); }
@@ -85,7 +115,6 @@
             const { data: { user } } = await supabaseClient.auth.getUser();
             
             // If Guest (No user), leave the welcome text and 0 stats. 
-            // The "Log In" button is already configured in HTML.
             if (!user) return;
 
             // If Logged In, show stats and change button to Logout
@@ -94,11 +123,45 @@
             document.getElementById('auth-btn').setAttribute('onclick', 'logout()');
 
             let { data: profile } = await supabaseClient.from('profiles').select('*').eq('id', user.id).single();
-            if (profile) {
-                document.getElementById('user-diamonds').innerText = profile.diamonds || 0;
-                document.getElementById('user-xp').innerText = profile.xp || 0;
-                document.getElementById('user-streak').innerText = profile.streak || 1;
+            
+            if (!profile) {
+                await supabaseClient.from('profiles').insert([{ 
+                    id: user.id, 
+                    email: user.email, 
+                    diamonds: 0, 
+                    xp: 0, 
+                    streak: 1, 
+                    last_login: new Date().toISOString().split('T')[0] 
+                }]);
+                profile = { diamonds: 0, xp: 0, streak: 1, last_login: new Date().toISOString().split('T')[0] };
+            } else {
+                if (!profile.email) {
+                    await supabaseClient.from('profiles').update({ email: user.email }).eq('id', user.id);
+                }
+
+                const today = new Date().toISOString().split('T')[0];
+                const lastLogin = profile.last_login;
+
+                if (lastLogin !== today) {
+                    const yesterday = new Date();
+                    yesterday.setDate(yesterday.getDate() - 1);
+                    const yesterdayStr = yesterday.toISOString().split('T')[0];
+
+                    let newStreak = profile.streak || 0;
+                    if (lastLogin === yesterdayStr) {
+                        newStreak += 1; 
+                    } else {
+                        newStreak = 1; 
+                    }
+
+                    await supabaseClient.from('profiles').update({ streak: newStreak, last_login: today }).eq('id', user.id);
+                    profile.streak = newStreak;
+                }
             }
+
+            document.getElementById('user-diamonds').innerText = profile.diamonds || 0;
+            document.getElementById('user-xp').innerText = profile.xp || 0;
+            document.getElementById('user-streak').innerText = profile.streak || 1;
         }
 
         async function logout() {
