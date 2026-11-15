@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Leaderboard — Talphapy</title>
     <style>
-        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; }
+        :root { --bg-color: #0a1a3a; --card-bg: #15264d; --gold: #f0c040; --text-main: #ffffff; --text-muted: #94a3b8; --success: #10b981; --danger: #ef4444; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; padding: 20px 16px; }
         .app-container { width: 100%; max-width: 480px; display: flex; flex-direction: column; gap: 16px; }
@@ -31,6 +31,10 @@
         .top-3 { border: 2px solid #b45309; }
         .top-3 .rank-number { color: #b45309; }
         
+        /* Highlight your own row */
+        .my-rank { border: 1px solid var(--success); background: rgba(16, 185, 129, 0.1); }
+        .my-rank .rank-name { color: var(--success); }
+        
         .loading { text-align: center; color: var(--text-muted); margin-top: 40px; }
     </style>
 </head>
@@ -52,42 +56,61 @@
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         async function loadLeaderboard() {
-            // Fetch top 10 users, ordered by XP (highest first)
+            // 1. Get current user to highlight their row
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const currentUserId = user ? user.id : null;
+
+            // 2. Fetch top 10 users, including their email so we can show a real name
             let { data: profiles, error } = await supabaseClient
                 .from('profiles')
-                .select('id, xp, diamonds')
+                .select('id, email, xp, diamonds')
                 .order('xp', { ascending: false })
                 .limit(10);
 
             const container = document.getElementById('leaderboard-list');
             
-            if (error || !profiles || profiles.length === 0) {
+            if (error) {
+                container.innerHTML = `<div class="loading" style="color:var(--danger)">Error: ${error.message}</div>`;
+                return;
+            }
+            
+            if (!profiles || profiles.length === 0) {
                 container.innerHTML = `<div class="loading">No players yet. Be the first!</div>`;
                 return;
             }
 
             container.innerHTML = ''; // Clear loading text
 
-            profiles.forEach((user, index) => {
+            profiles.forEach((player, index) => {
                 const rank = index + 1;
                 let cardClass = 'leaderboard-card';
                 
                 if (rank === 1) cardClass += ' top-1';
                 if (rank === 2) cardClass += ' top-2';
                 if (rank === 3) cardClass += ' top-3';
+                if (player.id === currentUserId) cardClass += ' my-rank'; // Highlight current user
 
-                // Since we don't have usernames yet, we'll use the first 5 characters of their ID
-                const shortName = "Learner " + user.id.substring(0, 5).toUpperCase();
+                // Get the name from the email (e.g., "bashiruv20@gmail.com" -> "bashiruv20")
+                let displayName = "Anonymous";
+                if (player.email) {
+                    displayName = player.email.split('@')[0];
+                }
+
+                // Add medals for top 3
+                let medal = `#${rank}`;
+                if (rank === 1) medal = "🥇";
+                if (rank === 2) medal = "🥈";
+                if (rank === 3) medal = "🥉";
 
                 container.innerHTML += `
                     <div class="${cardClass}">
                         <div class="rank-info">
-                            <div class="rank-number">#${rank}</div>
-                            <div class="rank-name">${shortName}</div>
+                            <div class="rank-number">${medal}</div>
+                            <div class="rank-name">${displayName}</div>
                         </div>
                         <div class="rank-stats">
-                            <div class="rank-xp">⭐ ${user.xp || 0} XP</div>
-                            <div class="rank-diamonds">💎 ${user.diamonds || 0}</div>
+                            <div class="rank-xp">⭐ ${player.xp || 0} XP</div>
+                            <div class="rank-diamonds">💎 ${player.diamonds || 0}</div>
                         </div>
                     </div>
                 `;
