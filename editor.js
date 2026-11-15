@@ -1,4 +1,4 @@
-// editor.js - Reusable In-App Python Editor
+// editor.js - Reusable In-App Python Editor (Cached for Speed)
 
 let pyodideReady = false;
 let pyodideLoading = false;
@@ -54,22 +54,26 @@ async function runModalCode() {
     
     if (!code.trim()) return;
 
-    output.innerHTML = "⏳ Running...";
+    output.innerHTML = "⏳ Preparing Python engine...";
     runBtn.disabled = true;
 
     try {
         if (!pyodideReady) {
             if (!pyodideLoading) {
                 pyodideLoading = true;
-                output.innerHTML = "⏳ Loading Python engine...";
+                
+                // Show a nice loading message
+                output.innerHTML = "⏳ Downloading Python engine (This only happens once)...";
+                
+                // This tells the browser to cache the download using the service worker
                 window.pyodide = await loadPyodide({
+                    indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/",
                     stdout: (text) => {
-                        if (output.innerHTML.includes("⏳ Running...") || output.innerHTML.includes("⏳ Loading")) {
-                            output.innerHTML = "";
-                        }
+                        if (output.innerHTML.includes("⏳")) output.innerHTML = "";
                         output.innerText += text; 
                     }
                 });
+                
                 pyodideReady = true;
             } else {
                 while (!pyodideReady) { await new Promise(r => setTimeout(r, 500)); }
@@ -108,7 +112,6 @@ function setupGlobalEditor() {
             
             <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 100px; flex-shrink: 0;"></textarea>
             
-            <!-- BUTTONS NOW WRAP INSTEAD OF SCROLL -->
             <div class="symbol-bar">
                 <button onclick="insertSymbol('(', 'modal-code')">(</button>
                 <button onclick="insertSymbol(')', 'modal-code')">)</button>
@@ -127,8 +130,6 @@ function setupGlobalEditor() {
                 <button onclick="insertSymbol('%', 'modal-code')">%</button>
                 <button onclick="insertSymbol('**', 'modal-code')">**</button>
                 <button onclick="insertSymbol('#', 'modal-code')">#</button>
-                
-                <!-- Shortcuts -->
                 <button onclick="insertSymbol('print()', 'modal-code')" style="color: var(--gold); font-weight: bold;">print()</button>
                 <button onclick="insertSymbol('input()', 'modal-code')" style="color: var(--gold); font-weight: bold;">input()</button>
                 <button onclick="insertSymbol('for i in range():', 'modal-code')" style="color: #c678dd; font-weight: bold;">for loop</button>
@@ -145,13 +146,6 @@ function setupGlobalEditor() {
         </div>
     `;
     document.body.appendChild(modal);
-
-    if (!document.getElementById('pyodide-script')) {
-        const script = document.createElement('script');
-        script.id = 'pyodide-script';
-        script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
-        document.head.appendChild(script);
-    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -188,24 +182,8 @@ document.addEventListener("DOMContentLoaded", () => {
         .close-modal { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
         .code-area { width: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
         
-        /* THE FIX: Flex-wrap puts buttons on multiple lines */
-        .symbol-bar { 
-            display: flex; 
-            flex-wrap: wrap; 
-            background: #2d2d2d; 
-            padding: 8px; 
-            gap: 6px; 
-        }
-        .symbol-bar button { 
-            background: #3c3c3c; 
-            color: #fff; 
-            border: none; 
-            padding: 6px 10px; 
-            border-radius: 6px; 
-            font-size: 14px; 
-            font-family: monospace; 
-            cursor: pointer; 
-        }
+        .symbol-bar { display: flex; flex-wrap: wrap; background: #2d2d2d; padding: 8px; gap: 6px; }
+        .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; }
         .symbol-bar button:active { background: #555; }
         
         .run-btn { padding: 12px; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; border-radius: 6px; }
