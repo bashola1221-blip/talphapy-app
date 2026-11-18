@@ -1,7 +1,29 @@
-// editor.js - Reusable In-App Python Editor (Cached for Speed)
+// editor.js - Reusable In-App Python Editor (With Script Loading Fix)
 
 let pyodideReady = false;
 let pyodideLoading = false;
+let pyodideScriptPromise = null;
+
+// This function guarantees the script is loaded before we try to use it
+function loadPyodideScript() {
+    if (pyodideScriptPromise) return pyodideScriptPromise;
+    
+    pyodideScriptPromise = new Promise((resolve, reject) => {
+        // If it's already loaded (e.g. from cache)
+        if (window.loadPyodide) {
+            resolve();
+            return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+    
+    return pyodideScriptPromise;
+}
 
 function insertSymbol(symbol, targetId) {
     const ta = document.getElementById(targetId);
@@ -61,11 +83,12 @@ async function runModalCode() {
         if (!pyodideReady) {
             if (!pyodideLoading) {
                 pyodideLoading = true;
-                
-                // Show a nice loading message
                 output.innerHTML = "⏳ Downloading Python engine (This only happens once)...";
                 
-                // This tells the browser to cache the download using the service worker
+                // 1. Force the browser to wait for the script to load
+                await loadPyodideScript();
+                
+                // 2. Initialize Python
                 window.pyodide = await loadPyodide({
                     indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/",
                     stdout: (text) => {
@@ -76,6 +99,7 @@ async function runModalCode() {
                 
                 pyodideReady = true;
             } else {
+                // If another click happened while loading, wait for it to finish
                 while (!pyodideReady) { await new Promise(r => setTimeout(r, 500)); }
             }
         }
@@ -169,8 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .editor-modal-content {
             background: #1e1e1e; width: 100%; max-width: 480px; border-radius: 12px;
             border: 1px solid #333; display: flex; flex-direction: column;
-            max-height: 90dvh; 
-            overflow-y: auto;
+            max-height: 90dvh; overflow-y: auto;
         }
         
         .editor-modal-header {
