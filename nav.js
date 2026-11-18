@@ -1,4 +1,4 @@
-// This script automatically adds the bottom navigation bar, PWA install prompt, and Auto-Reminder Prompt
+// nav.js - Navigation, PWA Install, and Manual Reminder Trigger
 document.addEventListener("DOMContentLoaded", function() {
     
     // --- 1. BOTTOM NAVIGATION BAR ---
@@ -83,18 +83,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // --- 3. AUTOMATIC REMINDER SETUP ---
-    // Only show this if they don't have a time set AND they haven't dismissed the popup
-    const savedTime = localStorage.getItem('userReminderTime');
-    const hasDismissed = localStorage.getItem('reminder_prompt_dismissed');
+    // --- 3. MANUAL REMINDER MODAL (Triggered by Lessons) ---
+    window.triggerReminderModal = function() {
+        const savedTime = localStorage.getItem('userReminderTime');
+        const hasDismissed = localStorage.getItem('reminder_prompt_dismissed');
 
-    if (!savedTime && hasDismissed !== 'true') {
-        // Wait 5 seconds before popping up so we don't annoy them immediately
-        setTimeout(showReminderModal, 5000);
-    }
+        // Only show if they haven't set a time AND haven't dismissed it
+        if (!savedTime && hasDismissed !== 'true') {
+            showReminderModal();
+        }
+    };
 
     function showReminderModal() {
-        // Prevent double popups
         if (document.getElementById('reminder-modal-overlay')) return;
 
         const overlay = document.createElement('div');
@@ -146,7 +146,6 @@ document.addEventListener("DOMContentLoaded", function() {
         if (time) {
             localStorage.setItem('userReminderTime', time);
             
-            // Ask for notification permission
             if ('Notification' in window && Notification.permission !== 'granted') {
                 await Notification.requestPermission();
             }
