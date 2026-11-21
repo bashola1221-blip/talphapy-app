@@ -1,7 +1,17 @@
-// nav.js - Navigation, PWA Install, and Manual Reminder Trigger
+// nav.js - Navigation, PWA, Reminders, and Service Worker Registration
+
+// --- 1. REGISTER SERVICE WORKER ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('Service Worker registered!', reg.scope))
+      .catch(err => console.log('Service Worker failed:', err));
+  });
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     
-    // --- 1. BOTTOM NAVIGATION BAR ---
+    // --- 2. BOTTOM NAVIGATION BAR ---
     const navHTML = `
     <style>
         .bottom-nav {
@@ -32,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.body.insertAdjacentHTML('beforeend', navHTML);
 
-    // --- 2. PWA INSTALL PROMPT ---
+    // --- 3. PWA INSTALL PROMPT ---
     if (localStorage.getItem('pwa_prompt_dismissed') !== 'true' && !window.matchMedia('(display-mode: standalone)').matches) {
         let deferredPrompt;
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -83,16 +93,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // --- 3. MANUAL REMINDER MODAL (Triggered by Lessons) ---
-    window.triggerReminderModal = function() {
-        const savedTime = localStorage.getItem('userReminderTime');
-        const hasDismissed = localStorage.getItem('reminder_prompt_dismissed');
+    // --- 4. AUTOMATIC REMINDER SETUP ---
+    const savedTime = localStorage.getItem('userReminderTime');
+    const hasDismissed = localStorage.getItem('reminder_prompt_dismissed');
 
-        // Only show if they haven't set a time AND haven't dismissed it
-        if (!savedTime && hasDismissed !== 'true') {
-            showReminderModal();
-        }
-    };
+    if (!savedTime && hasDismissed !== 'true') {
+        setTimeout(showReminderModal, 5000);
+    }
 
     function showReminderModal() {
         if (document.getElementById('reminder-modal-overlay')) return;
@@ -145,11 +152,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const time = document.getElementById('quick-reminder-time').value;
         if (time) {
             localStorage.setItem('userReminderTime', time);
-            
             if ('Notification' in window && Notification.permission !== 'granted') {
                 await Notification.requestPermission();
             }
-            
             document.getElementById('reminder-modal-overlay').remove();
             alert('Awesome! We will remind you at ' + time + ' every day.');
         }
@@ -160,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('reminder-modal-overlay').remove();
     };
 
-    // --- 4. DAILY REMINDER BACKGROUND TIMER ---
+    // --- 5. DAILY REMINDER BACKGROUND TIMER ---
     async function setupDailyReminder() {
         const reminderTimeKey = 'userReminderTime';
         const lastNotifiedKey = 'lastNotifiedDate';
