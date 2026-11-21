@@ -1,45 +1,31 @@
-// editor.js - Reusable In-App Python Editor (With Script Loading Fix)
+// editor.js - Reusable In-App Python Editor (With Auto-Save)
 
 let pyodideReady = false;
 let pyodideLoading = false;
 let pyodideScriptPromise = null;
 
-// This function guarantees the script is loaded before we try to use it
 function loadPyodideScript() {
     if (pyodideScriptPromise) return pyodideScriptPromise;
     
     pyodideScriptPromise = new Promise((resolve, reject) => {
-        // If it's already loaded (e.g. from cache)
-        if (window.loadPyodide) {
-            resolve();
-            return;
-        }
-        
+        if (window.loadPyodide) { resolve(); return; }
         const script = document.createElement('script');
         script.src = "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js";
         script.onload = resolve;
         script.onerror = reject;
         document.head.appendChild(script);
     });
-    
     return pyodideScriptPromise;
 }
 
 function insertSymbol(symbol, targetId) {
     const ta = document.getElementById(targetId);
     if (!ta) return;
-    
     const startPos = ta.selectionStart;
     const endPos = ta.selectionEnd;
-    
     let cursorOffset = symbol.length;
-    if (symbol === 'print()' || symbol === 'input()' || symbol === 'range()') {
-        cursorOffset = symbol.length - 1; 
-    }
-    if (symbol === 'for i in range():') {
-        cursorOffset = 15; 
-    }
-
+    if (symbol === 'print()' || symbol === 'input()' || symbol === 'range()') cursorOffset = symbol.length - 1; 
+    if (symbol === 'for i in range():') cursorOffset = 15; 
     ta.value = ta.value.substring(0, startPos) + symbol + ta.value.substring(endPos, ta.value.length);
     ta.selectionStart = ta.selectionEnd = startPos + cursorOffset;
     ta.focus();
@@ -49,7 +35,12 @@ function openEditorModal(initialCode = '') {
     document.getElementById('editor-modal').style.display = 'flex';
     const ta = document.getElementById('modal-code');
     
-    if (initialCode) {
+    // 1. Check if there is saved code in localStorage
+    const savedCode = localStorage.getItem('talphapy_saved_code');
+    
+    if (savedCode) {
+        ta.value = savedCode; // Load saved code
+    } else if (initialCode) {
         let div = document.createElement('div');
         div.innerHTML = initialCode;
         ta.value = div.textContent;
@@ -57,16 +48,22 @@ function openEditorModal(initialCode = '') {
     ta.focus();
 }
 
+// 2. Save code every time the user types
+document.addEventListener('input', function(e) {
+    if (e.target && e.target.id === 'modal-code') {
+        localStorage.setItem('talphapy_saved_code', e.target.value);
+    }
+});
+
 function copyCode() {
     const code = document.getElementById('modal-code').value;
-    navigator.clipboard.writeText(code).then(() => {
-        alert("Code copied!");
-    });
+    navigator.clipboard.writeText(code).then(() => alert("Code copied!"));
 }
 
 function clearCode() {
     document.getElementById('modal-code').value = "";
     document.getElementById('modal-output').innerText = "";
+    localStorage.removeItem('talphapy_saved_code'); // Clear saved code
 }
 
 async function runModalCode() {
@@ -84,11 +81,7 @@ async function runModalCode() {
             if (!pyodideLoading) {
                 pyodideLoading = true;
                 output.innerHTML = "⏳ Downloading Python engine (This only happens once)...";
-                
-                // 1. Force the browser to wait for the script to load
                 await loadPyodideScript();
-                
-                // 2. Initialize Python
                 window.pyodide = await loadPyodide({
                     indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/",
                     stdout: (text) => {
@@ -96,24 +89,17 @@ async function runModalCode() {
                         output.innerText += text; 
                     }
                 });
-                
                 pyodideReady = true;
             } else {
-                // If another click happened while loading, wait for it to finish
                 while (!pyodideReady) { await new Promise(r => setTimeout(r, 500)); }
             }
         }
-
         output.innerText = ""; 
         await window.pyodide.runPythonAsync(code);
-        
-        if (output.innerText === "") {
-            output.innerText = "[Program finished with no output]";
-        }
+        if (output.innerText === "") output.innerText = "[Program finished with no output]";
     } catch (error) {
         output.innerHTML += `<br><span style="color: #ef4444;">${error.message}</span>`;
     }
-    
     runBtn.disabled = false;
 }
 
@@ -134,7 +120,7 @@ function setupGlobalEditor() {
                 <button class="close-modal" onclick="document.getElementById('editor-modal').style.display='none'">✖</button>
             </div>
             
-            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 100px; flex-shrink: 0;"></textarea>
+            <textarea id="modal-code" class="code-area" placeholder="Type Python code here..." spellcheck="false" style="height: 120px; flex-shrink: 0;"></textarea>
             
             <div class="symbol-bar">
                 <button onclick="insertSymbol('(', 'modal-code')">(</button>
@@ -166,7 +152,7 @@ function setupGlobalEditor() {
             </div>
             
             <div class="output-header">Output:</div>
-            <pre id="modal-output" class="code-output" style="max-height: 80px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
+            <pre id="modal-output" class="code-output" style="max-height: 100px; overflow-y: auto; margin:0; font-family:monospace;"></pre>
         </div>
     `;
     document.body.appendChild(modal);
@@ -183,37 +169,30 @@ document.addEventListener("DOMContentLoaded", () => {
             z-index: 1500; cursor: pointer; display: flex; align-items: center; justify-content: center;
         }
         .fab-editor:active { transform: scale(0.95); }
-        
         .editor-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.9); display: none; justify-content: center; align-items: center;
             z-index: 2000; padding: 10px;
         }
-        
         .editor-modal-content {
             background: #1e1e1e; width: 100%; max-width: 480px; border-radius: 12px;
             border: 1px solid #333; display: flex; flex-direction: column;
             max-height: 90dvh; overflow-y: auto;
         }
-        
         .editor-modal-header {
             background: #2d2d2d; color: #ccc; padding: 12px; font-weight: bold;
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 10;
         }
-        
         .close-modal { background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; }
         .code-area { width: 100%; background: #1e1e1e; color: #d4d4d4; border: none; padding: 12px; font-family: 'Courier New', Courier, monospace; font-size: 14px; resize: none; outline: none; }
-        
         .symbol-bar { display: flex; flex-wrap: wrap; background: #2d2d2d; padding: 8px; gap: 6px; }
         .symbol-bar button { background: #3c3c3c; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; font-size: 14px; font-family: monospace; cursor: pointer; }
         .symbol-bar button:active { background: #555; }
-        
         .run-btn { padding: 12px; color: white; font-weight: bold; border: none; font-size: 14px; cursor: pointer; border-radius: 6px; }
         .run-btn:disabled { background: #2e7d32; opacity: 0.7; }
         .output-header { background: #2d2d2d; color: #ccc; font-size: 12px; padding: 4px 12px; }
         .code-output { background: #000; color: #fff; min-height: 40px; padding: 12px; font-size: 14px; white-space: pre-wrap; line-height: 1.4; }
-        
         @media (min-width: 768px) {
             .symbol-bar { display: none; }
             .editor-modal-content { max-width: 800px; }
